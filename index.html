@@ -1,0 +1,1352 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <!-- begin SEO -->
+    <title>Learn the Origin</title>
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Learn the Origin">
+    <meta property="og:title" content="Learn the Origin">
+    <link rel="canonical" href="http://jorgemoral.es/">
+    <meta property="og:url" content="http://jorgemoral.es/">
+    <meta name="twitter:site" content="@UnPOUcoDe">
+    <meta name="twitter:title" content="Learn the Origin">
+    <meta name="twitter:description" content="Touching containers, orchestration and application development properly mixed with a little touch of real life experience">
+    <meta name="twitter:url" content="http://jorgemoral.es/">
+    <meta name="twitter:card" content="summary">
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "Person",
+            "name": "Jorge Morales Pou",
+            "url": "http://jorgemoral.es",
+            "sameAs": ["https://twitter.com/UnPOUcoDe", "https://www.linkedin.com/in/jorgemoralespou", "https://github.com/jorgemoralespou"]
+        }
+    </script>
+    <!-- end SEO -->
+    <link href="http://jorgemoral.es/feed.xml" type="application/atom+xml" rel="alternate" title="Learn the Origin Feed">
+    <title>jorgemoral.es ::
+        Home
+    </title>
+    <!--
+    <link rel="stylesheet" href="/css/stylesheet.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    -->
+    <meta name="generator" content="Nanoc 4.3.4">
+
+    <!-- For all browsers -->
+    <link rel="stylesheet" href="/css/main.css">
+    <meta http-equiv="cleartype" content="on">
+    <!-- start custom head snippets -->
+    <!-- insert favicons. use http://realfavicongenerator.net/ -->
+    <link rel="stylesheet" href="/css/asciidoc-pygments.css">
+</head>
+
+<body  class="layout--single">
+    <div class="masthead">
+        <div class="masthead__inner-wrap">
+            <div class="masthead__menu">
+                <nav id="site-nav" class="greedy-nav">
+                    <button><div class="navicon"></div></button>
+                    <ul class="visible-links">
+                        <li class="masthead__menu-item masthead__menu-item--lg"><a href="/">Learn the Origin</a></li>
+                        <li class="masthead__menu-item"><a href="/categories">Categories</a></li>
+                        <li class="masthead__menu-item"><a href="/tags">Tags</a></li>
+                        <li class="masthead__menu-item"><a href="/all-posts">All posts</a></li>
+                        <!--
+                        <li class="masthead__menu-item"><a href="/year-archive">By year</a></li>
+                        -->
+                        <li class="masthead__menu-item"><a href="/presentations">Presentations</a></li>
+                        <li class="masthead__menu-item"><a href="/conferences">Conferences</a></li>
+                        <li class="masthead__menu-item"><a href="/about">About me</a></li>
+                    </ul>
+                    <ul class="hidden-links hidden"></ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+<!--  USE Breadcrumbs Helper
+
+    <nav class="breadcrumbs">
+      <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+              <a href="http://jorgemoral.es/" itemprop="item"><span itemprop="name">Home</span></a>
+              <meta itemprop="position" content="1" />
+            </li>
+            <span class="sep">/</span>
+            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+              <a href="http://jorgemoral.esdevexp" itemprop="item"><span itemprop="name">Devexp</span></a>
+              <meta itemprop="position" content="2" />
+            </li>
+            <span class="sep">/</span>
+            <li class="current">Configuring your application, Part 2</li>
+      </ol>
+    </nav>
+-->
+
+    <div id="main" role="main">
+        <div class="sidebar sticky">
+            <div itemscope itemtype="http://schema.org/Person">
+                <div class="author__avatar">
+                    <img src="/images/bio-photo.jpg" class="author__avatar" alt="Jorge Morales">
+                </div>
+                <div class="author__content">
+                    <h3 class="author__name">Jorge Morales</h3>
+                    <p class="author__bio">OpenShift Developer Advocate working for Red Hat.<br/>Drop me a tweet if you want me to blog about a topic</p>
+                </div>
+
+                <div class="author__urls-wrapper">
+                    <button class="btn btn--inverse">Follow</button>
+                    <ul class="author__urls social-icons">
+                        <li><i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> Madrid, Spain</li>
+                        <li><a href="https://twitter.com/UnPOUcoDe"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+                        <li><a href="https://github.com/jorgemoralespou"><i class="fa fa-fw fa-github-square" aria-hidden="true"></i> GitHub</a></li>
+                        <li><a href="https://gitlab.com/jorgemoralespou"><i class="fa fa-fw fa-github-square" aria-hidden="true"></i> GitLab</a></li>
+                        <li><a href="https://www.linkedin.com/in/jorgemoralespou"><i class="fa fa-fw fa-linkedin-square" aria-hidden="true"></i> LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        
+<div class="archive">
+    <h1 class="page__title"></h1>
+    <p></p>
+    <h3 class="archive__subtitle">Recent Posts</h3>
+    
+       <div class="list__item">
+           <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+               <h2 class="archive__item-title" itemprop="headline"><a href="/2016/07/configuring-your-app-2/">Configuring your application, Part 2</a></h2>
+               <p class="page__meta">
+                  <i class="fa fa-clock-o" aria-hidden="true"></i> 5 minutes
+                  Posted: 01/Jul/2016 by Jorge Morales
+               </p>
+               <p class="archive__item-excerpt" itemprop="description">In a real world, your applications will be transitioning from environment to environment, from development to testing and into production, as part of their lifecycle....</p>
+               <!--
+               <p class="archive__item-excerpt" itemprop="description"><div class="paragraph">
+<p>In a real world, your applications will be transitioning from environment to environment, from development to testing and into production, as part of their lifecycle. In a container world, applications are assembled into one or many container images, hence what will be promoted are images.
+&lt;!--more-&#8594;
+In this blog I will demonstrate <a href="http://blog.openshift.com/configuring-your-application-part-1">the concepts we learnt about externalizing configuration</a> in your image promotion scenarios.
+As Veer <a href="https://blog.openshift.com/promoting-applications-across-environments/">has previously showed</a>, OpenShift is a platform where we can easily model the concept of stages/environments per application, and we can promote an application (image) from environment to environment just by tagging it accordingly in the project.</p>
+</div>
+<div class="paragraph">
+<p>In this example, I will be using the same application I used before, and I will create two projects simulating two different stages/environments for my application:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>node-app-dev</strong> will model the development stage and will be owned by user <strong>dev</strong></p>
+</li>
+<li>
+<p><strong>node-app-test</strong> will model the testing stage and will be owned by user <strong>test</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This application will be deployed with the exact same BuildConfig in both projects, but for each, a different configuration will be used by means of deploying different values in the ConfigMap. dev user, will have an additional task of building the application from source before deploying it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ git clone https://github.com/jorgemoralespou/ose-app-promotion-configmap.git
+
+$ cd ose-app-promotion-configmap/example2
+
+$ oc login 10.2.2.2:8443 -u dev -p dev
+$ oc new-project node-app-dev
+$ oc create -f configmap-dev.json
+$ oc create -f node-app-deployment.json
+$ oc create -f node-app-build.json</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>These commands will create a new project called node-app-dev, as user dev, and will deploy a ConfigMap, with a message and background color that will be used in development environment. Additionally, it will create the deployment configuration for the application and it will build our application from source code.</p>
+</div>
+<div class="paragraph">
+<p>Once the process is finished, we will be able to see the result:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/configmaps/node-app-dev.png" alt="Example app in development">
+</div>
+</div>
+<div class="paragraph">
+<p>Now, as user <strong>test</strong>, we will create a ConfigMap with different contents,  reflecting our test environment , but we will use exactly the same DeploymentConfig like before. The reason for that is, we are separating the application from its configuration, by leveraging the ConfigMap resource.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ git clone https://github.com/jorgemoralespou/ose-app-promotion-configmap.git
+
+$ cd ose-app-promotion-configmap/example2
+
+$ oc login 10.2.2.2:8443 -u test -p test
+$ oc new-project node-app-test
+$ oc create -f configmap-test.json
+$ oc create -f node-app-build.json</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this project, there will be no application deployed because no image has been tagged into the test project yet:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/configmaps/node-app-test.png" alt="Example app in test before promotion">
+</div>
+</div>
+<div class="paragraph">
+<p>There is one security requirement to allow dev user to tag into the test project and for a user in test project to pull down the image from the repository.</p>
+</div>
+<div class="paragraph">
+<p>Since we are fans of fine grained security, I will be creating a new role, image-tagger, that will be granted the rights to tag an ImageStream. That role will be assigned to the dev user in the test project. This action needs to be executed as an cluster admin user:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">$ oc login 10.2.2.2:8443 -u admin -p admin
+$ oc create -f - &amp;lt;&lt;eof null eof oc adm policy add-role-to-user image-tagger dev node-app-test additionally we also need the user from test project to be able pull down image project. but since in openshift by default deployment is done serviceaccount assign role accordingly node-app-dev now that all required permissions are place can have promote our application. for this he will just tag and it automatically deployed. login you verify has been promoted running testing environment showing configuration environment. app after promotion blog demonstrated a way of separating application so process promoting an gets easier requiring almost none customizations base resources being example fully executed origin all-in-one vagrant git clone cd ose-app-promotion-configmap new-project create configmap-dev.json node-app-deployment.json node-app-build.json configmap-test.json admin roles.json echo want system:image-puller="" system:serviceaccount:node-app-test:deployer="" image::="" link:https:="" doing:="" https:="" can:=""&gt;&lt;/eof&gt;</code></pre>
+</div>
+</div></p>
+               -->
+           </article>
+       </div>
+    
+       <div class="list__item">
+           <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+               <h2 class="archive__item-title" itemprop="headline"><a href="/2016/06/configuring-your-app-1/">Configuring your application, Part 1</a></h2>
+               <p class="page__meta">
+                  <i class="fa fa-clock-o" aria-hidden="true"></i> 6 minutes
+                  Posted: 09/Jun/2016 by Jorge Morales
+               </p>
+               <p class="archive__item-excerpt" itemprop="description">Kubernetes 1.2, released more than a month ago, has brought many interesting additions to the Kubernetes platform, but there’s one, that relates to configuration management, that’s especially relevant for application developers...</p>
+               <!--
+               <p class="archive__item-excerpt" itemprop="description"><div class="paragraph">
+<p>Kubernetes 1.2, released more than a month ago, has brought many interesting additions to the Kubernetes platform, but there’s one, that relates to configuration management, that’s especially relevant for application developers, this is <a href="http://kubernetes.io/docs/user-guide/configmap/">ConfigMap</a>. In this blog entry I will share some experiences and tips on using ConfigMap that goes beyond what one of our engineers and Kubernetes contributor, Paul Morie, recently <a href="http://blog.kubernetes.io/2016/04/configuration-management-with-containers.html">blogged about it</a>. We will take advantage of this new feature in a real application that we will be promoting through different environments, from development through testing into production.</p>
+</div>
+<div class="paragraph">
+<p>One of the challenges that we face as developers is the need to externalize application configuration as this will probably be different per environment or per deployment. In OpenShift, Docker, and Kubernetes, developers have been externalizing this configuration into Environment variables, allowing every deployment to have different values for runtime configuration. This has been a fantastic way to adhere to the third rule of the <a href="http://12factor.net/">12factor</a> methodology, “<a href="http://12factor.net/config">store config in the environment</a>”. When you think that what we, as users of OpenShift, are deploying into the platform is not a container but rather an application, that can be composed of one or multiple containers, we understand that the configuration per deployment really spans greater context than the container itself.</p>
+</div>
+<div class="paragraph">
+<p>We need a way of having all the configuration used/needed per application centralized, so that changes in configuration will not impact the definition of the deployment. This is what ConfigMap is for.</p>
+</div>
+<div class="paragraph">
+<p>The official <a href="http://kubernetes.io/docs/user-guide/configmap/">Kubernetes documentation</a> states:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Many applications require configuration via some combination of config files, command line arguments, and environment variables. These configuration artifacts should be decoupled from image content in order to keep containerized applications portable. The ConfigMap API resource provides mechanisms to inject containers with configuration data while keeping containers agnostic of Kubernetes. ConfigMap can be used to store fine-grained information like individual properties or coarse-grained information like entire config files or JSON blobs.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>So, what type of configuration can we provide to an application or deployment?
+It will typically fall under one of these categories:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Single configuration value expressed as an environment variable for the container.</p>
+</li>
+<li>
+<p>Command line arguments in a container.</p>
+</li>
+<li>
+<p>Multiple configuration values typically set in a configuration file.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Let’s explore how we can use ConfigMaps:</p>
+</div>
+<div class="paragraph">
+<p>I will demonstrate ConfigMap with a simple node.js app. This application will print a message as body content and will have background color configurable. We will externalize configuration into a ConfigMap. The code for the application is on <a href="https://github.com/jorgemoralespou/ose-app-promotion-configmap/blob/master/node-app/server.js">GitHub</a>.</p>
+</div>
+<div class="paragraph">
+<p>First required thing is to create a ConfigMap to hold the configuration values you want to make available to the deployment. My node.js application will get it’s background color from a property named “color” in a file named “/etc/node-app/node-app.config” in the container. It will also, look for an environment property named message for a string to be show as background message.
+The configuration file contents that will be used is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">color=blue</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let’s create a ConfigMap, named <strong>config</strong>, with both a literal text, message=<strong>Hello world!</strong>, and the configuration file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc create configmap config \
+            --from-literal=message=’Hello world!’ \
+            --from-file=ui.properties
+configmap "config" created</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let’s verify the contents of our ConfigMap.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">$ oc get configmap/config -o json
+{
+    "kind": "ConfigMap",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "config",
+    },
+    "data": {
+        "message": "Hello world!",
+        "ui.properties": "color=blue\n"
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Some internal metadata has been removed from output for brevity.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Now that I have a ConfigMap with the configuration my application requires, I’m going to deploy an application that will make use of it.</p>
+</div>
+<div class="paragraph">
+<p>In my <a href="https://github.com/jorgemoralespou/ose-app-promotion-configmap/blob/master/node-app/server.js">sample app</a>, I will consume the configuration provided by the ConfigMap, mapping the ConfigMap property <strong>message</strong> to the environment variable <strong>BACKGROUND_MSG</strong> the application expects, and also mapping the <strong>ui.properties</strong> into a file located in <strong>/etc/node-app/node-app.config</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json"> "template": {
+   "metadata": {
+      "labels": {
+         "app": "node-app",
+         "deploymentconfig": "node-app"
+      }
+   },
+   "spec": {
+      "containers": [
+         {
+            "name": "node-app",
+            "image": "node-app",
+            "ports": [
+               {
+                  "containerPort": 8080,
+                  "protocol": "TCP"
+               }
+            ],
+            "env": [
+               {
+                  "name": "OPENSHIFT_NODEJS_PORT",
+                   "value": "8080"
+               },
+               {
+                  "name": "BACKGROUND_MESSAGE",
+                  "valueFrom": {
+                     "configMapKeyRef": {
+                        "name": "config",
+                        "key": "message"
+                      }
+                   }
+                }
+             ],
+             "volumeMounts":[
+                {
+                   "name": "app-config",
+                   "mountPath": "/etc/node-app/"
+                }
+             ],
+             "resources": {},
+             "terminationMessagePath": "/dev/termination-log",
+             "imagePullPolicy": "Always"
+           }
+        ],
+        "volumes": [
+           {
+              "name": "app-config",
+              "configMap": {
+                 "name": "config",
+                 "items": [
+                    {
+                       "key": "ui.properties",
+                       "path": "node-app.config"
+                    }
+                 ]
+              }
+           }
+        ],
+        "restartPolicy": "Always",
+        "terminationGracePeriodSeconds": 30,
+        "dnsPolicy": "ClusterFirst",
+        "securityContext": {}
+     }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Configuration is assembled at deployment time, so when the application is deployed and there is no ConfigMap that satisfies the DeploymentConfig, we will have a warning event in our Event log that will help us diagnose the misconfiguration that prevented the deployment to start:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/configmaps/configmap-example-error.png" alt="Misconfiguration">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/configmaps/configmap-example.png" alt="ConfigMap example">
+</div>
+</div>
+<div class="paragraph">
+<p>One important thing to know is, when a ConfigMap is mounted as a volume, we can change the contents of the ConfigMap, and the mounted file in the container will be eventually updated, when the kubelet on the node re-synchs the pod, providing for changes in configuration in running containers. The running application needs to provide a mechanism to reload configuration changes when they happen.</p>
+</div>
+<div class="paragraph">
+<p>In this blog we have demonstrated a way of externalizing configuration of an application. Remember, ConfigMaps are GA in Kubernetes 1.2 and OpenShift 3.2 and some improvements are still to come. Just take these simple <strong>restrictions</strong> into account:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>ConfigMaps must be created before they are consumed in pods.</p>
+</li>
+<li>
+<p>ConfigMaps reside in a namespace. They can only be referenced by pods in the same namespace.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The example shown in this blog can be fully executed in the Openshift Origin all-in-one Vagrant image, by doing:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ git clone https://github.com/jorgemoralespou/ose-app-promotion-configmap.git
+$ cd ose-app-promotion-configmap/example1
+$ oc new-project configmap-example
+$ oc create -f configmap-example.json
+$ oc create -f node-app-deployment.json
+$ oc create -f node-app-build.json</code></pre>
+</div>
+</div>
+<div class="videoblock">
+<div class="content">
+<iframe src="https://www.youtube.com/embed/vKDLz2OXu7k?rel=0" frameborder="0" allowfullscreen></iframe>
+</div>
+</div>
+<div class="paragraph">
+<p><a href="http://www.youtube.com/watch?v=vKDLz2OXu7k">See a video in action</a></p>
+</div></p>
+               -->
+           </article>
+       </div>
+    
+       <div class="list__item">
+           <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+               <h2 class="archive__item-title" itemprop="headline"><a href="/2016/04/understanding-SAs_and-SCCs/">Understanding Service Accounts and SCCs</a></h2>
+               <p class="page__meta">
+                  <i class="fa fa-clock-o" aria-hidden="true"></i> 8 minutes
+                  Posted: 15/Apr/2016 by Jorge Morales
+               </p>
+               <p class="archive__item-excerpt" itemprop="description">We launched OpenShift 3.0 back in June 2015 and I have had the pleasure of speaking with users all over Europe and the EMEA region to help them</p>
+               <!--
+               <p class="archive__item-excerpt" itemprop="description"><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>We launched OpenShift 3.0 back in June 2015 and I have had the pleasure of speaking with users all over Europe and the EMEA region to help them get up and running with deploying applications on the platform. One of the features that developers and administrator often ask questions about are Service Accounts and Security Context Constraints. In this blog post, I will provide a simple introduction into both concepts, how they work and their usage.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_security_context_constraints_scc">Security Context Constraints (SCC)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <a href="https://docs.openshift.org/latest/architecture/additional_concepts/authorization.html#security-context-constraints">official documentation states</a>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>OpenShift provides security context constraints (SCC) that control the actions that a pod can perform and what it has the ability to access.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>In short, when we execute a container, we want to guarantee that the capabilities required by that container to run are satisfied, while at the same time we also want OpenShift to be a secure Container Application platform. For this reason we can not allow any container to get access to unnecessary capabilities or to run in an insecure way (e.g. privileged or as root).</p>
+</div>
+<div class="paragraph">
+<p>OpenShift guarantees that the capabilities required by a container are granted to the user that executes the container at <a href="https://docs.openshift.org/latest/architecture/additional_concepts/authorization.html#admission">admission time</a>. Admission is done based on the identity of the user executing the pod and the pod’s service account (introduced later in this blog).</p>
+</div>
+<div class="paragraph">
+<p>The OpenShift Container Application Platform provides a set of predefined Security Context Constraints that can be used, modified or extended by any administrator. The SCCs that can be used are as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc get scc
+NAME              PRIV   CAPS  HOSTDIR  SELINUX    RUNASUSER         FSGROUP   SUPGROUP  PRIORITY
+anyuid            false  []    false    MustRunAs  RunAsAny          RunAsAny  RunAsAny  10
+hostaccess        false  []    true     MustRunAs  MustRunAsRange    RunAsAny  RunAsAny  &lt;none&gt;
+hostmount-anyuid  false  []    true     MustRunAs  RunAsAny          RunAsAny  RunAsAny  &lt;none&gt;
+nonroot           false  []    false    MustRunAs  MustRunAsNonRoot  RunAsAny  RunAsAny  &lt;none&gt;
+privileged        true   []    true     RunAsAny   RunAsAny          RunAsAny  RunAsAny  &lt;none&gt;
+restricted        false  []    false    MustRunAs  MustRunAsRange    RunAsAny  RunAsAny  &lt;none&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default, the execution of any container will be granted the <strong>restricted</strong> SCC and only the capabilities defined by that SCC.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc describe scc restricted
+Name:                restricted
+Priority:               &lt;none&gt;
+Access:
+  Users:             &lt;none&gt;
+  Groups:               system:authenticated
+Settings:
+  Allow Privileged:        false
+  Default Add Capabilities:      &lt;none&gt;
+  Required Drop Capabilities:    KILL,MKNOD,SYS_CHROOT,SETUID,SETGID
+  Allowed Capabilities:       &lt;none&gt;
+  Allowed Volume Types:       configMap,downwardAPI,emptyDir,persistentVolumeClaim,secret
+  Allow Host Network:         false
+  Allow Host Ports:        false
+  Allow Host PID:          false
+  Allow Host IPC:          false
+  Read Only Root Filesystem:     false
+  Run As User Strategy:             MustRunAsRange
+    UID:             &lt;none&gt;
+    UID Range Min:            &lt;none&gt;
+    UID Range Max:            &lt;none&gt;
+  SELinux Context Strategy:         MustRunAs
+    User:               &lt;none&gt;
+    Role:               &lt;none&gt;
+    Type:               &lt;none&gt;
+    Level:              &lt;none&gt;
+  FSGroup Strategy:                 MustRunAs
+    Ranges:             &lt;none&gt;
+  Supplemental Groups Strategy:     RunAsAny
+    Ranges:             &lt;none&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As can be seen in the previous description of the <strong>restricted</strong> SCC, a list of users and groups can be specified. In order to grant a user or group a specific SCC, a cluster administrator can execute the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ oadm policy add-user-to-scc &lt;scc_name&gt; &lt;user_name&gt;
+$ oadm policy add-group-to-scc &lt;scc_name&gt; &lt;group_name&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_service_accounts">Service Accounts</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <a href="https://docs.openshift.org/latest/dev_guide/service_accounts.html">official documentation states</a>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>When a person uses the command line or web console, their API token authenticates them to the OpenShift API. However, when a regular user’s credentials are not available, it is common for components to make API calls independently. For example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replication controllers make API calls to create or delete pods</p>
+</li>
+<li>
+<p>Applications inside containers could make API calls for discovery purposes</p>
+</li>
+<li>
+<p>External applications could make API calls for monitoring or integration purposes</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Service accounts provide a flexible way to control API access without sharing a regular user’s credentials</strong>.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>As you can see, there are many use cases for Service Accounts, and if we dive into the first use case aforementioned, we need to understand that OpenShift (and Kubernetes) are not synchronous in the execution of their commands.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/sa_scc/Eventual_consistency.png" alt="Asynch state consolidation">
+</div>
+</div>
+<div class="paragraph">
+<p>When a user wants to deploy an application, he creates a DeploymentConfig resource, which describes a desired state (as can be seen in the picture above - step 1). From this point, a set of controllers (admission, replication controller, scheduler,&#8230;&#8203;), running on the master server, will be monitoring those definitions and will execute necessary actions on the OpenShift platform in order to provide consistency between the desired and actual state (as can be seen in the picture above - step 2). This will happen as soon as the controllers try to consolidate the cluster state.</p>
+</div>
+<div class="paragraph">
+<p>What this really means is, the actions are executed by the OpenShift controllers and not by the actual user, that expressed the desired state. This leads to the situation where we need to identify who&#8217;s executing the actions the controllers are invoking.</p>
+</div>
+<div class="paragraph">
+<p>By default, OpenShift creates three service accounts per project for building, deploying and running an application (see <a href="https://docs.openshift.org/latest/dev_guide/service_accounts.html#default-service-accounts-and-roles">the official documentation</a> for more details).</p>
+</div>
+<div class="paragraph">
+<p>When a user creates anyobject in OpenShift it will use these default Service Accounts, but a different one can be specified within the object configuration.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">{
+   "kind": "DeploymentConfig",
+   "apiVersion": "v1",
+   "metadata": {...},
+   "spec": {
+      ...
+      "template": {
+         ...
+         "spec":{
+            "containers": [
+            ],
+            ...
+            "serviceAccountName": "myserviceaccount"
+         }
+      }
+   }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>One reason to use a dedicated service account in a deployment configuration is to allow an application running within a pod to use a set of privileges or capabilities other than those granted by the <strong>default</strong> service account. This default service account will only have access to all the capabilities defined by the <strong>restricted</strong> SCC, as out of the box OpenShift will add every authenticated user to the restricted SCC (as can bee seen in the output of the execution of “oc describe scc restricted” shown above). This includes the default service account which is not explicitly included in any other SCC.</p>
+</div>
+<div class="paragraph">
+<p>Since every service account has an associated username, it can be added to any specific SCC in a similar way as we have done previously with users and groups.</p>
+</div>
+<div class="paragraph">
+<p>As an example, we might want to run an application that needs access to mount hostPath volumes, or we might want to run an application with a specified user and not a random user OpenShift will use as default (as detailed in <a href="https://blog.openshift.com/getting-any-docker-image-running-in-your-own-openshift-cluster/">this blog</a>), or we might want to restrict the container&#8217;s filesystem to be readonly, and forcing every write to be on external storage. There are many other situations that might require us to change the capabilities provided by default.</p>
+</div>
+<div class="paragraph">
+<p>This leads to the conclusion of this blog with my advice:</p>
+</div>
+<div class="paragraph">
+<p>“Every time you have an application/process that requires a capability not granted by the restricted SCC, create a new, specific service account and add it to the appropriate SCC. But, if there is no SCC that perfectly suits your needs, instead of using the best fit one, <a href="https://docs.openshift.org/latest/admin_guide/manage_scc.html#creating-new-security-context-constraints">create a new SCC</a> tailored for your requirements, and finally set it for the deployment configuration (as described above).”</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc create serviceaccount useroot
+
+$ oc patch dc/myAppNeedsRoot --patch '{"spec":{"template":{"spec":{"serviceAccountName": "useroot"}}}}'
+
+$ oc adm policy add-scc-to-user anyuid -z useroot</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Above you can see my advice in action, creating a new service account named <em>useroot</em>, modifying the deployment configuration for <em>myAppNeedsRoot</em> and then adding the serviceaccount to the <em>anyuid</em> SCC as the application defined needs to run as user root in the container. Note that I haven&#8217;t created a specific SCC since anyuid meets my needs.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+The previous example is using notation available in OpenShift Origin 1.1.4+ and OpenShift Enterprise 3.2+.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>I’ve seen many users granting access to a user/serviceaccount to the privileged SCC to avoid going through this exercise, and this is can be a big security problem, so take my word of caution.
+&lt;/group_name&gt;&lt;/scc_name&gt;&lt;/user_name&gt;&lt;/scc_name&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;</p>
+</div>
+</div>
+</div></p>
+               -->
+           </article>
+       </div>
+    
+       <div class="list__item">
+           <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+               <h2 class="archive__item-title" itemprop="headline"><a href="/2016/01/speed-java-builds/">Improving Build Time of Java Builds on OpenShift</a></h2>
+               <p class="page__meta">
+                  <i class="fa fa-clock-o" aria-hidden="true"></i> 15 minutes
+                  Posted: 18/Jan/2016 by Jorge Morales
+               </p>
+               <p class="archive__item-excerpt" itemprop="description">Since we released OpenShift 3 back in July 2015 one of the most common questions I get from developers is how to get better build time for Java based builds...</p>
+               <!--
+               <p class="archive__item-excerpt" itemprop="description"><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>As you might know, OpenShift 3 Enterprise provides Middleware Services (xPaas), which is a set of Java based images for JBoss EAP, JBoss EWS (Tomcat), JBoss Fuse Integration Services, JBoss A-MQ, JBoss Decision Server and JBoss Data Grid. Also, OpenShift Origin provides an additional JBoss based images for Wildfly, our application server community project. All these images are <a href="https://github.com/openshift/source-to-image/">source-to-image (S2I)</a> enable, that means that will get your application source code built (using Maven) and layered into the application container.</p>
+</div>
+<div class="paragraph">
+<p>When working with Maven, it is very common to use a Central Artifact Repository Manager in your organization for centralizing and managing all the required and generated dependencies, as well as providing you with isolation from the real location of the artifacts in the Internet and some security mechanisms, amongst other features. During my life as a developer and consultant I&#8217;ve been working with Nexus Artifact Manager for this purpose. I will not say that it&#8217;s the best or worst, but only that it is the one most familiar to me, and because of that, I will be using it in my OpenShift install.</p>
+</div>
+<div class="paragraph">
+<p>It is important to note that everything I will describe can be executed in OpenShift Enterprise or Origin, the only requirement is, that if you&#8217;re using the Middleware Services images you should have the corresponding subscriptions for running them.</p>
+</div>
+<div class="paragraph">
+<p>The first thing we need to do is to lay out our OpenShift architecture. I&#8217;ve decided to deploy Nexus as a service in OpenShift, for that purpose I have created a <a href="https://github.com/jorgemoralespou/nexus-ose/tree/master/nexus/nexus-container">Nexus image</a> (not supported) that I will be building and deploying internally in my OpenShift instance, in a project that I&#8217;ve called <strong>ci</strong>. This project name is important as it will be used to reference the nexus instance. It is part of the service DNS name.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc new-project ci --display-name="Continuous Integration for OpenShift" --description="This project holds all continuous integration required infrastructure, like Nexus, Jenkins,..."
+
+$ oc create -f https://raw.githubusercontent.com/jorgemoralespou/nexus-ose/master/nexus/ose3/nexus-resources.json -n ci</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">The steps above will create a project called <strong>ci</strong>, and it will add some OpenShift resources to the project, namely</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p>A nexus <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/nexus/ose3/nexus-resources.json#L8-L15"><strong>ServiceAccount</strong></a> for using in build</p>
+</li>
+<li>
+<p>A <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/nexus/ose3/nexus-resources.json#L16-L69"><strong>BuildConfig</strong></a> for building the Nexus image, based on Centos7, that will be published into a <strong>nexus</strong> ImageStream. When the BuildConfig gets deployed, a nexus build will be triggered.</p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+I&#8217;ve used the <a href="https://github.com/sonatype/docker-nexus/blob/master/oss/Dockerfile">official sonatype nexus image&#8217;s Dockerfile</a> as base and extended with my own requirements for the purpose of this blog, like making sure any user will be able to deploy the image with an OpenShift restricted policy, or adding configuration to use Red Hat&#8217;s JBoss mave repositories.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The build will take some time, so <strong>be patient!</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/speed_java_builds/nexus_build.png" alt="Nexus build">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Both <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/nexus/ose3/nexus-resources.json#L70-L80">centos7</a> and <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/nexus/ose3/nexus-resources.json#L81-L96">nexus</a> <strong>ImageStream</strong> definitions</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/speed_java_builds/nexus_imagestreams.png" alt="ImagesStreams">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Two <strong>Template</strong>`s called <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/nexus/ose3/nexus-resources.json#L97-L291">nexus-ephemeral</a> and <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/nexus/ose3/nexus-resources.json#L292-L511">nexus-persistent</a>.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/speed_java_builds/template.png" alt="Templates">
+</div>
+</div>
+<div class="paragraph">
+<p>The templates that are provided as part of the loaded resources will allow you to deploy an instance of the Nexus image built, using the nexus ServiceAccount, and configured to have a service on port 8081 and a route on whatever hostname you decide, for external access. Also, these templates will allow you to have a persistent instance of Nexus, using a <a href="https://docs.openshift.org/latest/dev_guide/volumes.html">PersistentVolume</a> or working in an ephemeral mode, where if the nexus replica dies, you&#8217;ll lose all of your cached dependencies. For testing purposes, it&#8217;s much easier to setup the ephemeral instance, but for a more real usage, you should consider only the persistent image.</p>
+</div>
+<div class="paragraph">
+<p>There is full instruction on how to set the persistent volume and all the requirements in the <a href="https://github.com/jorgemoralespou/nexus-ose">README file in the Github repository</a></p>
+</div>
+<div class="paragraph">
+<p>In this example, I will deploy the ephemeral version, with the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">oc new-app --template=nexus-ephemeral --param=APPLICATION_HOSTNAME=nexus.apps.10.2.2.2.xip.io</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also deploy your nexus instance using the OpenShift console:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/speed_java_builds/nexus_template_instance.png" alt="Create a nexus instance">
+</div>
+</div>
+<div class="paragraph">
+<p>It is very important to understand that the nexus instance will not be deployed until the build process has finished, and this can take quite some time, so <strong>be patient!</strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/speed_java_builds/nexus_pod.png" alt="Nexus deployed">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+The value provided to APPLICATION_HOSTNAME is dependant on your installation. My OpenShift environment default application domain is apps.10.2.2.2.xip.io
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>We can access our nexus instance through the <strong>APPLICATION_HOSTNAME</strong> value we have provided, and check what repositories are in there. Default credentials for this nexus instance are (<strong>admin/admin123</strong>). It is important to note, that this Nexus server comes already configured with some Red Hat JBoss repositories, to allow our S2I images to fetch the appropriate dependencies.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/speed_java_builds/nexus_console.png" alt="Repository view">
+</div>
+</div>
+<div class="paragraph">
+<p>What we need now is a way of instructing our JBoss S2I builder images to use this nexus instance as artifact repository manager. There is some alternatives to this, of which I will show two of them.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_the_provided_s2i_builder">Using the provided S2I builder</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>JBoss EAP S2I Builder Image version 1.2, which is the latest version of the builder image, that comes with OpenShift Enterprise 3.1, it provides an environment variable that can be set to point to a maven mirror url, unsurprisingly it is called <strong>MAVEN_MIRROR_URL</strong>. I will use that variable to get the maven artifacts through our Nexus instance.</p>
+</div>
+<div class="paragraph">
+<p>To check that our builds will use our internal nexus instance, we can browse to the public group page and verify that there is no dependency currently stored.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/speed_java_builds/repo_empty.png" alt="Empty group">
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s create a new project and create a sample application using nexus.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc new-project eap-nexus-builds --display-name="EAP builds with Nexus" --description="Building Applications in EAP using Nexus for dependency management"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For the application, we will be using the EAP S2I Builder image, and we will use the default sample project, and we will set a build MAVEN_MIRROR_URL.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/speed_java_builds/eap_app.png" alt="Creating an EAP app using Nexus">
+</div>
+</div>
+<div class="paragraph">
+<p>You should notice that I&#8217;ve used internal DNS name of our nexus instance, which is <strong>nexus.ci.svc.cluster.local</strong>, which follows the pattern &lt;service-name&gt;.&lt;project&gt;.svc.cluster.local for services. This is a very powerful feature of OpenShift that provides DNS names for every service, <a href="https://docs.openshift.org/latest/architecture/additional_concepts/networking.html#openshift-dns">and much more</a>.</p>
+</div>
+<div class="paragraph">
+<p>When building the application, we will notice that maven dependencies are being pulled from our nexus instance, instead of the default public Red Hat JBoss' repositories.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/speed_java_builds/eap_app_build.png" alt="EAP Builds">
+</div>
+</div>
+<div class="paragraph">
+<p>Once our build is finished, we will also see how our nexus repository artifact group is filled with all the dependencies that have been pulled down.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/speed_java_builds/repo_full.png" alt="Dependencies in repo">
+</div>
+</div>
+<div class="paragraph">
+<p>And we will have our application running.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/speed_java_builds/eap_builds.png" alt="Builds">
+</div>
+</div>
+<div class="paragraph">
+<p>Here, we can a historical view of the builds before and after setting MAVEN_MIRROR_URL. The first build in OpenShift always takes longer than any other build as it has to push all the base layers to the registry after the build. Successive builds will just push the application layer. From build #2 to #5 we can see the time it takes a normal build, without using Nexus, averaging <strong>1 minute and 13 seconds</strong></p>
+</div>
+<div class="paragraph">
+<p>Build #7 introduces the change with MAVEN_MIRROR_URL set, but as this is the first build after the environment variable has been set, it still took <strong>1 minute and 8 seconds</strong> to complete. This build was populating Nexus with all the pulled down dependencies.</p>
+</div>
+<div class="paragraph">
+<p>In builds #8 to #10 we can see that the average time it takes now to build is <strong>42 seconds</strong></p>
+</div>
+<div class="paragraph">
+<p>As can be seen, we get an average benefit of <strong>31 seconds</strong> in building time after introducing our integration with an artifact repository manager, like Nexus.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_modifying_the_s2i_builder">Modifying the S2I builder</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Not always one can have the comfort of working with S2i builder images that expose the ability to set a Maven mirror like the Middleware Services images provided by Red Hat does, in that cases you need to think of other mechanisms to integrate these images with an artifact repository manager.</p>
+</div>
+<div class="paragraph">
+<p>The options can vary, ranging from  the most obvious, modify or extend the builder image, using incremental builds, up to creating builder image from scratch. Since I do not like modifying existing images, especially those created by others, I will show how to extend existing Wildfly S2I Builder images to make use of a Nexus artifact repository manager. The same approach can be used with any other builder image, and some other technologies that use or can benefit from the use of an artifact repository manager, especially that Nexus or Artifactory support storing dependencies for other languages than just java.</p>
+</div>
+<div class="paragraph">
+<p>I have created a file that will install all the required resources needed to work with the Nexus instance provided in the OpenShift install. These resources are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>3 <strong>BuildConfigs</strong>, for <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/wildfly-nexus-resources.json#L8-L58">Wildfly 8</a>,  <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/wildfly-nexus-resources.json#L59-L109">Wildfly 9</a> and  <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/wildfly-nexus-resources.json#L110-L160">Wildfly 10</a>.</p>
+</li>
+<li>
+<p>6 <strong>ImageStreams</strong>, one for each of the original ImageStreams for every Wildfly version (<a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/wildfly-nexus-resources.json#L110-L160">8</a>, <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/wildfly-nexus-resources.json#L110-L160">9</a> and <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/wildfly-nexus-resources.json#L228-L260">10</a>) and another one for each of the modified S2I builder images for Wildfly integrated with nexus (<a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/wildfly-nexus-resources.json#L261-L283">8</a>, <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/wildfly-nexus-resources.json#L284-L305">9</a> and <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/wildfly-nexus-resources.json#L306-L327">10</a>).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The change that I’ve done to the default Wildfly S2I builder image is as simple as <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/8.1/Dockerfile#L1-L3">providing an overloaded settings.xml file in my custom S2I builder</a> images that points to the <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/8.1/settings.xml#L17">nexus artifact repository manager</a>. This change is the easiest to prove this functionality, although probably a better option would be to provide environment variable to customize the assembly process.</p>
+</div>
+<div class="paragraph">
+<p>To install the Wildfly version:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc new-project wildfly-nexus-builds --display-name="Wildfly builds with Nexus" --description="Building Applications in Wildfly using Nexus for dependency management"
+
+$ oc create -f https://raw.githubusercontent.com/jorgemoralespou/nexus-ose/master/builders/wildfly-nexus/wildfly-nexus-resources.json</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once we have our custom Wildfly S2I images built,</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/speed_java_builds/wildfly-nexus-builds.png" alt="Builds">
+</div>
+</div>
+<div class="paragraph">
+<p>we can just create a sample application with them.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc new-app --docker-image=wildfly-nexus-9 --strategy=source --code=https://github.com/bparees/openshift-jee-sample.git --name='wildfly-nexus-sample'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here, we see as well that our build process is fetching the required maven dependencies from the provided Nexus artifact repository manager.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/speed_java_builds/wildfly_builds.png" alt="Builds">
+</div>
+</div>
+<div class="paragraph">
+<p>This first build took <strong>3 minutes and 11 seconds</strong>, it includes building with the plain wildfly-9 image available on Github, and the time needed to pull down the image. This image was not doing any dependency management.</p>
+</div>
+<div class="paragraph">
+<p>In the second build, I updated the BuildConfig to use wildfly-nexus-9 builder image and this build took <strong>1 minutes and 24 seconds</strong>. The reason for that is that Nexus was caching all the dependencies, since I used a clean nexus instance.</p>
+</div>
+<div class="paragraph">
+<p>On the third and fourth build, all the dependencies were already cached in Nexus and build time dropped to <strong>37 and 35 seconds</strong>, respectively.</p>
+</div>
+<div class="paragraph">
+<p>As in the previous example, with EAP, we get a benefit of more than 40 seconds in our build time by using an artifact repository manager, like Nexus.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_incremental_build">Using incremental build</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Another option, I’ve mentioned before, we can use to improve Maven based Java builds in OpenShift is to enable the <a href="https://docs.openshift.com/enterprise/3.1/dev_guide/builds.html#incremental-builds">incremental builds</a>. Unfortunately not all images support this feature, since it requires the existence of <a href="https://docs.openshift.com/enterprise/3.1/creating_images/s2i.html#s2i-scripts">save-artifacts</a> script, responsible for saving artifacts used during builds. In our cases these will be maven dependencies. This will have the same behavior as having a local maven repository into the build image itself, with the drawback of reaching out for the previously built image and getting the dependencies out of it.</p>
+</div>
+<div class="paragraph">
+<p>To test this mode, I have created a <a href="https://raw.githubusercontent.com/jorgemoralespou/nexus-ose/master/other/eap-incremental/eap-incremental-resources.json">sample resources file</a> that can be easily tested.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc new-project eap-incremental-builds --display-name="EAP incremental builds" --description="Building Applications in EAP using incremental build mode"
+
+$ oc create -f https://raw.githubusercontent.com/jorgemoralespou/nexus-ose/master/other/eap-incremental/eap-incremental-resources.json</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After we&#8217;ve created the resources, let&#8217;s do some builds and look at the times.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/speed_java_builds/eap_incremental_build.png" alt="EAP incremental build">
+</div>
+</div>
+<div class="paragraph">
+<p>As can be seen in the image above, the times for the second and third build, which are the builds benefiting from the stored artifacts takes much less time, <strong>48 and 47 seconds</strong>, but it&#8217;s the same time it takes when using the artifact repository manager, so there is no additional benefit in time, although it is much simpler for those images that support incremental mode, as the developer will only need to specify <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/other/eap-incremental/eap-incremental-resources.json#L57">a flag in the BuildConfig</a>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/speed_java_builds/eap_incremental_build_log.png" alt="EAP incremental buildlog">
+</div>
+</div>
+<div class="paragraph">
+<p>In this example, the application and pulled down dependencies are not adding a big overhead in size to the initial eap64-openshift S2I image, only 7 MB.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/speed_java_builds/eap_image_sizes.png" alt="EAP incremental build">
+</div>
+</div>
+<div class="paragraph">
+<p>But we need to be careful with this approach as there are other images or applications that will have much more dependencies, and the size of the generated image can grow enormously. 130 MB in the following example using Fuse Integration Services.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/speed_java_builds/fis_image_sizes.png" alt="FIS incremental build">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_summary">Summary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For every application that we build we will be getting a performance benefit by caching into an artifact repository manager it&#8217;s dependencies. Initially we will be perceiving a performance benefit for the second and subsequent builds of every application, but as the artifact repository manager stores more and more dependencies this benefit will be also seen in initial builds of new applications, and most of the dependencies will already be cached.</p>
+</div>
+<div class="paragraph">
+<p>Also, we can use incremental builds to get better performance on Java based builds, but it is important to understand that even this approach is easier to set up there are some drawbacks for this approach, like the need for the image to support incremental mode. Also, in this scenario, as the build process saves the dependencies within the image being built it means that if successive builds are run in different nodes, every node will have to first pull down the image from the OpenShift’s Docker registry which might take longer than pulling down the dependencies again.</p>
+</div>
+<div class="paragraph">
+<p>The most important benefit of using Nexus or any other artifact repository dependency manager is the security and the fact that dependencies downloaded by one developer/build will be reused over all the builds using the same dependencies. Whereas in the case of incremental builds only the dependencies downloaded during previous build can be reused and only by the same build. This might have huge impact for any Java-based organization.</p>
+</div>
+<div class="paragraph">
+<p>In this blog, I&#8217;ve highlighted how we can improve the build time of Maven based Java builds in OpenShift, but also a very important topic is the use of the internal DNS service names to reference from one project to another. The only caveat to this, is that if we are using the multi-tenant OVS networking plugin, our cluster administrators will have to make visible our <strong>ci</strong> project to all other projects:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ oadm pod-network make-projects-global ci</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>&lt;/project&gt;&lt;/service-name&gt;</p>
+</div>
+</div>
+</div></p>
+               -->
+           </article>
+       </div>
+    
+       <div class="list__item">
+           <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+               <h2 class="archive__item-title" itemprop="headline"><a href="/2015/09/deploying-springboot/">Using OpenShift for Enterprise Grade Spring Boot Deployments</a></h2>
+               <p class="page__meta">
+                  <i class="fa fa-clock-o" aria-hidden="true"></i> 10 minutes
+                  Posted: 03/Sep/2015 by Jorge Morales
+               </p>
+               <p class="archive__item-excerpt" itemprop="description">e live in a polyglot world where developers are using a vast array of different technologies to create applications that perform well, while also having the ability to scale to meet the demands of their application users</p>
+               <!--
+               <p class="archive__item-excerpt" itemprop="description"><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>We live in a polyglot world where developers are using a vast array of different technologies to create applications that perform well, while also having the ability to scale to meet the demands of their application users. Of course, it is very easy to show the supported languages and runtimes that OpenShift provides out of the box, but to be realistic, many developers would like to see how we can bring other leading technologies into OpenShift and use them seamlessly. We built OpenShift 3 around Docker to embrace a standard container runtime and packaging format and give OpenShift developers access to the huge ecosystem of Docker-packaged software stacks. Kubernetes then adds web scale orchestration to OpenShift, which is critical for deploying complex microservices that span multiple containers across multiples hosts. As a result, the ability to run virtually any runtime or framework on the OpenShift platform is now a reality.</p>
+</div>
+<div class="paragraph">
+<p>Today, I’ve decided to create an application (to be more precise a set of microservices) using the popular Spring Boot technology and deploy it on OpenShift 3. In this post, I’m going to walk you through all of the steps required, as well as provide the source code so you can see it in action by yourself and customize/extend it to your needs.</p>
+</div>
+<div class="paragraph">
+<p>This is a summary of what I’m going to show:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Creating a Source-to-Image (S2I) builder image for Spring Boot based applications</p>
+</li>
+<li>
+<p>Deploying a sample set of applications developed with Spring Boot</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Let’s get our hands dirty and start playing with some of this technology.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_spring_boot_s2i_builder">Spring Boot S2I Builder</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring Boot applications are really very similar in structure to any other Java application. The main difference, apart from the libraries you use, is that it will pack everything as a single fat jar that will be run directly by the JVM. All of the runtime, libraries, dependencies and code will be embedded into this single jar file.</p>
+</div>
+<div class="paragraph">
+<p>OpenShift S2I automatically generates a new Docker image for deployment, using source code provided by the developer and a corresponding Docker builder image in OpenShift. I used what <a href="https://twitter.com/soltysh"><em>Maciej Szulik</em></a> showed in his <a href="https://blog.openshift.com/create-s2i-builder-image/">How to Create an S2I Builder Image</a> blog post. Also, I used the <a href="https://github.com/openshift/sti-wildfly">openshift/wildfly-81-centos7</a> image as a source of inspiration.</p>
+</div>
+<div class="paragraph">
+<p>I created an S2I project, and modified the Dockerfile:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Installed all the binaries I needed. In this case I installed <strong>java 8</strong>, <strong>maven 3.3.3</strong> and <strong>gradle 2.6</strong> on top of the <strong>openshift/base-centos7</strong> base image</p>
+</li>
+<li>
+<p>Modified all the labels describing the S2I image</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You may want to take a few minutes and examine the <a href="https://github.com/jorgemoralespou/osev3-examples/blob/master/spring-boot/springboot-sti/Dockerfile">Dockerfile</a> in more detail.</p>
+</div>
+<div class="paragraph">
+<p>The next step in the process of getting a Spring Boot application running on OpenShift 3 is to build/generate the artifact (fat jar file) and place it into a “known” location where the image expects to find it. In order to accomplish this, we need to modify the assemble script that we are using as a base from the wildfly image.  This scripts needs to be modified to have the following capabilities:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Ability to build with maven and gradle. Maven takes precedence if there is a pom.xml against having a build.gradle file</p>
+</li>
+<li>
+<p>Make configurable the options to both builders via and ENV named BUILDER_ARGS with some appropriate defaults</p>
+</li>
+<li>
+<p>Place the generated artifact in a known location (/opt/openshift/app.jar)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You may want to take a few minutes and review the modified <a href="https://github.com/jorgemoralespou/osev3-examples/blob/master/spring-boot/springboot-sti/.sti/bin/assemble">assemble</a> script to ensure you understand all of the changes.</p>
+</div>
+<div class="paragraph">
+<p>And finally, I modified the S2I run script to run the Spring Boot application, with the following changes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Execution of the generated artifact in the known location</p>
+</li>
+<li>
+<p>Being able to pass application parameters via an ENV named APP_OPTIONS</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You may want to look in greater detail the S2I <a href="https://github.com/jorgemoralespou/osev3-examples/blob/master/spring-boot/springboot-sti/.sti/bin/run">run</a> script.</p>
+</div>
+<div class="paragraph">
+<p>Then, following instructions on <a href="https://blog.openshift.com/create-s2i-builder-image/">Maciej&#8217;s blog post</a>, I created a test application (really two, one for maven building and one for gradle), and tested everything via using the generated Makefile.</p>
+</div>
+<div class="paragraph">
+<p><strong>Great!!! Now it is time to add this S2I Builder to OpenShift 3.</strong></p>
+</div>
+<div class="paragraph">
+<p>At this step you can take two approaches (with some variations). Publish your builder on Docker Hub, or just make your builder available in OpenShift..</p>
+</div>
+<div class="paragraph">
+<p>Now, in order to do the latter, in a new project we need to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Create an ImageStream. An ImageStream is identified as having builder images if it has a <a href="https://github.com/jorgemoralespou/osev3-examples/blob/master/spring-boot/springboot-sti/springboot-sti-all.json#L83">builder tag</a> in it’s definition.</p>
+</li>
+<li>
+<p>Create a BuildConfig using my GitHub project as source and the builder ImageStream as output.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You may want to see the <a href="https://github.com/jorgemoralespou/osev3-examples/blob/master/spring-boot/springboot-sti/springboot-sti-all.json">OpenShift resources definition</a>.</p>
+</div>
+<div class="paragraph">
+<p>To have the Spring Boot builder working on your OpenShift 3 installation, follow these simple steps:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc new-project springboot-sti
+$ oc create -f https://raw.githubusercontent.com/jorgemoralespou/osev3-examples/master/spring-boot/springboot-sti/springboot-sti-all.json</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>I have also provided two sample instant-app templates for demonstrating usage of the builder. This is a helloworld Spring Boot sample application available in my GitHub that will be built using maven or gradle depending on the instant-app you select.</p>
+</div>
+<div class="paragraph">
+<p>You can monitor the building process for this springboot-sti image. Once the build is done, and the image is pushed into the internal docker registry in OpenShift, it is ready for use.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/springboot/springboot-sti-builder.png" alt="Building the builder">
+</div>
+</div>
+<div class="paragraph">
+<p>You can use one of the quickstart templates:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/springboot/springboot-templates.png" alt="Selecting a template">
+</div>
+</div>
+<div class="paragraph">
+<p>Provide it with required information (application name and hostname):</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/springboot/helloworld-gradle.png" alt="Gradle helloworld instantapp">
+</div>
+</div>
+<div class="paragraph">
+<p>And create the application.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/springboot/helloworld-deployed.png" alt="Helloworld in OS Console">
+</div>
+</div>
+<div class="paragraph">
+<p>Once your application is running, you can visit it’s URL to see it in action.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/springboot//helloworld-running.png" alt="Running helloworld app">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_a_more_interesting_spring_boot_application">A more interesting Spring Boot application</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>So far, we have a running Spring Boot application. But the question is, will I be able to build and run more complex applications? Of course you can!</p>
+</div>
+<div class="paragraph">
+<p>I created a more complex sample Spring Boot application, consisting of a web application and a messages service that stores information in memory.To keep things simple, I used the samples provided with Spring Boot distribution as source and modified two of them to allow interaction across the two samples. So our web application will be a frontend for our messages service. The web service will interact with the messages service via a Rest API.</p>
+</div>
+<div class="paragraph">
+<p>I will use the same approach I did before, on <a href="https://blog.openshift.com/part-2-creating-a-template-a-technical-walkthrough/">Part 2</a> of my templates blog to show all the OpenShift resources that I will be creating. I will package everything as an <a href="https://github.com/jorgemoralespou/osev3-examples/blob/master/spring-boot/sample-microservices-springboot/ose-instantapp-template.json">instant-app template</a>, so it can be seen in action in an easy way.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/springboot/Template-SpringBoot-microservices.png" alt="Sample template">
+</div>
+</div>
+<div class="paragraph">
+<p>To run it you will just need to load the instant-app, and instantiate it. Of course, you will need to adjust the parameters when creating your template. The required parameters are APPLICATION_NAME for the name of the application, APPLICATION_HOSTNAME will be the external DNS name where the web will be listening and APPLICATION_HOSTNAME_DATA will be the external DNS name for the Rest Endpoint for the data service.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc create -f https://raw.githubusercontent.com/jorgemoralespou/osev3-examples/master/spring-boot/sample-microservices-springboot/ose-instantapp-template.json
+$ oc new-app --template=springboot-sample-microservices -p APPLICATION_NAME=springbootms,APPLICATION_HOSTNAME=web.example.com,APPLICATION_HOSTNAME_DATA=data.example.com</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This sample application will create a web component that will look like this:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/springboot/web.png" alt="Web application">
+</div>
+</div>
+<div class="paragraph">
+<p>And a data services, that can be queried using Rest, like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$  curl http://data.example.com/
+[{"id":1,"text":"Hello","summary":"World","created":1441125685591},{"id":2,"text":"Hi","summary":"Universe","created":1441125685594},{"id":3,"text":"Hola","summary":"OpenShift","created":1441125685594}]</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl  -H "Content-type: application/json" -X POST -d '{"id":10,"text":"aaaaa","summary":"bbbbb"}'  http://data.example.com:1080
+{"id":10,"text":"aaaaa","summary":"bbbbb","created":1441126793364}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$  curl http://data.example.com/
+[{"id":1,"text":"Hello","summary":"World","created":1441125685591},{"id":2,"text":"Hi","summary":"Universe","created":1441125685594},{"id":3,"text":"Hola","summary":"OpenShift","created":1441125685594},{"id":10,"text":"aaaaa","summary":"bbbbb","created":1441126793364}]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Looking at the logs of both pods, you will be able to see the output of your running Spring Boot applications.</p>
+</div>
+<div class="paragraph">
+<p>Let’s first identify our pods. These will be the pods in Running state, with names starting with springbootms-data and springbootms-web:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc get pods
+NAME                        READY     STATUS       RESTARTS   AGE
+springboot-sti-1-build      0/1       ExitCode:0   0          48m
+springbootms-data-1-1093k   1/1       Running      0          24m
+springbootms-data-1-build   0/1       ExitCode:0   0          28m
+springbootms-web-1-37xi2    1/1       Running      0          24m
+springbootms-web-1-build    0/1       ExitCode:0   0          28m</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is similar to what you will see if you tail the log for the data service:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc logs springbootms-data-1-1093k
+2015-09-01 16:41:28.019  INFO 1 --- [           main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2015-09-01 16:41:28.031  INFO 1 --- [           main] o.s.c.support.DefaultLifecycleProcessor  : Starting beans in phase 0
+2015-09-01 16:41:28.239  INFO 1 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8080 (http)
+2015-09-01 16:41:28.241  INFO 1 --- [           main] c.o.e.m.r.InMemoryRepositoryApplication  : Started InMemoryRepositoryApplication in 19.117 seconds (JVM running for 20.961)
+2015-09-01 16:55:36.809  INFO 1 --- [nio-8080-exec-4] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring FrameworkServlet 'dispatcherServlet'
+2015-09-01 16:55:36.809  INFO 1 --- [nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization started
+2015-09-01 16:55:36.836  INFO 1 --- [nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization completed in 27 ms</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And this is the content available in the tailed log for the web service:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc logs springbootms-web-1-37xi2
+2015-09-01 16:41:27.410  INFO 1 --- [           main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2015-09-01 16:41:27.693  INFO 1 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8080 (http)
+2015-09-01 16:41:27.703  INFO 1 --- [           main] c.o.e.m.web.SampleWebUIApplication       : Started SampleWebUIApplication in 17.639 seconds (JVM running for 20.512)
+2015-09-01 16:55:36.567  INFO 1 --- [nio-8080-exec-4] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring FrameworkServlet 'dispatcherServlet'
+2015-09-01 16:55:36.568  INFO 1 --- [nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization started
+2015-09-01 16:55:36.594  INFO 1 --- [nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization completed in 26 ms</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As we have seen, our sample Spring Boot services application are running fine using our Spring Boot S2I builder image.</p>
+</div>
+<div class="paragraph">
+<p>I hope you have enjoyed!!!</p>
+</div>
+</div>
+</div></p>
+               -->
+           </article>
+       </div>
+    
+</div>
+
+    </div>
+
+    <div class="page__footer">
+        <footer>
+            <!-- start custom footer snippets -->
+            <!-- end custom footer snippets -->
+            <div class="page__footer-follow">
+                <ul class="social-icons">
+                    <li><strong>Follow:</strong></li>
+                    <li><a href="https://twitter.com/UnPOUcoDe"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+                    <li><a href="http://jorgemoral.es/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+                </ul>
+            </div>
+            <div class="page__footer-copyright">&copy; 2016 Jorge Morales Pou.</div>
+        </footer>
+    </div>
+    <script src="/js/main.min.js"></script>
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-81343831-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+</body>
+
+</html>
