@@ -123,9 +123,10 @@
             </p>
         </header>
         <div class="paragraph">
-<p>In a real world, your applications will be transitioning from environment to environment, from development to testing and into production, as part of their lifecycle. In a container world, applications are assembled into one or many container images, hence what will be promoted are images.
-&lt;!--more-&#8594;
-In this blog I will demonstrate <a href="http://blog.openshift.com/configuring-your-application-part-1">the concepts we learnt about externalizing configuration</a> in your image promotion scenarios.
+<p>In a real world, your applications will be transitioning from environment to environment, from development to testing and into production, as part of their lifecycle. In a container world, applications are assembled into one or many container images, hence what will be promoted are images.</p>
+</div>
+<div class="paragraph">
+<p>In this blog I will demonstrate <a href="http://blog.openshift.com/configuring-your-application-part-1">the concepts we learnt about externalizing configuration</a> in your image promotion scenarios.
 As Veer <a href="https://blog.openshift.com/promoting-applications-across-environments/">has previously showed</a>, OpenShift is a platform where we can easily model the concept of stages/environments per application, and we can promote an application (image) from environment to environment just by tagging it accordingly in the project.</p>
 </div>
 <div class="paragraph">
@@ -200,7 +201,97 @@ $ oc create -f node-app-build.json</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">$ oc login 10.2.2.2:8443 -u admin -p admin
-$ oc create -f - &amp;lt;&lt;eof null eof oc adm policy add-role-to-user image-tagger dev node-app-test additionally we also need the user from test project to be able pull down image project. but since in openshift by default deployment is done serviceaccount assign role accordingly node-app-dev now that all required permissions are place can have promote our application. for this he will just tag and it automatically deployed. login you verify has been promoted running testing environment showing configuration environment. app after promotion blog demonstrated a way of separating application so process promoting an gets easier requiring almost none customizations base resources being example fully executed origin all-in-one vagrant git clone cd ose-app-promotion-configmap new-project create configmap-dev.json node-app-deployment.json node-app-build.json configmap-test.json admin roles.json echo want system:image-puller="" system:serviceaccount:node-app-test:deployer="" image::="" link:https:="" doing:="" https:="" can:=""&gt;&lt;/eof&gt;</code></pre>
+$ oc create -f - &amp;lt; &amp;lt; EOF
+{
+      "kind": "ClusterRole",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "image-tagger"
+      },
+      "rules": [
+        {
+          "verbs": [
+            "get",
+            "list",
+            "create",
+            "update",
+            "edit"
+          ],
+          "attributeRestrictions": null,
+          "apiGroups": null,
+          "resources": [
+            "imagestreamimages",
+            "imagestreamimports",
+            "imagestreammappings",
+            "imagestreams",
+            "imagestreamtags"
+          ]
+        }
+      ]
+    }
+EOF
+
+$ oc adm policy add-role-to-user image-tagger dev -n node-app-test</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Additionally, we also need the user from test project to be able to pull down the image from dev project. But since in OpenShift, by default, the deployment is done by the <strong>deployment</strong> ServiceAccount, we need to assign the role accordingly</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc adm policy add-role-to-user system:image-puller system:serviceaccount:node-app-test:deployer -n node-app-dev</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now that all the required permissions are in place, we can have <strong>dev</strong> user to promote our application. For this he will just tag the image in the node-app-test project, and it will be automatically deployed.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc login 10.2.2.2:8443 -u dev -p dev
+$ oc tag node-app-dev/node-app:latest node-app-test/node-app:latest</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can now verify that the image has been promoted, and is now running in the testing environment, showing the configuration for this environment.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/configmaps/node-app-test-2.png" alt="Example app in test after promotion">
+</div>
+</div>
+<div class="paragraph">
+<p>In this blog we have demonstrated a way of separating configuration from application so that the process of promoting an application gets easier, requiring almost none customizations of the base resources being deployed.</p>
+</div>
+<div class="paragraph">
+<p>This blog example can be fully executed in the <a href="https://www.openshift.org/vm/">Openshift Origin all-in-one Vagrant image</a>, by doing:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ git clone https://github.com/jorgemoralespou/ose-app-promotion-configmap.git
+
+$ cd ose-app-promotion-configmap/example2
+
+$ oc login 10.2.2.2:8443 -u dev -p dev
+$ oc new-project node-app-dev
+$ oc create -f configmap-dev.json
+$ oc create -f node-app-deployment.json
+$ oc create -f node-app-build.json
+
+$ oc login 10.2.2.2:8443 -u test -p test
+$ oc new-project node-app-test
+$ oc create -f configmap-test.json
+$ oc create -f node-app-deployment.json
+
+
+$ oc login 10.2.2.2:8443 -u admin -p admin
+$ oc create -f roles.json
+$ oc adm policy add-role-to-user image-tagger dev -n node-app-test
+$ oc adm policy add-role-to-user system:image-puller system:serviceaccount:node-app-test:deployer -n node-app-dev
+
+$ oc login 10.2.2.2:8443 -u dev -p dev
+
+$ echo "If you want to promote the application, you can:"
+$ echo "    oc tag node-app-dev/node-app:latest node-app-test/node-app:latest"</code></pre>
 </div>
 </div>
     </div
