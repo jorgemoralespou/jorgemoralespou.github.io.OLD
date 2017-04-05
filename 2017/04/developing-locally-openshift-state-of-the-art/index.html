@@ -27,7 +27,7 @@
     <!-- end SEO -->
     <link href="http://jorgemoral.es/feed.xml" type="application/atom+xml" rel="alternate" title="Learn the Origin Feed">
     <title>jorgemoral.es ::
-        Configuring your application, Part 2
+        Developing locally with OpenShift - State of the art
     </title>
     <!--
     <link rel="stylesheet" href="/css/stylesheet.css">
@@ -114,185 +114,149 @@
 <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
     <div class="page__inner-wrap">
         <header>
-            <h1 class="page__title" itemprop="headline">Configuring your application, Part 2</h1>
+            <h1 class="page__title" itemprop="headline">Developing locally with OpenShift - State of the art</h1>
             <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i>
-                5 minutes
+                12 minutes
                     Posted:
-                    01/Jul/2016 by
+                    05/Apr/2017 by
                         Jorge Morales
             </p>
         </header>
         <div class="paragraph">
-<p>In a real world, your applications will be transitioning from environment to environment, from development to testing and into production, as part of their lifecycle. In a container world, applications are assembled into one or many container images, hence what will be promoted are images.</p>
+<p>OpenShift v3 launched a year and a half ago and during this time we’ve been looking at different ways to run a local OpenShift development environment on the developer’s laptop. In this series of articles I will be introducing the options we have been providing and most importantly, I will describe the evolution in our approach..</p>
 </div>
 <div class="paragraph">
-<p>In this blog I will demonstrate <a href="http://blog.openshift.com/configuring-your-application-part-1">the concepts we learnt about externalizing configuration</a> in your image promotion scenarios.
-As Veer <a href="https://blog.openshift.com/promoting-applications-across-environments/">has previously showed</a>, OpenShift is a platform where we can easily model the concept of stages/environments per application, and we can promote an application (image) from environment to environment just by tagging it accordingly in the project.</p>
+<p>But before digging into any particular solution, we need to set the ground rules of what a local development environment is and why it is important.</p>
 </div>
 <div class="paragraph">
-<p>In this example, I will be using the same application I used before, and I will create two projects simulating two different stages/environments for my application:</p>
+<p>OpenShift is a Cloud Container Application Platform that will usually be installed on a datacenter for enterprise grade usage. This means that developers will have access to a set of nodes that will be acting as development environment for them. As you probably know, OpenShift runs applications packaged as Docker containers, so all that is required to use the platform is the Docker images to run. How you get to these images is not relevant for OpenShift, although it provides some mechanism out of the box that makes your life easier, what is really relevant is that your Docker image is available to the platform.</p>
+</div>
+<div class="paragraph">
+<p>As a developer, how can you make this happen? These are some options.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>node-app-dev</strong> will model the development stage and will be owned by user <strong>dev</strong></p>
+<p>Provide source code to the platform and let the platform build it. There are 2 options:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Provide your application’s source code and let OpenShift build the Docker image using s2i.</p>
 </li>
 <li>
-<p><strong>node-app-test</strong> will model the testing stage and will be owned by user <strong>test</strong></p>
+<p>Provide a Dockerfile and let OpenShift build the Docker image using a Docker build for you.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Provide just your application binary to a special image that knows how to run it. This can be done in different ways but most likely:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Provide your application binary to OpenShift and let OpenShift build a Docker image with the binary on top of an existing base image.</p>
+</li>
+<li>
+<p>Provide your application binary as a parameter to your deployment that will use a generic Docker image and will pull it down at startup time. This goes against the model that the Docker image should container everything it needs, but still, is an option.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Create a Docker image and push it to the platform. There is multiple ways to create this Docker image, build it locally or in a CI server running internally or externally to openshift.</p>
+</li>
+<li>
+<p>Pull down into the platform an existing Docker image. The only difference is that in this case, you will not be building the image.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>This application will be deployed with the exact same BuildConfig in both projects, but for each, a different configuration will be used by means of deploying different values in the ConfigMap. dev user, will have an additional task of building the application from source before deploying it.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ git clone https://github.com/jorgemoralespou/ose-app-promotion-configmap.git
-
-$ cd ose-app-promotion-configmap/example2
-
-$ oc login 10.2.2.2:8443 -u dev -p dev
-$ oc new-project node-app-dev
-$ oc create -f configmap-dev.json
-$ oc create -f node-app-deployment.json
-$ oc create -f node-app-build.json</code></pre>
-</div>
+<p>But let’s step back a little. Since we are developers, it is quite important to us how we create those Docker images. The truth is that, as developers, we will be building our application and trying it out on the environment several times during the development cycle. While doing this using a clustered platform, remote to our laptops, is probably the easiest in terms of convenience, but the truth is that for most developers, like me, this will not be enough. I will probably be building the application several times a day, sometimes tens or even hundreds of times. I will probably like to debug the running application. I will probably want to do many other things that can be summarized in:</p>
 </div>
 <div class="paragraph">
-<p>These commands will create a new project called node-app-dev, as user dev, and will deploy a ConfigMap, with a message and background color that will be used in development environment. Additionally, it will create the deployment configuration for the application and it will build our application from source code.</p>
+<p>“I want to develop applications for OpenShift as fast as I can develop an application running on my local development box”</p>
 </div>
 <div class="paragraph">
-<p>Once the process is finished, we will be able to see the result:</p>
+<p>That probably means that</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/configmaps/node-app-dev.png" alt="Example app in development">
-</div>
-</div>
-<div class="paragraph">
-<p>Now, as user <strong>test</strong>, we will create a ConfigMap with different contents,  reflecting our test environment , but we will use exactly the same DeploymentConfig like before. The reason for that is, we are separating the application from its configuration, by leveraging the ConfigMap resource.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ git clone https://github.com/jorgemoralespou/ose-app-promotion-configmap.git
-
-$ cd ose-app-promotion-configmap/example2
-
-$ oc login 10.2.2.2:8443 -u test -p test
-$ oc new-project node-app-test
-$ oc create -f configmap-test.json
-$ oc create -f node-app-build.json</code></pre>
-</div>
+<div class="ulist">
+<ul>
+<li>
+<p>I need to be able to have the OpenShift environment as close and available to me as possible</p>
+</li>
+<li>
+<p>I want to have a streamlined process for developing against this local OpenShift environment.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>In this project, there will be no application deployed because no image has been tagged into the test project yet:</p>
+<p>While you may not agree with what I just said, I can provide some good reasoning on why I would like this kind of development environment. Of course there’s always some drawbacks, but I think they can be overcome. Let’s start with the pros on why it is good to have an OpenShift local.</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/configmaps/node-app-test.png" alt="Example app in test before promotion">
-</div>
-</div>
-<div class="paragraph">
-<p>There is one security requirement to allow dev user to tag into the test project and for a user in test project to pull down the image from the repository.</p>
-</div>
-<div class="paragraph">
-<p>Since we are fans of fine grained security, I will be creating a new role, image-tagger, that will be granted the rights to tag an ImageStream. That role will be assigned to the dev user in the test project. This action needs to be executed as an cluster admin user:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">$ oc login 10.2.2.2:8443 -u admin -p admin
-$ oc create -f - &amp;lt; &amp;lt; EOF
-{
-      "kind": "ClusterRole",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "image-tagger"
-      },
-      "rules": [
-        {
-          "verbs": [
-            "get",
-            "list",
-            "create",
-            "update",
-            "edit"
-          ],
-          "attributeRestrictions": null,
-          "apiGroups": null,
-          "resources": [
-            "imagestreamimages",
-            "imagestreamimports",
-            "imagestreammappings",
-            "imagestreams",
-            "imagestreamtags"
-          ]
-        }
-      ]
-    }
-EOF
-
-$ oc adm policy add-role-to-user image-tagger dev -n node-app-test</code></pre>
-</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Independence of location</strong>. I no longer need to be attached to the company’s network to be able to work.</p>
+</li>
+<li>
+<p><strong>Independence of connectivity</strong>. I will no longer require an internet connection to work. This is not always true, but is true as long as you have your dependencies and base images locally available. And this will work especially well if you integrate your image repository or source code repository into the local OpenShift. For example, this can be accomplished with Gitlab.</p>
+</li>
+<li>
+<p><strong>Customization of the experience</strong>. I can customize the build experience so that it looks as close as possible to developing without OpenShift.</p>
+</li>
+<li>
+<p><strong>Faster development cycle</strong>. I can iterate faster on my development, code, test, deploy, code, test, deploy, debug,&#8230;&#8203;</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>Additionally, we also need the user from test project to be able to pull down the image from dev project. But since in OpenShift, by default, the deployment is done by the <strong>deployment</strong> ServiceAccount, we need to assign the role accordingly</p>
+<p>And now, the few cons I can think of:</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc adm policy add-role-to-user system:image-puller system:serviceaccount:node-app-test:deployer -n node-app-dev</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now that all the required permissions are in place, we can have <strong>dev</strong> user to promote our application. For this he will just tag the image in the node-app-test project, and it will be automatically deployed.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc login 10.2.2.2:8443 -u dev -p dev
-$ oc tag node-app-dev/node-app:latest node-app-test/node-app:latest</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You can now verify that the image has been promoted, and is now running in the testing environment, showing the configuration for this environment.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/configmaps/node-app-test-2.png" alt="Example app in test after promotion">
-</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Solutions for multiple platforms</strong>. Developers might use Windows, Linux or Mac, so the local development environment needs to run on these Operating Systems.</p>
+</li>
+<li>
+<p><strong>Developer box resource requirements</strong>. Having a local OpenShift install means that the Developer Workstation needs to have enough resources to run it.</p>
+</li>
+<li>
+<p><strong>Administration rights to install the tools</strong>. Sometimes we have found that developer’s workstations are standardized and they are not allowed to install additional software.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>In this blog we have demonstrated a way of separating configuration from application so that the process of promoting an application gets easier, requiring almost none customizations of the base resources being deployed.</p>
+<p>Of these cons, the first one is Red Hat’s responsibility, as we should provide a solution for local development targeting these different environments. The others are something that Enterprises will need to think about when adopting new technology. As we are already in 2017 we need to understand that developers will not be productive using low resources workstations, it’s penny-wise pound foolish. I hope that at this point in time, enterprises understand that specs for developer workstations should no longer be such a big issue.</p>
 </div>
 <div class="paragraph">
-<p>This blog example can be fully executed in the <a href="https://www.openshift.org/vm/">Openshift Origin all-in-one Vagrant image</a>, by doing:</p>
+<p>There’s always alternatives to running a local OpenShift instance on the developer’s box, but I can not advocate for any solution that goes against the principles of test your production code as soon as possible, which for me, that means on my workstation.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ git clone https://github.com/jorgemoralespou/ose-app-promotion-configmap.git
-
-$ cd ose-app-promotion-configmap/example2
-
-$ oc login 10.2.2.2:8443 -u dev -p dev
-$ oc new-project node-app-dev
-$ oc create -f configmap-dev.json
-$ oc create -f node-app-deployment.json
-$ oc create -f node-app-build.json
-
-$ oc login 10.2.2.2:8443 -u test -p test
-$ oc new-project node-app-test
-$ oc create -f configmap-test.json
-$ oc create -f node-app-deployment.json
-
-
-$ oc login 10.2.2.2:8443 -u admin -p admin
-$ oc create -f roles.json
-$ oc adm policy add-role-to-user image-tagger dev -n node-app-test
-$ oc adm policy add-role-to-user system:image-puller system:serviceaccount:node-app-test:deployer -n node-app-dev
-
-$ oc login 10.2.2.2:8443 -u dev -p dev
-
-$ echo "If you want to promote the application, you can:"
-$ echo "    oc tag node-app-dev/node-app:latest node-app-test/node-app:latest"</code></pre>
+<div class="paragraph">
+<p>Most importantly,  there is multiple ways to bring your code into an application and that application to run it in your local OpenShift developer instance:</p>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p>Building your application and rsync the compiled code into a running container.</p>
+</li>
+<li>
+<p>Rsync source code directly into a container when using non-compiled languages.</p>
+</li>
+<li>
+<p>Using a maven plugin to build the images on the host and push them into you local OpenShift environment.</p>
+</li>
+<li>
+<p>Many others&#8230;&#8203;</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Any option you take, should mean that at the end you, as a developer, can test your application running in an OpenShift environment. If on the contrary, you build and verify/test your application in a specific way that will be different as how the application will be run in production, there’s many chances that issues might occur. This should be avoided as much as possible if you want to fully embrace DevOps and agility.</p>
+</div>
+<div class="paragraph">
+<p>Now that I have presented the importance of having a local OpenShift environment available in your workstation, I’ll present the evolution of the “local OpenShift development environment” since we started to the present time, when I can say we have finally a really good solution that only can get better.</p>
+</div>
+<div class="paragraph">
+<p>In the next blogs I’ll talk about the Origin all-on-one VM (and the Container Development Kit/CDK) using virtualization and Vagrant. Then I’ll move into a pure docker solution with “oc cluster up” and I’ll end up with minishift, a lightweight virtualized option.</p>
 </div>
     </div
 
@@ -300,7 +264,7 @@ $ echo "    oc tag node-app-dev/node-app:latest node-app-test/node-app:latest"</
       <p class="page__taxonomy">
          <strong><i class="fa fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
          <span itemprop="keywords">
-               <a href="/tags/#openshift" class="page__taxonomy-item" rel="tag">openshift</a><a href="/tags/#origin" class="page__taxonomy-item" rel="tag">origin</a><a href="/tags/#config" class="page__taxonomy-item" rel="tag">config</a><a href="/tags/#configmap" class="page__taxonomy-item" rel="tag">configmap</a>
+               <a href="/tags/#openshift" class="page__taxonomy-item" rel="tag">openshift</a><a href="/tags/#origin" class="page__taxonomy-item" rel="tag">origin</a><a href="/tags/#development" class="page__taxonomy-item" rel="tag">development</a><a href="/tags/#local" class="page__taxonomy-item" rel="tag">local</a><a href="/tags/#devexp" class="page__taxonomy-item" rel="tag">devexp</a><a href="/tags/#oc-cluster" class="page__taxonomy-item" rel="tag">oc-cluster</a><a href="/tags/#allinone" class="page__taxonomy-item" rel="tag">allinone</a><a href="/tags/#minishift" class="page__taxonomy-item" rel="tag">minishift</a><a href="/tags/#cdk" class="page__taxonomy-item" rel="tag">cdk</a>
          </span>
       </p>
 
@@ -312,12 +276,12 @@ $ echo "    oc tag node-app-dev/node-app:latest node-app-test/node-app:latest"</
       </p>
 
       <p class="page__date">
-            <strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:  </strong>July 01, 2016</p>
+            <strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:  </strong>April 05, 2017</p>
    </footer>
 
    <section class="page__share">
       <h4 class="page__share-title">Share on</h4>
-         <a href="https://twitter.com/intent/tweet?via=UnPOUcoDe&text=Configuring your application, Part 2 http://jorgemoral.es/2016/07/configuring-your-app-2/" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+         <a href="https://twitter.com/intent/tweet?via=UnPOUcoDe&text=Developing locally with OpenShift - State of the art http://jorgemoral.es/2017/04/developing-locally-openshift-state-of-the-art/" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 <!--
          <a href="https://www.facebook.com/sharer/sharer.php?u=http://jorgemoral.es/devexp/configuring-your-app-2/" class="btn btn--facebook" title="Share on Facebook"><i class="fa fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
          <a href="https://plus.google.com/share?url=http://jorgemoral.es/devexp/configuring-your-app-2/" class="btn btn--google-plus" title="Share on Google Plus"><i class="fa fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>

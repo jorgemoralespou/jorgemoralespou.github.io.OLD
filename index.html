@@ -25,7 +25,7 @@
         }
     </script>
     <!-- end SEO -->
-    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Learn the Origin Feed">
+    <link href="http://jorgemoral.es/feed.xml" type="application/atom+xml" rel="alternate" title="Learn the Origin Feed">
     <title>jorgemoral.es ::
         Home
     </title>
@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="/css/stylesheet.css">
     <link rel="stylesheet" href="/css/font-awesome.min.css">
     -->
-    <meta name="generator" content="Nanoc 4.3.4">
+    <meta name="generator" content="Nanoc 4.7.5">
 
     <!-- For all browsers -->
     <link rel="stylesheet" href="/css/main.css">
@@ -115,6 +115,155 @@
     <h1 class="page__title"></h1>
     <p></p>
     <h3 class="archive__subtitle">Recent Posts</h3>
+    
+       <div class="list__item">
+           <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+               <h2 class="archive__item-title" itemprop="headline"><a href="/2017/04/developing-locally-openshift-state-of-the-art/">Developing locally with OpenShift - State of the art</a></h2>
+               <p class="page__meta">
+                  <i class="fa fa-clock-o" aria-hidden="true"></i> 12 minutes
+                  Posted: 05/Apr/2017 by Jorge Morales
+               </p>
+               <p class="archive__item-excerpt" itemprop="description">This is the first article of a series of blogs describing the state of the art related to local development using OpenShift as Container Application Platform</p>
+               <!--
+               <p class="archive__item-excerpt" itemprop="description"><div class="paragraph">
+<p>OpenShift v3 launched a year and a half ago and during this time we’ve been looking at different ways to run a local OpenShift development environment on the developer’s laptop. In this series of articles I will be introducing the options we have been providing and most importantly, I will describe the evolution in our approach..</p>
+</div>
+<div class="paragraph">
+<p>But before digging into any particular solution, we need to set the ground rules of what a local development environment is and why it is important.</p>
+</div>
+<div class="paragraph">
+<p>OpenShift is a Cloud Container Application Platform that will usually be installed on a datacenter for enterprise grade usage. This means that developers will have access to a set of nodes that will be acting as development environment for them. As you probably know, OpenShift runs applications packaged as Docker containers, so all that is required to use the platform is the Docker images to run. How you get to these images is not relevant for OpenShift, although it provides some mechanism out of the box that makes your life easier, what is really relevant is that your Docker image is available to the platform.</p>
+</div>
+<div class="paragraph">
+<p>As a developer, how can you make this happen? These are some options.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Provide source code to the platform and let the platform build it. There are 2 options:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Provide your application’s source code and let OpenShift build the Docker image using s2i.</p>
+</li>
+<li>
+<p>Provide a Dockerfile and let OpenShift build the Docker image using a Docker build for you.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Provide just your application binary to a special image that knows how to run it. This can be done in different ways but most likely:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Provide your application binary to OpenShift and let OpenShift build a Docker image with the binary on top of an existing base image.</p>
+</li>
+<li>
+<p>Provide your application binary as a parameter to your deployment that will use a generic Docker image and will pull it down at startup time. This goes against the model that the Docker image should container everything it needs, but still, is an option.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Create a Docker image and push it to the platform. There is multiple ways to create this Docker image, build it locally or in a CI server running internally or externally to openshift.</p>
+</li>
+<li>
+<p>Pull down into the platform an existing Docker image. The only difference is that in this case, you will not be building the image.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>But let’s step back a little. Since we are developers, it is quite important to us how we create those Docker images. The truth is that, as developers, we will be building our application and trying it out on the environment several times during the development cycle. While doing this using a clustered platform, remote to our laptops, is probably the easiest in terms of convenience, but the truth is that for most developers, like me, this will not be enough. I will probably be building the application several times a day, sometimes tens or even hundreds of times. I will probably like to debug the running application. I will probably want to do many other things that can be summarized in:</p>
+</div>
+<div class="paragraph">
+<p>“I want to develop applications for OpenShift as fast as I can develop an application running on my local development box”</p>
+</div>
+<div class="paragraph">
+<p>That probably means that</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>I need to be able to have the OpenShift environment as close and available to me as possible</p>
+</li>
+<li>
+<p>I want to have a streamlined process for developing against this local OpenShift environment.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>While you may not agree with what I just said, I can provide some good reasoning on why I would like this kind of development environment. Of course there’s always some drawbacks, but I think they can be overcome. Let’s start with the pros on why it is good to have an OpenShift local.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Independence of location</strong>. I no longer need to be attached to the company’s network to be able to work.</p>
+</li>
+<li>
+<p><strong>Independence of connectivity</strong>. I will no longer require an internet connection to work. This is not always true, but is true as long as you have your dependencies and base images locally available. And this will work especially well if you integrate your image repository or source code repository into the local OpenShift. For example, this can be accomplished with Gitlab.</p>
+</li>
+<li>
+<p><strong>Customization of the experience</strong>. I can customize the build experience so that it looks as close as possible to developing without OpenShift.</p>
+</li>
+<li>
+<p><strong>Faster development cycle</strong>. I can iterate faster on my development, code, test, deploy, code, test, deploy, debug,&#8230;&#8203;</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>And now, the few cons I can think of:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Solutions for multiple platforms</strong>. Developers might use Windows, Linux or Mac, so the local development environment needs to run on these Operating Systems.</p>
+</li>
+<li>
+<p><strong>Developer box resource requirements</strong>. Having a local OpenShift install means that the Developer Workstation needs to have enough resources to run it.</p>
+</li>
+<li>
+<p><strong>Administration rights to install the tools</strong>. Sometimes we have found that developer’s workstations are standardized and they are not allowed to install additional software.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Of these cons, the first one is Red Hat’s responsibility, as we should provide a solution for local development targeting these different environments. The others are something that Enterprises will need to think about when adopting new technology. As we are already in 2017 we need to understand that developers will not be productive using low resources workstations, it’s penny-wise pound foolish. I hope that at this point in time, enterprises understand that specs for developer workstations should no longer be such a big issue.</p>
+</div>
+<div class="paragraph">
+<p>There’s always alternatives to running a local OpenShift instance on the developer’s box, but I can not advocate for any solution that goes against the principles of test your production code as soon as possible, which for me, that means on my workstation.</p>
+</div>
+<div class="paragraph">
+<p>Most importantly,  there is multiple ways to bring your code into an application and that application to run it in your local OpenShift developer instance:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Building your application and rsync the compiled code into a running container.</p>
+</li>
+<li>
+<p>Rsync source code directly into a container when using non-compiled languages.</p>
+</li>
+<li>
+<p>Using a maven plugin to build the images on the host and push them into you local OpenShift environment.</p>
+</li>
+<li>
+<p>Many others&#8230;&#8203;</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Any option you take, should mean that at the end you, as a developer, can test your application running in an OpenShift environment. If on the contrary, you build and verify/test your application in a specific way that will be different as how the application will be run in production, there’s many chances that issues might occur. This should be avoided as much as possible if you want to fully embrace DevOps and agility.</p>
+</div>
+<div class="paragraph">
+<p>Now that I have presented the importance of having a local OpenShift environment available in your workstation, I’ll present the evolution of the “local OpenShift development environment” since we started to the present time, when I can say we have finally a really good solution that only can get better.</p>
+</div>
+<div class="paragraph">
+<p>In the next blogs I’ll talk about the Origin all-on-one VM (and the Container Development Kit/CDK) using virtualization and Vagrant. Then I’ll move into a pure docker solution with “oc cluster up” and I’ll end up with minishift, a lightweight virtualized option.</p>
+</div></p>
+               -->
+           </article>
+       </div>
     
        <div class="list__item">
            <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
@@ -1199,375 +1348,6 @@ The previous example is using notation available in OpenShift Origin 1.1.4+ and 
            </article>
        </div>
     
-       <div class="list__item">
-           <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
-               <h2 class="archive__item-title" itemprop="headline"><a href="/2016/01/speed-java-builds/">Improving Build Time of Java Builds on OpenShift</a></h2>
-               <p class="page__meta">
-                  <i class="fa fa-clock-o" aria-hidden="true"></i> 15 minutes
-                  Posted: 18/Jan/2016 by Jorge Morales
-               </p>
-               <p class="archive__item-excerpt" itemprop="description">Since we released OpenShift 3 back in July 2015 one of the most common questions I get from developers is how to get better build time for Java based builds...</p>
-               <!--
-               <p class="archive__item-excerpt" itemprop="description"><div id="preamble">
-<div class="sectionbody">
-<div class="paragraph">
-<p>As you might know, OpenShift 3 Enterprise provides Middleware Services (xPaas), which is a set of Java based images for JBoss EAP, JBoss EWS (Tomcat), JBoss Fuse Integration Services, JBoss A-MQ, JBoss Decision Server and JBoss Data Grid. Also, OpenShift Origin provides an additional JBoss based images for Wildfly, our application server community project. All these images are <a href="https://github.com/openshift/source-to-image/">source-to-image (S2I)</a> enable, that means that will get your application source code built (using Maven) and layered into the application container.</p>
-</div>
-<div class="paragraph">
-<p>When working with Maven, it is very common to use a Central Artifact Repository Manager in your organization for centralizing and managing all the required and generated dependencies, as well as providing you with isolation from the real location of the artifacts in the Internet and some security mechanisms, amongst other features. During my life as a developer and consultant I&#8217;ve been working with Nexus Artifact Manager for this purpose. I will not say that it&#8217;s the best or worst, but only that it is the one most familiar to me, and because of that, I will be using it in my OpenShift install.</p>
-</div>
-<div class="paragraph">
-<p>It is important to note that everything I will describe can be executed in OpenShift Enterprise or Origin, the only requirement is, that if you&#8217;re using the Middleware Services images you should have the corresponding subscriptions for running them.</p>
-</div>
-<div class="paragraph">
-<p>The first thing we need to do is to lay out our OpenShift architecture. I&#8217;ve decided to deploy Nexus as a service in OpenShift, for that purpose I have created a <a href="https://github.com/jorgemoralespou/nexus-ose/tree/master/nexus/nexus-container">Nexus image</a> (not supported) that I will be building and deploying internally in my OpenShift instance, in a project that I&#8217;ve called <strong>ci</strong>. This project name is important as it will be used to reference the nexus instance. It is part of the service DNS name.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc new-project ci --display-name="Continuous Integration for OpenShift" --description="This project holds all continuous integration required infrastructure, like Nexus, Jenkins,..."
-
-$ oc create -f https://raw.githubusercontent.com/jorgemoralespou/nexus-ose/master/nexus/ose3/nexus-resources.json -n ci</code></pre>
-</div>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">The steps above will create a project called <strong>ci</strong>, and it will add some OpenShift resources to the project, namely</dt>
-<dd>
-<div class="ulist">
-<ul>
-<li>
-<p>A nexus <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/nexus/ose3/nexus-resources.json#L8-L15"><strong>ServiceAccount</strong></a> for using in build</p>
-</li>
-<li>
-<p>A <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/nexus/ose3/nexus-resources.json#L16-L69"><strong>BuildConfig</strong></a> for building the Nexus image, based on Centos7, that will be published into a <strong>nexus</strong> ImageStream. When the BuildConfig gets deployed, a nexus build will be triggered.</p>
-</li>
-</ul>
-</div>
-</dd>
-</dl>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-I&#8217;ve used the <a href="https://github.com/sonatype/docker-nexus/blob/master/oss/Dockerfile">official sonatype nexus image&#8217;s Dockerfile</a> as base and extended with my own requirements for the purpose of this blog, like making sure any user will be able to deploy the image with an OpenShift restricted policy, or adding configuration to use Red Hat&#8217;s JBoss mave repositories.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>The build will take some time, so <strong>be patient!</strong>.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/speed_java_builds/nexus_build.png" alt="Nexus build">
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Both <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/nexus/ose3/nexus-resources.json#L70-L80">centos7</a> and <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/nexus/ose3/nexus-resources.json#L81-L96">nexus</a> <strong>ImageStream</strong> definitions</p>
-</li>
-</ul>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/speed_java_builds/nexus_imagestreams.png" alt="ImagesStreams">
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Two <strong>Template</strong>`s called <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/nexus/ose3/nexus-resources.json#L97-L291">nexus-ephemeral</a> and <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/nexus/ose3/nexus-resources.json#L292-L511">nexus-persistent</a>.</p>
-</li>
-</ul>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/speed_java_builds/template.png" alt="Templates">
-</div>
-</div>
-<div class="paragraph">
-<p>The templates that are provided as part of the loaded resources will allow you to deploy an instance of the Nexus image built, using the nexus ServiceAccount, and configured to have a service on port 8081 and a route on whatever hostname you decide, for external access. Also, these templates will allow you to have a persistent instance of Nexus, using a <a href="https://docs.openshift.org/latest/dev_guide/volumes.html">PersistentVolume</a> or working in an ephemeral mode, where if the nexus replica dies, you&#8217;ll lose all of your cached dependencies. For testing purposes, it&#8217;s much easier to setup the ephemeral instance, but for a more real usage, you should consider only the persistent image.</p>
-</div>
-<div class="paragraph">
-<p>There is full instruction on how to set the persistent volume and all the requirements in the <a href="https://github.com/jorgemoralespou/nexus-ose">README file in the Github repository</a></p>
-</div>
-<div class="paragraph">
-<p>In this example, I will deploy the ephemeral version, with the following command:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">oc new-app --template=nexus-ephemeral --param=APPLICATION_HOSTNAME=nexus.apps.10.2.2.2.xip.io</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You can also deploy your nexus instance using the OpenShift console:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/speed_java_builds/nexus_template_instance.png" alt="Create a nexus instance">
-</div>
-</div>
-<div class="paragraph">
-<p>It is very important to understand that the nexus instance will not be deployed until the build process has finished, and this can take quite some time, so <strong>be patient!</strong></p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/speed_java_builds/nexus_pod.png" alt="Nexus deployed">
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-The value provided to APPLICATION_HOSTNAME is dependant on your installation. My OpenShift environment default application domain is apps.10.2.2.2.xip.io
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>We can access our nexus instance through the <strong>APPLICATION_HOSTNAME</strong> value we have provided, and check what repositories are in there. Default credentials for this nexus instance are (<strong>admin/admin123</strong>). It is important to note, that this Nexus server comes already configured with some Red Hat JBoss repositories, to allow our S2I images to fetch the appropriate dependencies.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/speed_java_builds/nexus_console.png" alt="Repository view">
-</div>
-</div>
-<div class="paragraph">
-<p>What we need now is a way of instructing our JBoss S2I builder images to use this nexus instance as artifact repository manager. There is some alternatives to this, of which I will show two of them.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_using_the_provided_s2i_builder">Using the provided S2I builder</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>JBoss EAP S2I Builder Image version 1.2, which is the latest version of the builder image, that comes with OpenShift Enterprise 3.1, it provides an environment variable that can be set to point to a maven mirror url, unsurprisingly it is called <strong>MAVEN_MIRROR_URL</strong>. I will use that variable to get the maven artifacts through our Nexus instance.</p>
-</div>
-<div class="paragraph">
-<p>To check that our builds will use our internal nexus instance, we can browse to the public group page and verify that there is no dependency currently stored.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/speed_java_builds/repo_empty.png" alt="Empty group">
-</div>
-</div>
-<div class="paragraph">
-<p>Let&#8217;s create a new project and create a sample application using nexus.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc new-project eap-nexus-builds --display-name="EAP builds with Nexus" --description="Building Applications in EAP using Nexus for dependency management"</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>For the application, we will be using the EAP S2I Builder image, and we will use the default sample project, and we will set a build MAVEN_MIRROR_URL.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/speed_java_builds/eap_app.png" alt="Creating an EAP app using Nexus">
-</div>
-</div>
-<div class="paragraph">
-<p>You should notice that I&#8217;ve used internal DNS name of our nexus instance, which is <strong>nexus.ci.svc.cluster.local</strong>, which follows the pattern &lt;service-name&gt;.&lt;project&gt;.svc.cluster.local for services. This is a very powerful feature of OpenShift that provides DNS names for every service, <a href="https://docs.openshift.org/latest/architecture/additional_concepts/networking.html#openshift-dns">and much more</a>.</p>
-</div>
-<div class="paragraph">
-<p>When building the application, we will notice that maven dependencies are being pulled from our nexus instance, instead of the default public Red Hat JBoss' repositories.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/speed_java_builds/eap_app_build.png" alt="EAP Builds">
-</div>
-</div>
-<div class="paragraph">
-<p>Once our build is finished, we will also see how our nexus repository artifact group is filled with all the dependencies that have been pulled down.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/speed_java_builds/repo_full.png" alt="Dependencies in repo">
-</div>
-</div>
-<div class="paragraph">
-<p>And we will have our application running.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/speed_java_builds/eap_builds.png" alt="Builds">
-</div>
-</div>
-<div class="paragraph">
-<p>Here, we can a historical view of the builds before and after setting MAVEN_MIRROR_URL. The first build in OpenShift always takes longer than any other build as it has to push all the base layers to the registry after the build. Successive builds will just push the application layer. From build #2 to #5 we can see the time it takes a normal build, without using Nexus, averaging <strong>1 minute and 13 seconds</strong></p>
-</div>
-<div class="paragraph">
-<p>Build #7 introduces the change with MAVEN_MIRROR_URL set, but as this is the first build after the environment variable has been set, it still took <strong>1 minute and 8 seconds</strong> to complete. This build was populating Nexus with all the pulled down dependencies.</p>
-</div>
-<div class="paragraph">
-<p>In builds #8 to #10 we can see that the average time it takes now to build is <strong>42 seconds</strong></p>
-</div>
-<div class="paragraph">
-<p>As can be seen, we get an average benefit of <strong>31 seconds</strong> in building time after introducing our integration with an artifact repository manager, like Nexus.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_modifying_the_s2i_builder">Modifying the S2I builder</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Not always one can have the comfort of working with S2i builder images that expose the ability to set a Maven mirror like the Middleware Services images provided by Red Hat does, in that cases you need to think of other mechanisms to integrate these images with an artifact repository manager.</p>
-</div>
-<div class="paragraph">
-<p>The options can vary, ranging from  the most obvious, modify or extend the builder image, using incremental builds, up to creating builder image from scratch. Since I do not like modifying existing images, especially those created by others, I will show how to extend existing Wildfly S2I Builder images to make use of a Nexus artifact repository manager. The same approach can be used with any other builder image, and some other technologies that use or can benefit from the use of an artifact repository manager, especially that Nexus or Artifactory support storing dependencies for other languages than just java.</p>
-</div>
-<div class="paragraph">
-<p>I have created a file that will install all the required resources needed to work with the Nexus instance provided in the OpenShift install. These resources are:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>3 <strong>BuildConfigs</strong>, for <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/wildfly-nexus-resources.json#L8-L58">Wildfly 8</a>,  <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/wildfly-nexus-resources.json#L59-L109">Wildfly 9</a> and  <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/wildfly-nexus-resources.json#L110-L160">Wildfly 10</a>.</p>
-</li>
-<li>
-<p>6 <strong>ImageStreams</strong>, one for each of the original ImageStreams for every Wildfly version (<a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/wildfly-nexus-resources.json#L110-L160">8</a>, <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/wildfly-nexus-resources.json#L110-L160">9</a> and <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/wildfly-nexus-resources.json#L228-L260">10</a>) and another one for each of the modified S2I builder images for Wildfly integrated with nexus (<a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/wildfly-nexus-resources.json#L261-L283">8</a>, <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/wildfly-nexus-resources.json#L284-L305">9</a> and <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/wildfly-nexus-resources.json#L306-L327">10</a>).</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>The change that I’ve done to the default Wildfly S2I builder image is as simple as <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/8.1/Dockerfile#L1-L3">providing an overloaded settings.xml file in my custom S2I builder</a> images that points to the <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/builders/wildfly-nexus/8.1/settings.xml#L17">nexus artifact repository manager</a>. This change is the easiest to prove this functionality, although probably a better option would be to provide environment variable to customize the assembly process.</p>
-</div>
-<div class="paragraph">
-<p>To install the Wildfly version:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc new-project wildfly-nexus-builds --display-name="Wildfly builds with Nexus" --description="Building Applications in Wildfly using Nexus for dependency management"
-
-$ oc create -f https://raw.githubusercontent.com/jorgemoralespou/nexus-ose/master/builders/wildfly-nexus/wildfly-nexus-resources.json</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Once we have our custom Wildfly S2I images built,</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/speed_java_builds/wildfly-nexus-builds.png" alt="Builds">
-</div>
-</div>
-<div class="paragraph">
-<p>we can just create a sample application with them.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc new-app --docker-image=wildfly-nexus-9 --strategy=source --code=https://github.com/bparees/openshift-jee-sample.git --name='wildfly-nexus-sample'</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Here, we see as well that our build process is fetching the required maven dependencies from the provided Nexus artifact repository manager.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/speed_java_builds/wildfly_builds.png" alt="Builds">
-</div>
-</div>
-<div class="paragraph">
-<p>This first build took <strong>3 minutes and 11 seconds</strong>, it includes building with the plain wildfly-9 image available on Github, and the time needed to pull down the image. This image was not doing any dependency management.</p>
-</div>
-<div class="paragraph">
-<p>In the second build, I updated the BuildConfig to use wildfly-nexus-9 builder image and this build took <strong>1 minutes and 24 seconds</strong>. The reason for that is that Nexus was caching all the dependencies, since I used a clean nexus instance.</p>
-</div>
-<div class="paragraph">
-<p>On the third and fourth build, all the dependencies were already cached in Nexus and build time dropped to <strong>37 and 35 seconds</strong>, respectively.</p>
-</div>
-<div class="paragraph">
-<p>As in the previous example, with EAP, we get a benefit of more than 40 seconds in our build time by using an artifact repository manager, like Nexus.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_using_incremental_build">Using incremental build</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Another option, I’ve mentioned before, we can use to improve Maven based Java builds in OpenShift is to enable the <a href="https://docs.openshift.com/enterprise/3.1/dev_guide/builds.html#incremental-builds">incremental builds</a>. Unfortunately not all images support this feature, since it requires the existence of <a href="https://docs.openshift.com/enterprise/3.1/creating_images/s2i.html#s2i-scripts">save-artifacts</a> script, responsible for saving artifacts used during builds. In our cases these will be maven dependencies. This will have the same behavior as having a local maven repository into the build image itself, with the drawback of reaching out for the previously built image and getting the dependencies out of it.</p>
-</div>
-<div class="paragraph">
-<p>To test this mode, I have created a <a href="https://raw.githubusercontent.com/jorgemoralespou/nexus-ose/master/other/eap-incremental/eap-incremental-resources.json">sample resources file</a> that can be easily tested.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc new-project eap-incremental-builds --display-name="EAP incremental builds" --description="Building Applications in EAP using incremental build mode"
-
-$ oc create -f https://raw.githubusercontent.com/jorgemoralespou/nexus-ose/master/other/eap-incremental/eap-incremental-resources.json</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>After we&#8217;ve created the resources, let&#8217;s do some builds and look at the times.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/speed_java_builds/eap_incremental_build.png" alt="EAP incremental build">
-</div>
-</div>
-<div class="paragraph">
-<p>As can be seen in the image above, the times for the second and third build, which are the builds benefiting from the stored artifacts takes much less time, <strong>48 and 47 seconds</strong>, but it&#8217;s the same time it takes when using the artifact repository manager, so there is no additional benefit in time, although it is much simpler for those images that support incremental mode, as the developer will only need to specify <a href="https://github.com/jorgemoralespou/nexus-ose/blob/master/other/eap-incremental/eap-incremental-resources.json#L57">a flag in the BuildConfig</a>.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/speed_java_builds/eap_incremental_build_log.png" alt="EAP incremental buildlog">
-</div>
-</div>
-<div class="paragraph">
-<p>In this example, the application and pulled down dependencies are not adding a big overhead in size to the initial eap64-openshift S2I image, only 7 MB.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/speed_java_builds/eap_image_sizes.png" alt="EAP incremental build">
-</div>
-</div>
-<div class="paragraph">
-<p>But we need to be careful with this approach as there are other images or applications that will have much more dependencies, and the size of the generated image can grow enormously. 130 MB in the following example using Fuse Integration Services.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/speed_java_builds/fis_image_sizes.png" alt="FIS incremental build">
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_summary">Summary</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>For every application that we build we will be getting a performance benefit by caching into an artifact repository manager it&#8217;s dependencies. Initially we will be perceiving a performance benefit for the second and subsequent builds of every application, but as the artifact repository manager stores more and more dependencies this benefit will be also seen in initial builds of new applications, and most of the dependencies will already be cached.</p>
-</div>
-<div class="paragraph">
-<p>Also, we can use incremental builds to get better performance on Java based builds, but it is important to understand that even this approach is easier to set up there are some drawbacks for this approach, like the need for the image to support incremental mode. Also, in this scenario, as the build process saves the dependencies within the image being built it means that if successive builds are run in different nodes, every node will have to first pull down the image from the OpenShift’s Docker registry which might take longer than pulling down the dependencies again.</p>
-</div>
-<div class="paragraph">
-<p>The most important benefit of using Nexus or any other artifact repository dependency manager is the security and the fact that dependencies downloaded by one developer/build will be reused over all the builds using the same dependencies. Whereas in the case of incremental builds only the dependencies downloaded during previous build can be reused and only by the same build. This might have huge impact for any Java-based organization.</p>
-</div>
-<div class="paragraph">
-<p>In this blog, I&#8217;ve highlighted how we can improve the build time of Maven based Java builds in OpenShift, but also a very important topic is the use of the internal DNS service names to reference from one project to another. The only caveat to this, is that if we are using the multi-tenant OVS networking plugin, our cluster administrators will have to make visible our <strong>ci</strong> project to all other projects:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ oadm pod-network make-projects-global ci</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>&lt;/project&gt;&lt;/service-name&gt;</p>
-</div>
-</div>
-</div></p>
-               -->
-           </article>
-       </div>
-    
 </div>
 
     </div>
@@ -1580,7 +1360,7 @@ $ oc create -f https://raw.githubusercontent.com/jorgemoralespou/nexus-ose/maste
                 <ul class="social-icons">
                     <li><strong>Follow:</strong></li>
                     <li><a href="https://twitter.com/UnPOUcoDe"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
-                    <li><a href="/atom.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+                    <li><a href="http://jorgemoral.es/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
                 </ul>
             </div>
             <div class="page__footer-copyright">&copy; 2016 Jorge Morales Pou.</div>
