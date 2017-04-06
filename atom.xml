@@ -2,13 +2,65 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://jorgemoral.es/</id>
   <title>Learn the Origin</title>
-  <updated>2017-04-05T21:00:00Z</updated>
+  <updated>2017-04-06T11:00:00Z</updated>
   <link rel="alternate" href="http://jorgemoral.es/"/>
   <link rel="self" href="http://jorgemoral.es/atom.xml"/>
   <author>
     <name>Jorge Morales</name>
     <uri>http://jorgemoral.es/about/</uri>
   </author>
+  <entry>
+    <id>tag:jorgemoral.es,2017-04-06:/2017/04/developing-locally-openshift-origin-all-in-one/</id>
+    <title type="html">Developing locally with OpenShift - Origin all in one. Where we started</title>
+    <published>2017-04-06T11:00:00Z</published>
+    <updated>2017-04-06T11:00:00Z</updated>
+    <author>
+      <name>Jorge Morales</name>
+      <uri>http://jorgemoral.es/about/</uri>
+    </author>
+    <link rel="alternate" href="http://jorgemoral.es/2017/04/developing-locally-openshift-origin-all-in-one/"/>
+    <content type="html">&lt;div class="paragraph"&gt;
+&lt;p&gt;At the time OpenShift started, we realized that having a local development environment was important to make iterative development work more agile. Back then, the requirements that we had for a local development environment were pretty clear:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;It needs to work on linux, mac and windows&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;It needs to be easy to run&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;It needs to be easily disposable&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Resources used need to be adjustable&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;There was an existing technology that was meeting all these requirements, Vagrant by Hashicorp. Vagrant is a tool that allows you to start a VM, from a template, and then provision/bootstrap the VM on first boot. Then you could start and stop that VM for as many times as you want/need before you discard it. This technology provided us a way to give a base VM image, based out of Centos or RHEL, that was on first boot bootstrapped to contain a full OpenShift environment.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;The OpenShift evangelist team started this work and created what we called the “&lt;strong&gt;Origin all-in-one&lt;/strong&gt;” which bootstrapped you an OpenShift Origin all-in-one node with additional content. This effort also started based on the necessity of the team to provide a way for developers to have a VM they could take home in order to learn OpenShift.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;The effort lead to an official variant, called &lt;strong&gt;CDK (Container Development Kit)&lt;/strong&gt; and supported by our Red Hat Developers Tools, that was based on Red Hat Enterprise Linux and installed the Enterprise version of OpenShift, now called OpenShift Container Platform. It provides mostly the same capabilities as the all-in-one, but the most important fact for this variant is that Red Hat supports it. You just need to subscribe the VM (free subscription for developers) and you’ll have access to our Enterprise product.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;The downsides to using Vagrant is that you need to use a full Operating System VM that required an initial download of some GBs of data prior to being able to start working. Also it requires a considerable amount of resources not always easily available in the developer’s workstations or laptops.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Relying on Vagrant seemed the right approach at the time, and in the case of CDK, Red Hat invested in having a team of developers working upstream on some of the plugins used. The truth is that after some time, Vagrant seems more an abandoned project where every release breaks a feature and introduces incompatibilities with some of the versions of the hypervisors, e.g. VirtualBox which makes it complicated for the users to have it properly installed and functional.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;I’m not going to explain how this approach works. If you’re interested you can just look at &lt;a href="https://github.com/openshift-evangelists/vagrant-origin/"&gt;our docs&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Even though we could admit that the Origin all-in-one VM has been very successful, it has become less and less the defacto way of running a local OpenShift instance, and it will no longer be maintained, as we have &lt;a href="https://blog.openshift.com/goodbye-openshift-all-in-one-vm-hello-minishift/"&gt;announced&lt;/a&gt;. But don’t be afraid, that doesn’t mean there will be no solution. In the following posts I’ll be talking about more options, so stay tuned!&lt;/p&gt;
+&lt;/div&gt;</content>
+    <summary type="html">In part 2 of this series of articles we will explore the first local development environment that existed for Openshift Origin and OpenShift 3.</summary>
+  </entry>
   <entry>
     <id>tag:jorgemoral.es,2017-04-05:/2017/04/developing-locally-openshift-state-of-the-art/</id>
     <title type="html">Developing locally with OpenShift - State of the art</title>

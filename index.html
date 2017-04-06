@@ -51,14 +51,24 @@
                     <button><div class="navicon"></div></button>
                     <ul class="visible-links">
                         <li class="masthead__menu-item masthead__menu-item--lg"><a href="/">Learn the Origin</a></li>
+<!-- UNCOMMENT WHEN IMPLEMENTED
                         <li class="masthead__menu-item"><a href="/categories">Categories</a></li>
+-->
+<!-- UNCOMMENT WHEN IMPLEMENTED
                         <li class="masthead__menu-item"><a href="/tags">Tags</a></li>
+-->
+<!-- UNCOMMENT WHEN IMPLEMENTED
                         <li class="masthead__menu-item"><a href="/all-posts">All posts</a></li>
+-->
                         <!--
                         <li class="masthead__menu-item"><a href="/year-archive">By year</a></li>
                         -->
+<!-- UNCOMMENT WHEN IMPLEMENTED
                         <li class="masthead__menu-item"><a href="/presentations">Presentations</a></li>
+-->
+<!-- UNCOMMENT WHEN IMPLEMENTED
                         <li class="masthead__menu-item"><a href="/conferences">Conferences</a></li>
+-->
                         <li class="masthead__menu-item"><a href="/about">About me</a></li>
                     </ul>
                     <ul class="hidden-links hidden"></ul>
@@ -94,7 +104,7 @@
                 </div>
                 <div class="author__content">
                     <h3 class="author__name">Jorge Morales</h3>
-                    <p class="author__bio">OpenShift Developer Advocate working for Red Hat.<br/>Drop me a tweet if you want me to blog about a topic</p>
+                    <p class="author__bio">OpenShift Field Product Manager and Developer Advocate working for Red Hat.<br/>Drop me a tweet if you want me to blog about a topic</p>
                 </div>
 
                 <div class="author__urls-wrapper">
@@ -118,9 +128,62 @@
     
        <div class="list__item">
            <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+               <h2 class="archive__item-title" itemprop="headline"><a href="/2017/04/developing-locally-openshift-origin-all-in-one/">Developing locally with OpenShift - Origin all in one. Where we started</a></h2>
+               <p class="page__meta">
+                  <i class="fa fa-clock-o" aria-hidden="true"></i> 4 minutes
+                  Posted: 06/Apr/2017 by Jorge Morales
+               </p>
+               <p class="archive__item-excerpt" itemprop="description">In part 2 of this series of articles we will explore the first local development environment that existed for Openshift Origin and OpenShift 3.</p>
+               <!--
+               <p class="archive__item-excerpt" itemprop="description"><div class="paragraph">
+<p>At the time OpenShift started, we realized that having a local development environment was important to make iterative development work more agile. Back then, the requirements that we had for a local development environment were pretty clear:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>It needs to work on linux, mac and windows</p>
+</li>
+<li>
+<p>It needs to be easy to run</p>
+</li>
+<li>
+<p>It needs to be easily disposable</p>
+</li>
+<li>
+<p>Resources used need to be adjustable</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>There was an existing technology that was meeting all these requirements, Vagrant by Hashicorp. Vagrant is a tool that allows you to start a VM, from a template, and then provision/bootstrap the VM on first boot. Then you could start and stop that VM for as many times as you want/need before you discard it. This technology provided us a way to give a base VM image, based out of Centos or RHEL, that was on first boot bootstrapped to contain a full OpenShift environment.</p>
+</div>
+<div class="paragraph">
+<p>The OpenShift evangelist team started this work and created what we called the “<strong>Origin all-in-one</strong>” which bootstrapped you an OpenShift Origin all-in-one node with additional content. This effort also started based on the necessity of the team to provide a way for developers to have a VM they could take home in order to learn OpenShift.</p>
+</div>
+<div class="paragraph">
+<p>The effort lead to an official variant, called <strong>CDK (Container Development Kit)</strong> and supported by our Red Hat Developers Tools, that was based on Red Hat Enterprise Linux and installed the Enterprise version of OpenShift, now called OpenShift Container Platform. It provides mostly the same capabilities as the all-in-one, but the most important fact for this variant is that Red Hat supports it. You just need to subscribe the VM (free subscription for developers) and you’ll have access to our Enterprise product.</p>
+</div>
+<div class="paragraph">
+<p>The downsides to using Vagrant is that you need to use a full Operating System VM that required an initial download of some GBs of data prior to being able to start working. Also it requires a considerable amount of resources not always easily available in the developer’s workstations or laptops.</p>
+</div>
+<div class="paragraph">
+<p>Relying on Vagrant seemed the right approach at the time, and in the case of CDK, Red Hat invested in having a team of developers working upstream on some of the plugins used. The truth is that after some time, Vagrant seems more an abandoned project where every release breaks a feature and introduces incompatibilities with some of the versions of the hypervisors, e.g. VirtualBox which makes it complicated for the users to have it properly installed and functional.</p>
+</div>
+<div class="paragraph">
+<p>I’m not going to explain how this approach works. If you’re interested you can just look at <a href="https://github.com/openshift-evangelists/vagrant-origin/">our docs</a>.</p>
+</div>
+<div class="paragraph">
+<p>Even though we could admit that the Origin all-in-one VM has been very successful, it has become less and less the defacto way of running a local OpenShift instance, and it will no longer be maintained, as we have <a href="https://blog.openshift.com/goodbye-openshift-all-in-one-vm-hello-minishift/">announced</a>. But don’t be afraid, that doesn’t mean there will be no solution. In the following posts I’ll be talking about more options, so stay tuned!</p>
+</div></p>
+               -->
+           </article>
+       </div>
+    
+       <div class="list__item">
+           <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
                <h2 class="archive__item-title" itemprop="headline"><a href="/2017/04/developing-locally-openshift-state-of-the-art/">Developing locally with OpenShift - State of the art</a></h2>
                <p class="page__meta">
-                  <i class="fa fa-clock-o" aria-hidden="true"></i> 12 minutes
+                  <i class="fa fa-clock-o" aria-hidden="true"></i> 5 minutes
                   Posted: 05/Apr/2017 by Jorge Morales
                </p>
                <p class="archive__item-excerpt" itemprop="description">This is the first article of a series of blogs describing the state of the art related to local development using OpenShift as Container Application Platform</p>
@@ -1126,223 +1189,6 @@ $ oc create -f node-app-build.json</code></pre>
 </div>
 <div class="paragraph">
 <p><a href="http://www.youtube.com/watch?v=vKDLz2OXu7k">See a video in action</a></p>
-</div></p>
-               -->
-           </article>
-       </div>
-    
-       <div class="list__item">
-           <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
-               <h2 class="archive__item-title" itemprop="headline"><a href="/2016/04/understanding-SAs_and-SCCs/">Understanding Service Accounts and SCCs</a></h2>
-               <p class="page__meta">
-                  <i class="fa fa-clock-o" aria-hidden="true"></i> 8 minutes
-                  Posted: 15/Apr/2016 by Jorge Morales
-               </p>
-               <p class="archive__item-excerpt" itemprop="description">We launched OpenShift 3.0 back in June 2015 and I have had the pleasure of speaking with users all over Europe and the EMEA region to help them</p>
-               <!--
-               <p class="archive__item-excerpt" itemprop="description"><div id="preamble">
-<div class="sectionbody">
-<div class="paragraph">
-<p>We launched OpenShift 3.0 back in June 2015 and I have had the pleasure of speaking with users all over Europe and the EMEA region to help them get up and running with deploying applications on the platform. One of the features that developers and administrator often ask questions about are Service Accounts and Security Context Constraints. In this blog post, I will provide a simple introduction into both concepts, how they work and their usage.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_security_context_constraints_scc">Security Context Constraints (SCC)</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The <a href="https://docs.openshift.org/latest/architecture/additional_concepts/authorization.html#security-context-constraints">official documentation states</a>:</p>
-</div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p>OpenShift provides security context constraints (SCC) that control the actions that a pod can perform and what it has the ability to access.</p>
-</div>
-</blockquote>
-</div>
-<div class="paragraph">
-<p>In short, when we execute a container, we want to guarantee that the capabilities required by that container to run are satisfied, while at the same time we also want OpenShift to be a secure Container Application platform. For this reason we can not allow any container to get access to unnecessary capabilities or to run in an insecure way (e.g. privileged or as root).</p>
-</div>
-<div class="paragraph">
-<p>OpenShift guarantees that the capabilities required by a container are granted to the user that executes the container at <a href="https://docs.openshift.org/latest/architecture/additional_concepts/authorization.html#admission">admission time</a>. Admission is done based on the identity of the user executing the pod and the pod’s service account (introduced later in this blog).</p>
-</div>
-<div class="paragraph">
-<p>The OpenShift Container Application Platform provides a set of predefined Security Context Constraints that can be used, modified or extended by any administrator. The SCCs that can be used are as follows:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc get scc
-NAME              PRIV   CAPS  HOSTDIR  SELINUX    RUNASUSER         FSGROUP   SUPGROUP  PRIORITY
-anyuid            false  []    false    MustRunAs  RunAsAny          RunAsAny  RunAsAny  10
-hostaccess        false  []    true     MustRunAs  MustRunAsRange    RunAsAny  RunAsAny  &lt;none&gt;
-hostmount-anyuid  false  []    true     MustRunAs  RunAsAny          RunAsAny  RunAsAny  &lt;none&gt;
-nonroot           false  []    false    MustRunAs  MustRunAsNonRoot  RunAsAny  RunAsAny  &lt;none&gt;
-privileged        true   []    true     RunAsAny   RunAsAny          RunAsAny  RunAsAny  &lt;none&gt;
-restricted        false  []    false    MustRunAs  MustRunAsRange    RunAsAny  RunAsAny  &lt;none&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>By default, the execution of any container will be granted the <strong>restricted</strong> SCC and only the capabilities defined by that SCC.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc describe scc restricted
-Name:                restricted
-Priority:               &lt;none&gt;
-Access:
-  Users:             &lt;none&gt;
-  Groups:               system:authenticated
-Settings:
-  Allow Privileged:        false
-  Default Add Capabilities:      &lt;none&gt;
-  Required Drop Capabilities:    KILL,MKNOD,SYS_CHROOT,SETUID,SETGID
-  Allowed Capabilities:       &lt;none&gt;
-  Allowed Volume Types:       configMap,downwardAPI,emptyDir,persistentVolumeClaim,secret
-  Allow Host Network:         false
-  Allow Host Ports:        false
-  Allow Host PID:          false
-  Allow Host IPC:          false
-  Read Only Root Filesystem:     false
-  Run As User Strategy:             MustRunAsRange
-    UID:             &lt;none&gt;
-    UID Range Min:            &lt;none&gt;
-    UID Range Max:            &lt;none&gt;
-  SELinux Context Strategy:         MustRunAs
-    User:               &lt;none&gt;
-    Role:               &lt;none&gt;
-    Type:               &lt;none&gt;
-    Level:              &lt;none&gt;
-  FSGroup Strategy:                 MustRunAs
-    Ranges:             &lt;none&gt;
-  Supplemental Groups Strategy:     RunAsAny
-    Ranges:             &lt;none&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>As can be seen in the previous description of the <strong>restricted</strong> SCC, a list of users and groups can be specified. In order to grant a user or group a specific SCC, a cluster administrator can execute the following command:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ oadm policy add-user-to-scc &lt;scc_name&gt; &lt;user_name&gt;
-$ oadm policy add-group-to-scc &lt;scc_name&gt; &lt;group_name&gt;</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_service_accounts">Service Accounts</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The <a href="https://docs.openshift.org/latest/dev_guide/service_accounts.html">official documentation states</a>:</p>
-</div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p>When a person uses the command line or web console, their API token authenticates them to the OpenShift API. However, when a regular user’s credentials are not available, it is common for components to make API calls independently. For example:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Replication controllers make API calls to create or delete pods</p>
-</li>
-<li>
-<p>Applications inside containers could make API calls for discovery purposes</p>
-</li>
-<li>
-<p>External applications could make API calls for monitoring or integration purposes</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>Service accounts provide a flexible way to control API access without sharing a regular user’s credentials</strong>.</p>
-</div>
-</blockquote>
-</div>
-<div class="paragraph">
-<p>As you can see, there are many use cases for Service Accounts, and if we dive into the first use case aforementioned, we need to understand that OpenShift (and Kubernetes) are not synchronous in the execution of their commands.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/sa_scc/Eventual_consistency.png" alt="Asynch state consolidation">
-</div>
-</div>
-<div class="paragraph">
-<p>When a user wants to deploy an application, he creates a DeploymentConfig resource, which describes a desired state (as can be seen in the picture above - step 1). From this point, a set of controllers (admission, replication controller, scheduler,&#8230;&#8203;), running on the master server, will be monitoring those definitions and will execute necessary actions on the OpenShift platform in order to provide consistency between the desired and actual state (as can be seen in the picture above - step 2). This will happen as soon as the controllers try to consolidate the cluster state.</p>
-</div>
-<div class="paragraph">
-<p>What this really means is, the actions are executed by the OpenShift controllers and not by the actual user, that expressed the desired state. This leads to the situation where we need to identify who&#8217;s executing the actions the controllers are invoking.</p>
-</div>
-<div class="paragraph">
-<p>By default, OpenShift creates three service accounts per project for building, deploying and running an application (see <a href="https://docs.openshift.org/latest/dev_guide/service_accounts.html#default-service-accounts-and-roles">the official documentation</a> for more details).</p>
-</div>
-<div class="paragraph">
-<p>When a user creates anyobject in OpenShift it will use these default Service Accounts, but a different one can be specified within the object configuration.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">{
-   "kind": "DeploymentConfig",
-   "apiVersion": "v1",
-   "metadata": {...},
-   "spec": {
-      ...
-      "template": {
-         ...
-         "spec":{
-            "containers": [
-            ],
-            ...
-            "serviceAccountName": "myserviceaccount"
-         }
-      }
-   }
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>One reason to use a dedicated service account in a deployment configuration is to allow an application running within a pod to use a set of privileges or capabilities other than those granted by the <strong>default</strong> service account. This default service account will only have access to all the capabilities defined by the <strong>restricted</strong> SCC, as out of the box OpenShift will add every authenticated user to the restricted SCC (as can bee seen in the output of the execution of “oc describe scc restricted” shown above). This includes the default service account which is not explicitly included in any other SCC.</p>
-</div>
-<div class="paragraph">
-<p>Since every service account has an associated username, it can be added to any specific SCC in a similar way as we have done previously with users and groups.</p>
-</div>
-<div class="paragraph">
-<p>As an example, we might want to run an application that needs access to mount hostPath volumes, or we might want to run an application with a specified user and not a random user OpenShift will use as default (as detailed in <a href="https://blog.openshift.com/getting-any-docker-image-running-in-your-own-openshift-cluster/">this blog</a>), or we might want to restrict the container&#8217;s filesystem to be readonly, and forcing every write to be on external storage. There are many other situations that might require us to change the capabilities provided by default.</p>
-</div>
-<div class="paragraph">
-<p>This leads to the conclusion of this blog with my advice:</p>
-</div>
-<div class="paragraph">
-<p>“Every time you have an application/process that requires a capability not granted by the restricted SCC, create a new, specific service account and add it to the appropriate SCC. But, if there is no SCC that perfectly suits your needs, instead of using the best fit one, <a href="https://docs.openshift.org/latest/admin_guide/manage_scc.html#creating-new-security-context-constraints">create a new SCC</a> tailored for your requirements, and finally set it for the deployment configuration (as described above).”</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc create serviceaccount useroot
-
-$ oc patch dc/myAppNeedsRoot --patch '{"spec":{"template":{"spec":{"serviceAccountName": "useroot"}}}}'
-
-$ oc adm policy add-scc-to-user anyuid -z useroot</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Above you can see my advice in action, creating a new service account named <em>useroot</em>, modifying the deployment configuration for <em>myAppNeedsRoot</em> and then adding the serviceaccount to the <em>anyuid</em> SCC as the application defined needs to run as user root in the container. Note that I haven&#8217;t created a specific SCC since anyuid meets my needs.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-The previous example is using notation available in OpenShift Origin 1.1.4+ and OpenShift Enterprise 3.2+.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>I’ve seen many users granting access to a user/serviceaccount to the privileged SCC to avoid going through this exercise, and this is can be a big security problem, so take my word of caution.
-&lt;/group_name&gt;&lt;/scc_name&gt;&lt;/user_name&gt;&lt;/scc_name&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;&lt;/none&gt;</p>
-</div>
-</div>
 </div></p>
                -->
            </article>
