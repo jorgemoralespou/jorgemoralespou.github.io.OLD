@@ -27,7 +27,7 @@
     <!-- end SEO -->
     <link href="http://jorgemoral.es/feed.xml" type="application/atom+xml" rel="alternate" title="Learn the Origin Feed">
     <title>jorgemoral.es ::
-        Developing locally with OpenShift - Where all began
+        Developing locally with OpenShift - Origin all in one. Where we started
     </title>
     <!--
     <link rel="stylesheet" href="/css/stylesheet.css">
@@ -114,7 +114,7 @@
 <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
     <div class="page__inner-wrap">
         <header>
-            <h1 class="page__title" itemprop="headline">Developing locally with OpenShift - Where all began</h1>
+            <h1 class="page__title" itemprop="headline">Developing locally with OpenShift - Origin all in one. Where we started</h1>
             <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i>
                 12 minutes
                     Posted:
@@ -123,15 +123,54 @@
             </p>
         </header>
         <div class="paragraph">
-<p>Test</p>
+<p>At the time OpenShift started, we realized that having a local development environment was important to make iterative development work more agile. Back then, the requirements that we had for a local development environment were pretty clear:</p>
 </div>
-    </div
+<div class="ulist">
+<ul>
+<li>
+<p>It needs to work on linux, mac and windows</p>
+</li>
+<li>
+<p>It needs to be easy to run</p>
+</li>
+<li>
+<p>It needs to be easily disposable</p>
+</li>
+<li>
+<p>Resources used need to be adjustable</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>There was an existing technology that was meeting all these requirements, Vagrant by Hashicorp. Vagrant is a tool that allows you to start a VM, from a template, and then provision/bootstrap the VM on first boot. Then you could start and stop that VM for as many times as you want/need before you discard it. This technology provided us a way to give a base VM image, based out of Centos or RHEL, that was on first boot bootstrapped to contain a full OpenShift environment.</p>
+</div>
+<div class="paragraph">
+<p>The OpenShift evangelist team started this work and created what we called the “<strong>Origin all-in-one</strong>” which bootstrapped you an OpenShift Origin all-in-one node with additional content. This effort also started based on the necessity of the team to provide a way for developers to have a VM they could take home in order to learn OpenShift.</p>
+</div>
+<div class="paragraph">
+<p>The effort lead to an official variant, called <strong>CDK (Container Development Kit)</strong> and supported by our Red Hat Developers Tools, that was based on Red Hat Enterprise Linux and installed the Enterprise version of OpenShift, now called OpenShift Container Platform. It provides mostly the same capabilities as the all-in-one, but the most important fact for this variant is that Red Hat supports it. You just need to subscribe the VM (free subscription for developers) and you’ll have access to our Enterprise product.</p>
+</div>
+<div class="paragraph">
+<p>The downsides to using Vagrant is that you need to use a full Operating System VM that required an initial download of some GBs of data prior to being able to start working. Also it requires a considerable amount of resources not always easily available in the developer’s workstations or laptops.</p>
+</div>
+<div class="paragraph">
+<p>Relying on Vagrant seemed the right approach at the time, and in the case of CDK, Red Hat invested in having a team of developers working upstream on some of the plugins used. The truth is that after some time, Vagrant seems more an abandoned project where every release breaks a feature and introduces incompatibilities with some of the versions of the hypervisors, e.g. VirtualBox which makes it complicated for the users to have it properly installed and functional.</p>
+</div>
+<div class="paragraph">
+<p>I’m not going to explain how this approach works. If you’re interested you can just look at <a href="https://github.com/openshift-evangelists/vagrant-origin/">our docs</a>.</p>
+</div>
+<div class="paragraph">
+<p>Even though we could admit that the Origin all-in-one VM has been very successful, it has become less and less the defacto way of running a local OpenShift instance, and it will no longer be maintained, as we have <a href="https://blog.openshift.com/goodbye-openshift-all-in-one-vm-hello-minishift/">announced</a>. But don’t be afraid, that doesn’t mean there will be no solution. In the following posts I’ll be talking about more options, so stay tuned!</p>
+</div>
+
+        <p>I would like to hear from you! If you have some ideas or comments, please do not hesitate to <a href="https://twitter.com/UnPOUcoDe">tweet me</a> your comments.</p>
+    </div>
 
     <footer class="page__meta">
       <p class="page__taxonomy">
          <strong><i class="fa fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
          <span itemprop="keywords">
-               <a href="/tags/#openshift" class="page__taxonomy-item" rel="tag">openshift</a><a href="/tags/#origin" class="page__taxonomy-item" rel="tag">origin</a><a href="/tags/#development" class="page__taxonomy-item" rel="tag">development</a><a href="/tags/#local" class="page__taxonomy-item" rel="tag">local</a><a href="/tags/#devexp" class="page__taxonomy-item" rel="tag">devexp</a><a href="/tags/#oc-cluster" class="page__taxonomy-item" rel="tag">oc-cluster</a>
+               <a href="/tags/#openshift" class="page__taxonomy-item" rel="tag">openshift</a><a href="/tags/#origin" class="page__taxonomy-item" rel="tag">origin</a><a href="/tags/#development" class="page__taxonomy-item" rel="tag">development</a><a href="/tags/#local" class="page__taxonomy-item" rel="tag">local</a><a href="/tags/#devexp" class="page__taxonomy-item" rel="tag">devexp</a><a href="/tags/#allinone" class="page__taxonomy-item" rel="tag">allinone</a><a href="/tags/#cdk" class="page__taxonomy-item" rel="tag">cdk</a>
          </span>
       </p>
 
@@ -148,22 +187,8 @@
 
    <section class="page__share">
       <h4 class="page__share-title">Share on</h4>
-         <a href="https://twitter.com/intent/tweet?via=UnPOUcoDe&text=Developing locally with OpenShift - Where all began http://jorgemoral.es/2017/04/developing-locally-openshift-origin-all-in-one/" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
-<!--
-         <a href="https://www.facebook.com/sharer/sharer.php?u=http://jorgemoral.es/devexp/configuring-your-app-2/" class="btn btn--facebook" title="Share on Facebook"><i class="fa fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
-         <a href="https://plus.google.com/share?url=http://jorgemoral.es/devexp/configuring-your-app-2/" class="btn btn--google-plus" title="Share on Google Plus"><i class="fa fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
-         <a href="https://www.linkedin.com/shareArticle?mini=true&url=http://jorgemoral.es/devexp/configuring-your-app-2/" class="btn btn--linkedin" title="Share on LinkedIn"><i class="fa fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
--->
+         <a href="https://twitter.com/intent/tweet?via=UnPOUcoDe&text=Developing locally with OpenShift - Origin all in one. Where we started http://jorgemoral.es/2017/04/developing-locally-openshift-origin-all-in-one/" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
    </section>
-
-<!--
-<nav class="pagination">
-<a href="http://jorgemoral.es/devexp/configuring-your-app-1/" class="pagination--pager" title="Configuring your application, Part 1
-">Previous</a>
-<a href="#" class="pagination--pager disabled">Next</a>
-</nav>
-</div>
--->
 </article>
 
     </div>
@@ -176,7 +201,7 @@
                 <ul class="social-icons">
                     <li><strong>Follow:</strong></li>
                     <li><a href="https://twitter.com/UnPOUcoDe"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
-                    <li><a href="http://jorgemoral.es/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+                    <li><a href="/atom.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
                 </ul>
             </div>
             <div class="page__footer-copyright">&copy; 2016 Jorge Morales Pou.</div>
