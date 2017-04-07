@@ -27,7 +27,7 @@
     <!-- end SEO -->
     <link href="http://jorgemoral.es/feed.xml" type="application/atom+xml" rel="alternate" title="Learn the Origin Feed">
     <title>jorgemoral.es ::
-        Developing locally with OpenShift - Bringing it all together
+        Developing locally with OpenShift - minishift, bringing it all together
     </title>
     <!--
     <link rel="stylesheet" href="/css/stylesheet.css">
@@ -124,15 +124,106 @@
 <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
     <div class="page__inner-wrap">
         <header>
-            <h1 class="page__title" itemprop="headline">Developing locally with OpenShift - Bringing it all together</h1>
+            <h1 class="page__title" itemprop="headline">Developing locally with OpenShift - minishift, bringing it all together</h1>
             <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i>
-                12 minutes
+                4 minutes
                     Posted:
-                    05/Apr/2017 by
+                    08/Apr/2017 by
                         Jorge Morales
             </p>
         </header>
-        
+        <div class="paragraph">
+<p>We finally get to the last post of the series, and in this post I will introduce you to the tool that Developers will be using soon. It’s still not final and yet many features need to be planned and included, but will overcome all the problems I described in my previous posts.</p>
+</div>
+<div class="paragraph">
+<p>There’s already a good blog post from <a href="https://github.com/LalatenduMohanty">Lalatendu Mohanty</a> about <a href="https://developers.redhat.com/blog/2017/02/28/using-red-hat-container-development-kit-3-beta/">what CDKv3 is</a> so I will not go into many details. I will just simply quote him for what I consider the most important part:</p>
+</div>
+<div class="paragraph">
+<p>“Minishift is a fork of the Minikube project and uses libmachine to interact with the underlying virtualization software. It also uses OpenShift’s “cluster up” functionality for provisioning the local Origin/OCP cluster”</p>
+</div>
+<div class="paragraph">
+<p>Also:</p>
+</div>
+<div class="paragraph">
+<p>“At the moment, KVM, Virtualbox, Xhyve and HyperV are the supported hypervisors.”</p>
+</div>
+<div class="paragraph">
+<p>You should note that from this 2 sentences there is so many relevant things to mention:</p>
+</div>
+<div class="paragraph">
+<p>First, and foremost, the tool runs in a virtual machine, providing isolation from the host. Also, the support for the most common virtualization technologies across all major Operating Systems, providing consistency on where minishift can be run. And finally, minishift uses internally “oc cluster up” which is the preferred way to bootstrap a local cluster.</p>
+</div>
+<div class="paragraph">
+<p>One of the key aspects of minishift is that it is a tool created with developers in mind, so most of the shortcomings that “oc cluster” provides are meant to be overtaken by minishift. But, not only is a tool for developers, it’s also a tool to have reproducible OpenShift local environments. This aspect is key for some alternative use cases, like teaching or showing OpenShift capabilities in a reproducible manner. Evangelism of OpenShift will greatly benefit from the sweetness that minishift provides.</p>
+</div>
+<div class="paragraph">
+<p>As an example of things that are or will be shortly possible:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Reuse downloaded images from VM to VM</p>
+</li>
+<li>
+<p>Provision a set of addons/bundles upon cluster creation</p>
+</li>
+<li>
+<p>Modify cluster default behavior</p>
+</li>
+<li>
+<p>Provide multiple openshift instances/profiles</p>
+</li>
+<li>
+<p>Ability to pack and transfer files required to have a working environment</p>
+</li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="_how_to_get_started">How to get started</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To work with minishift is as easy as it is to work with “oc cluster”. It’s a single go binary compiled for the different major developers operating systems (Windows, Mac and Linux). The only pre-requirement is that you have any of the supported virtualization technologies available on your workstation. Once you have the binary downloaded, and for convenience, added to the path, you can just issue one command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ minishift start</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This command, which accepts a variety of configuration flags, does all you need to have OpenShift up and running. It will pull down a boot-2-docker iso (there’s also Centos and RHEL variants), it will create a VM using that iso image, and will do “oc cluster up” within the VM, with the appropriate configuration. After all the images have been pulled down (which can take a while) you’ll have a complete OpenShift all in one cluster running in a VM.</p>
+</div>
+<div class="paragraph">
+<p>Once you finish working, you just need to stop the VM, by doing:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ minishift stop</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that this will keep the VM in your workstation, so you can start and stop it several times being sure that your work will be preserved.</p>
+</div>
+<div class="paragraph">
+<p>Once you’re done, you can discard the VM and recover all used disc space, by doing:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ minishift delete</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusions">Conclusions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Although minishift has not even hit version 1.0.0 GA it is already one of the easiest ways to work with Openshift locally. But the truth is that if the present is encouraging the future is promising, and we will see a great deal of capabilities being added moving forward that will keep simplifying developers life, so that a regular developer will not need to know how to install, manage, configure and operate and OpenShift cluster and will be able to keep focus in what should be important to him, develop applications that will ultimately run on an OpenShift cluster.</p>
+</div>
+<div class="paragraph">
+<p>I have to say that these past months where I’ve been working with the minishift team, they have proved that “being the tool of choice for developers” is their main goal, and they have been listening to all the feedback from the community to make the experience as easy as possible. I want to thank <a href="https://github.com/hferentschik">Hardy Ferentschik</a>, <a href="https://github.com/LalatenduMohanty">Lalatendu Mohanty</a>, <a href="https://github.com/praveenkumar">Praveen Kumar</a>, <a href="https://github.com/budhrg">Budh Ram Gurung</a>, <a href="https://github.com/gbraad">Gerard Braad</a>, and the rest of the <a href="https://github.com/minishift/minishift/graphs/contributors">minishift team</a>, and also specially <a href="https://github.com/jimmidyson">Jimmy Dyson</a> who started this project.</p>
+</div>
+</div>
+</div>
 
         <p>I would like to hear from you! If you have some ideas or comments, please do not hesitate to <a href="https://twitter.com/UnPOUcoDe">tweet me</a> your comments.</p>
     </div>
@@ -141,7 +232,7 @@
       <p class="page__taxonomy">
          <strong><i class="fa fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
          <span itemprop="keywords">
-               <a href="/tags/#openshift" class="page__taxonomy-item" rel="tag">openshift</a><a href="/tags/#origin" class="page__taxonomy-item" rel="tag">origin</a><a href="/tags/#development" class="page__taxonomy-item" rel="tag">development</a><a href="/tags/#local" class="page__taxonomy-item" rel="tag">local</a><a href="/tags/#devexp" class="page__taxonomy-item" rel="tag">devexp</a><a href="/tags/#oc-cluster" class="page__taxonomy-item" rel="tag">oc-cluster</a>
+               <a href="/tags/#openshift" class="page__taxonomy-item" rel="tag">openshift</a><a href="/tags/#origin" class="page__taxonomy-item" rel="tag">origin</a><a href="/tags/#development" class="page__taxonomy-item" rel="tag">development</a><a href="/tags/#local" class="page__taxonomy-item" rel="tag">local</a><a href="/tags/#devexp" class="page__taxonomy-item" rel="tag">devexp</a><a href="/tags/#minishift" class="page__taxonomy-item" rel="tag">minishift</a><a href="/tags/#cdk" class="page__taxonomy-item" rel="tag">cdk</a>
          </span>
       </p>
 
@@ -153,12 +244,12 @@
       </p>
 
       <p class="page__date">
-            <strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:  </strong>April 05, 2017</p>
+            <strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:  </strong>April 08, 2017</p>
    </footer>
 
    <section class="page__share">
       <h4 class="page__share-title">Share on</h4>
-         <a href="https://twitter.com/intent/tweet?via=UnPOUcoDe&text=Developing locally with OpenShift - Bringing it all together http://jorgemoral.es/2017/04/developing-locally-openshift-minishift/" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+         <a href="https://twitter.com/intent/tweet?via=UnPOUcoDe&text=Developing locally with OpenShift - minishift, bringing it all together http://jorgemoral.es/2017/04/developing-locally-openshift-minishift/" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
    </section>
 </article>
 
