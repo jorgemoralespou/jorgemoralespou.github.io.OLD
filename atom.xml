@@ -2,13 +2,117 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://jorgemoral.es/</id>
   <title>Learn the Origin</title>
-  <updated>2017-04-07T11:00:00Z</updated>
+  <updated>2017-04-08T11:00:00Z</updated>
   <link rel="alternate" href="http://jorgemoral.es/"/>
   <link rel="self" href="http://jorgemoral.es/atom.xml"/>
   <author>
     <name>Jorge Morales</name>
     <uri>http://jorgemoral.es/about/</uri>
   </author>
+  <entry>
+    <id>tag:jorgemoral.es,2017-04-08:/2017/04/developing-locally-openshift-minishift/</id>
+    <title type="html">Developing locally with OpenShift - minishift, bringing it all together</title>
+    <published>2017-04-08T11:00:00Z</published>
+    <updated>2017-04-08T11:00:00Z</updated>
+    <author>
+      <name>Jorge Morales</name>
+      <uri>http://jorgemoral.es/about/</uri>
+    </author>
+    <link rel="alternate" href="http://jorgemoral.es/2017/04/developing-locally-openshift-minishift/"/>
+    <content type="html">&lt;div class="paragraph"&gt;
+&lt;p&gt;We finally get to the last post of the series, and in this post I will introduce you to the tool that Developers will be using soon. It’s still not final and yet many features need to be planned and included, but will overcome all the problems I described in my previous posts.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;There’s already a good blog post from &lt;a href="https://github.com/LalatenduMohanty"&gt;Lalatendu Mohanty&lt;/a&gt; about &lt;a href="https://developers.redhat.com/blog/2017/02/28/using-red-hat-container-development-kit-3-beta/"&gt;what CDKv3 is&lt;/a&gt; so I will not go into many details. I will just simply quote him for what I consider the most important part:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;“Minishift is a fork of the Minikube project and uses libmachine to interact with the underlying virtualization software. It also uses OpenShift’s “cluster up” functionality for provisioning the local Origin/OCP cluster”&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Also:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;“At the moment, KVM, Virtualbox, Xhyve and HyperV are the supported hypervisors.”&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;You should note that from this 2 sentences there is so many relevant things to mention:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;First, and foremost, the tool runs in a virtual machine, providing isolation from the host. Also, the support for the most common virtualization technologies across all major Operating Systems, providing consistency on where minishift can be run. And finally, minishift uses internally “oc cluster up” which is the preferred way to bootstrap a local cluster.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;One of the key aspects of minishift is that it is a tool created with developers in mind, so most of the shortcomings that “oc cluster” provides are meant to be overtaken by minishift. But, not only is a tool for developers, it’s also a tool to have reproducible OpenShift local environments. This aspect is key for some alternative use cases, like teaching or showing OpenShift capabilities in a reproducible manner. Evangelism of OpenShift will greatly benefit from the sweetness that minishift provides.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;As an example of things that are or will be shortly possible:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Reuse downloaded images from VM to VM&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Provision a set of addons/bundles upon cluster creation&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Modify cluster default behavior&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Provide multiple openshift instances/profiles&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Ability to pack and transfer files required to have a working environment&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_how_to_get_started"&gt;How to get started&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;To work with minishift is as easy as it is to work with “oc cluster”. It’s a single go binary compiled for the different major developers operating systems (Windows, Mac and Linux). The only pre-requirement is that you have any of the supported virtualization technologies available on your workstation. Once you have the binary downloaded, and for convenience, added to the path, you can just issue one command:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre&gt;$ minishift start&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;This command, which accepts a variety of configuration flags, does all you need to have OpenShift up and running. It will pull down a boot-2-docker iso (there’s also Centos and RHEL variants), it will create a VM using that iso image, and will do “oc cluster up” within the VM, with the appropriate configuration. After all the images have been pulled down (which can take a while) you’ll have a complete OpenShift all in one cluster running in a VM.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Once you finish working, you just need to stop the VM, by doing:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre&gt;$ minishift stop&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Note that this will keep the VM in your workstation, so you can start and stop it several times being sure that your work will be preserved.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Once you’re done, you can discard the VM and recover all used disc space, by doing:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre&gt;$ minishift delete&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_conclusions"&gt;Conclusions&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Although minishift has not even hit version 1.0.0 GA it is already one of the easiest ways to work with Openshift locally. But the truth is that if the present is encouraging the future is promising, and we will see a great deal of capabilities being added moving forward that will keep simplifying developers life, so that a regular developer will not need to know how to install, manage, configure and operate and OpenShift cluster and will be able to keep focus in what should be important to him, develop applications that will ultimately run on an OpenShift cluster.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;I have to say that these past months where I’ve been working with the minishift team, they have proved that “being the tool of choice for developers” is their main goal, and they have been listening to all the feedback from the community to make the experience as easy as possible. I want to thank &lt;a href="https://github.com/hferentschik"&gt;Hardy Ferentschik&lt;/a&gt;, &lt;a href="https://github.com/LalatenduMohanty"&gt;Lalatendu Mohanty&lt;/a&gt;, &lt;a href="https://github.com/praveenkumar"&gt;Praveen Kumar&lt;/a&gt;, &lt;a href="https://github.com/budhrg"&gt;Budh Ram Gurung&lt;/a&gt;, &lt;a href="https://github.com/gbraad"&gt;Gerard Braad&lt;/a&gt;, and the rest of the &lt;a href="https://github.com/minishift/minishift/graphs/contributors"&gt;minishift team&lt;/a&gt;, and also specially &lt;a href="https://github.com/jimmidyson"&gt;Jimmy Dyson&lt;/a&gt; who started this project.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content>
+    <summary type="html">In this last post I'm introducing what is the definitive tool for working with OpenShift locally and where we'll be investing moving forward.</summary>
+  </entry>
   <entry>
     <id>tag:jorgemoral.es,2017-04-07:/2017/04/developing-locally-openshift-oc-cluster/</id>
     <title type="html">Developing locally with OpenShift - “oc cluster up”, the fastest way to get a local cluster</title>

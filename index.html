@@ -128,6 +128,111 @@
     
        <div class="list__item">
            <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+               <h2 class="archive__item-title" itemprop="headline"><a href="/2017/04/developing-locally-openshift-minishift/">Developing locally with OpenShift - minishift, bringing it all together</a></h2>
+               <p class="page__meta">
+                  <i class="fa fa-clock-o" aria-hidden="true"></i> 4 minutes
+                  Posted: 08/Apr/2017 by Jorge Morales
+               </p>
+               <p class="archive__item-excerpt" itemprop="description">In this last post I'm introducing what is the definitive tool for working with OpenShift locally and where we'll be investing moving forward.</p>
+               <!--
+               <p class="archive__item-excerpt" itemprop="description"><div class="paragraph">
+<p>We finally get to the last post of the series, and in this post I will introduce you to the tool that Developers will be using soon. It’s still not final and yet many features need to be planned and included, but will overcome all the problems I described in my previous posts.</p>
+</div>
+<div class="paragraph">
+<p>There’s already a good blog post from <a href="https://github.com/LalatenduMohanty">Lalatendu Mohanty</a> about <a href="https://developers.redhat.com/blog/2017/02/28/using-red-hat-container-development-kit-3-beta/">what CDKv3 is</a> so I will not go into many details. I will just simply quote him for what I consider the most important part:</p>
+</div>
+<div class="paragraph">
+<p>“Minishift is a fork of the Minikube project and uses libmachine to interact with the underlying virtualization software. It also uses OpenShift’s “cluster up” functionality for provisioning the local Origin/OCP cluster”</p>
+</div>
+<div class="paragraph">
+<p>Also:</p>
+</div>
+<div class="paragraph">
+<p>“At the moment, KVM, Virtualbox, Xhyve and HyperV are the supported hypervisors.”</p>
+</div>
+<div class="paragraph">
+<p>You should note that from this 2 sentences there is so many relevant things to mention:</p>
+</div>
+<div class="paragraph">
+<p>First, and foremost, the tool runs in a virtual machine, providing isolation from the host. Also, the support for the most common virtualization technologies across all major Operating Systems, providing consistency on where minishift can be run. And finally, minishift uses internally “oc cluster up” which is the preferred way to bootstrap a local cluster.</p>
+</div>
+<div class="paragraph">
+<p>One of the key aspects of minishift is that it is a tool created with developers in mind, so most of the shortcomings that “oc cluster” provides are meant to be overtaken by minishift. But, not only is a tool for developers, it’s also a tool to have reproducible OpenShift local environments. This aspect is key for some alternative use cases, like teaching or showing OpenShift capabilities in a reproducible manner. Evangelism of OpenShift will greatly benefit from the sweetness that minishift provides.</p>
+</div>
+<div class="paragraph">
+<p>As an example of things that are or will be shortly possible:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Reuse downloaded images from VM to VM</p>
+</li>
+<li>
+<p>Provision a set of addons/bundles upon cluster creation</p>
+</li>
+<li>
+<p>Modify cluster default behavior</p>
+</li>
+<li>
+<p>Provide multiple openshift instances/profiles</p>
+</li>
+<li>
+<p>Ability to pack and transfer files required to have a working environment</p>
+</li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="_how_to_get_started">How to get started</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To work with minishift is as easy as it is to work with “oc cluster”. It’s a single go binary compiled for the different major developers operating systems (Windows, Mac and Linux). The only pre-requirement is that you have any of the supported virtualization technologies available on your workstation. Once you have the binary downloaded, and for convenience, added to the path, you can just issue one command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ minishift start</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This command, which accepts a variety of configuration flags, does all you need to have OpenShift up and running. It will pull down a boot-2-docker iso (there’s also Centos and RHEL variants), it will create a VM using that iso image, and will do “oc cluster up” within the VM, with the appropriate configuration. After all the images have been pulled down (which can take a while) you’ll have a complete OpenShift all in one cluster running in a VM.</p>
+</div>
+<div class="paragraph">
+<p>Once you finish working, you just need to stop the VM, by doing:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ minishift stop</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that this will keep the VM in your workstation, so you can start and stop it several times being sure that your work will be preserved.</p>
+</div>
+<div class="paragraph">
+<p>Once you’re done, you can discard the VM and recover all used disc space, by doing:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ minishift delete</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusions">Conclusions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Although minishift has not even hit version 1.0.0 GA it is already one of the easiest ways to work with Openshift locally. But the truth is that if the present is encouraging the future is promising, and we will see a great deal of capabilities being added moving forward that will keep simplifying developers life, so that a regular developer will not need to know how to install, manage, configure and operate and OpenShift cluster and will be able to keep focus in what should be important to him, develop applications that will ultimately run on an OpenShift cluster.</p>
+</div>
+<div class="paragraph">
+<p>I have to say that these past months where I’ve been working with the minishift team, they have proved that “being the tool of choice for developers” is their main goal, and they have been listening to all the feedback from the community to make the experience as easy as possible. I want to thank <a href="https://github.com/hferentschik">Hardy Ferentschik</a>, <a href="https://github.com/LalatenduMohanty">Lalatendu Mohanty</a>, <a href="https://github.com/praveenkumar">Praveen Kumar</a>, <a href="https://github.com/budhrg">Budh Ram Gurung</a>, <a href="https://github.com/gbraad">Gerard Braad</a>, and the rest of the <a href="https://github.com/minishift/minishift/graphs/contributors">minishift team</a>, and also specially <a href="https://github.com/jimmidyson">Jimmy Dyson</a> who started this project.</p>
+</div>
+</div>
+</div></p>
+               -->
+           </article>
+       </div>
+    
+       <div class="list__item">
+           <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
                <h2 class="archive__item-title" itemprop="headline"><a href="/2017/04/developing-locally-openshift-oc-cluster/">Developing locally with OpenShift - “oc cluster up”, the fastest way to get a local cluster</a></h2>
                <p class="page__meta">
                   <i class="fa fa-clock-o" aria-hidden="true"></i> 10 minutes
@@ -978,191 +1083,6 @@ I think that for them to adopt a platform like this, the development process nee
 <div class="paragraph">
 <p>Download the <strong><a href="https://github.com/openshift-evangelists/oc-cluster-wrapper">oc-cluster</a></strong></p>
 </div>
-</div>
-</div></p>
-               -->
-           </article>
-       </div>
-    
-       <div class="list__item">
-           <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
-               <h2 class="archive__item-title" itemprop="headline"><a href="/2016/07/configuring-your-app-2/">Configuring your application, Part 2</a></h2>
-               <p class="page__meta">
-                  <i class="fa fa-clock-o" aria-hidden="true"></i> 5 minutes
-                  Posted: 01/Jul/2016 by Jorge Morales
-               </p>
-               <p class="archive__item-excerpt" itemprop="description">In a real world, your applications will be transitioning from environment to environment, from development to testing and into production, as part of their lifecycle....</p>
-               <!--
-               <p class="archive__item-excerpt" itemprop="description"><div class="paragraph">
-<p>In a real world, your applications will be transitioning from environment to environment, from development to testing and into production, as part of their lifecycle. In a container world, applications are assembled into one or many container images, hence what will be promoted are images.</p>
-</div>
-<div class="paragraph">
-<p>In this blog I will demonstrate <a href="http://blog.openshift.com/configuring-your-application-part-1">the concepts we learnt about externalizing configuration</a> in your image promotion scenarios.
-As Veer <a href="https://blog.openshift.com/promoting-applications-across-environments/">has previously showed</a>, OpenShift is a platform where we can easily model the concept of stages/environments per application, and we can promote an application (image) from environment to environment just by tagging it accordingly in the project.</p>
-</div>
-<div class="paragraph">
-<p>In this example, I will be using the same application I used before, and I will create two projects simulating two different stages/environments for my application:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>node-app-dev</strong> will model the development stage and will be owned by user <strong>dev</strong></p>
-</li>
-<li>
-<p><strong>node-app-test</strong> will model the testing stage and will be owned by user <strong>test</strong></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>This application will be deployed with the exact same BuildConfig in both projects, but for each, a different configuration will be used by means of deploying different values in the ConfigMap. dev user, will have an additional task of building the application from source before deploying it.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ git clone https://github.com/jorgemoralespou/ose-app-promotion-configmap.git
-
-$ cd ose-app-promotion-configmap/example2
-
-$ oc login 10.2.2.2:8443 -u dev -p dev
-$ oc new-project node-app-dev
-$ oc create -f configmap-dev.json
-$ oc create -f node-app-deployment.json
-$ oc create -f node-app-build.json</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>These commands will create a new project called node-app-dev, as user dev, and will deploy a ConfigMap, with a message and background color that will be used in development environment. Additionally, it will create the deployment configuration for the application and it will build our application from source code.</p>
-</div>
-<div class="paragraph">
-<p>Once the process is finished, we will be able to see the result:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/configmaps/node-app-dev.png" alt="Example app in development">
-</div>
-</div>
-<div class="paragraph">
-<p>Now, as user <strong>test</strong>, we will create a ConfigMap with different contents,  reflecting our test environment , but we will use exactly the same DeploymentConfig like before. The reason for that is, we are separating the application from its configuration, by leveraging the ConfigMap resource.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ git clone https://github.com/jorgemoralespou/ose-app-promotion-configmap.git
-
-$ cd ose-app-promotion-configmap/example2
-
-$ oc login 10.2.2.2:8443 -u test -p test
-$ oc new-project node-app-test
-$ oc create -f configmap-test.json
-$ oc create -f node-app-build.json</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>In this project, there will be no application deployed because no image has been tagged into the test project yet:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/configmaps/node-app-test.png" alt="Example app in test before promotion">
-</div>
-</div>
-<div class="paragraph">
-<p>There is one security requirement to allow dev user to tag into the test project and for a user in test project to pull down the image from the repository.</p>
-</div>
-<div class="paragraph">
-<p>Since we are fans of fine grained security, I will be creating a new role, image-tagger, that will be granted the rights to tag an ImageStream. That role will be assigned to the dev user in the test project. This action needs to be executed as an cluster admin user:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">$ oc login 10.2.2.2:8443 -u admin -p admin
-$ oc create -f - &amp;lt; &amp;lt; EOF
-{
-      "kind": "ClusterRole",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "image-tagger"
-      },
-      "rules": [
-        {
-          "verbs": [
-            "get",
-            "list",
-            "create",
-            "update",
-            "edit"
-          ],
-          "attributeRestrictions": null,
-          "apiGroups": null,
-          "resources": [
-            "imagestreamimages",
-            "imagestreamimports",
-            "imagestreammappings",
-            "imagestreams",
-            "imagestreamtags"
-          ]
-        }
-      ]
-    }
-EOF
-
-$ oc adm policy add-role-to-user image-tagger dev -n node-app-test</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Additionally, we also need the user from test project to be able to pull down the image from dev project. But since in OpenShift, by default, the deployment is done by the <strong>deployment</strong> ServiceAccount, we need to assign the role accordingly</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc adm policy add-role-to-user system:image-puller system:serviceaccount:node-app-test:deployer -n node-app-dev</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now that all the required permissions are in place, we can have <strong>dev</strong> user to promote our application. For this he will just tag the image in the node-app-test project, and it will be automatically deployed.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ oc login 10.2.2.2:8443 -u dev -p dev
-$ oc tag node-app-dev/node-app:latest node-app-test/node-app:latest</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You can now verify that the image has been promoted, and is now running in the testing environment, showing the configuration for this environment.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/posts/images/configmaps/node-app-test-2.png" alt="Example app in test after promotion">
-</div>
-</div>
-<div class="paragraph">
-<p>In this blog we have demonstrated a way of separating configuration from application so that the process of promoting an application gets easier, requiring almost none customizations of the base resources being deployed.</p>
-</div>
-<div class="paragraph">
-<p>This blog example can be fully executed in the <a href="https://www.openshift.org/vm/">Openshift Origin all-in-one Vagrant image</a>, by doing:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ git clone https://github.com/jorgemoralespou/ose-app-promotion-configmap.git
-
-$ cd ose-app-promotion-configmap/example2
-
-$ oc login 10.2.2.2:8443 -u dev -p dev
-$ oc new-project node-app-dev
-$ oc create -f configmap-dev.json
-$ oc create -f node-app-deployment.json
-$ oc create -f node-app-build.json
-
-$ oc login 10.2.2.2:8443 -u test -p test
-$ oc new-project node-app-test
-$ oc create -f configmap-test.json
-$ oc create -f node-app-deployment.json
-
-
-$ oc login 10.2.2.2:8443 -u admin -p admin
-$ oc create -f roles.json
-$ oc adm policy add-role-to-user image-tagger dev -n node-app-test
-$ oc adm policy add-role-to-user system:image-puller system:serviceaccount:node-app-test:deployer -n node-app-dev
-
-$ oc login 10.2.2.2:8443 -u dev -p dev
-
-$ echo "If you want to promote the application, you can:"
-$ echo "    oc tag node-app-dev/node-app:latest node-app-test/node-app:latest"</code></pre>
 </div>
 </div></p>
                -->
