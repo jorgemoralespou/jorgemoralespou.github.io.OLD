@@ -128,6 +128,389 @@
     
        <div class="list__item">
            <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+               <h2 class="archive__item-title" itemprop="headline"><a href="/2017/04/chained-builds/">Enhancing your Builds on OpenShift. Chaining Builds.</a></h2>
+               <p class="page__meta">
+                  <i class="fa fa-clock-o" aria-hidden="true"></i> 16 minutes
+                  Posted: 19/Apr/2017 by Jorge Morales
+               </p>
+               <p class="archive__item-excerpt" itemprop="description">Chaining builds in OpenShift you can do fancy things like using an alternate builder tool, using an alternate runtime, or making a slim runtime image.</p>
+               <!--
+               <p class="archive__item-excerpt" itemprop="description"><div class="paragraph">
+<p>OpenShift provides different options for building and deploying containers on the platform.  These generally include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Build and deploy from application source code</strong> - Users can specify the location of their source code in a GIT repository.  OpenShift will build the application binaries, then build the container images that include those binaries and deploy to OpenShift. Users can also specify a dockerfile as the source code to build container images from.</p>
+</li>
+<li>
+<p><strong>Build and deploy from application binaries</strong> - Users can also specify the location of their application binaries, coming from their existing application build process and tools.  OpenShift will just build the container images that include those provided binaries and deploy to OpenShift.</p>
+</li>
+<li>
+<p><strong>Build outside of OpenShift</strong> - Users can build their applications and container images completely outside of OpenShift, coming from their existing application and container image build process and tools, and specify the location of those images to pull in. OpenShift will just deploy those container image as provided.</p>
+</li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="_enhancing_your_builds_on_openshift_chaining_builds">Enhancing your Builds on OpenShift: Chaining Builds.</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As previously described, OpenShift provides a mechanism to bring your applications to run in containers on the platform, while abstracting much of the detail of the underlying container runtime, Kubernetes orchestration, and platform itself. This mechanism is called <a href="https://docs.openshift.org/latest/architecture/core_concepts/builds_and_image_streams.html#source-build">s2i (source-to-image)</a> which uses builder images to build your applications in containers. A builder image is a standard Docker/OCI image that contains additional builder scripts which can build your applications from source or binaries. In the case of Java, the builder images use Java build tools like Maven or Gradle to build an artifact type (jar, war, or ear) and will layer that on a java runtime (JDK, Tomcat, JBoss EAP, Wildfly-Swarm,&#8230;&#8203;) and the end result result will be packaged as a new container image for your application and deployed as a container.</p>
+</div>
+<div class="paragraph">
+<p>In addition to the typical scenario of using source code as the input to a build, OpenShift build capabilities provides another build input type called “Image source”, that will stream content from one image (source) into another (destination).</p>
+</div>
+<div class="paragraph">
+<p>Using this, we can combine source from one or multiple source images. And we can pass one or multiple files and/or folders from a source image to a destination image. Once the destination image has been built it will be pushed into the registry (or an <a href="https://blog.openshift.com/pushing-application-images-to-an-external-registry/">external registry</a>), and will be ready to be deployed.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/image_source.png" alt="Image Source">
+</div>
+</div>
+<div class="paragraph">
+<p>Using an image (or multiple) as the source of the content you want to stream into the destination image may appear unnecessarily complicated, but it opens the door to splitting the build process into two (or even more) different stages: <strong>build</strong> and <strong>assemble</strong>.</p>
+</div>
+<div class="paragraph">
+<p>The <strong>build</strong> stage will use a regular source to image process and will pull down your application source code from Git and build it into an application artifact, publishing a new image that contains the built artifact. That’s the sole goal for this stage. For this reason, we can have specialized images that will know how to build an application artifact (or binary) using building tools, like maven, Gradle, go, …</p>
+</div>
+<div class="paragraph">
+<p>The <strong>assemble</strong> stage will copy the binary artifact from the “source” image built in the previous stage and put it in a well known location that a runtime image will use to look for this artifact. Examples of such images could be Wildfly, JBoss EAP, Tomcat, Java OpenJDK, or even scratch (a special image without a base). In this stage we will just need to indicate where the are artifacts located in the source image and where they need to be copied in the destination image. The build process will create an image that will be pushed into the registry and will be known as the application image.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/chaining.png" alt="Chaining builds">
+</div>
+</div>
+<div class="paragraph">
+<p>Now, I’m going to demonstrate this process with three different examples, that will give us the following benefits:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Build the app binaries with a regular s2i builder image and run the app using a vanilla (non s2i) image as the base image.</p>
+</li>
+<li>
+<p>Build the app binaries with a custom s2i builder image with a build tool (like Gradle), and run the app using an officially supported s2i image as the base.</p>
+</li>
+<li>
+<p>Make a minimal runtime image (which has many side benefits).</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+At the end of each example there is the complete code snippet that you can use to reproduce the example in your own environment.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_example_1_maven_builder_non_s2i_wildfly_runtime">Example 1: Maven builder + non-s2i Wildfly Runtime</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this example I will use as runtime image a vanilla wildfly image, which will give me a smaller final image size compared to the s2i version of wildfly. I will use <a href="https://hub.docker.com/r/jboss/wildfly/">the community version of wildfly available at Docker Hub</a>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/1-wildfly-size.png" alt="Wildfly image sizes">
+</div>
+</div>
+<div class="paragraph">
+<p>I’ll use <a href="https://github.com/minishift/minishift">minishift</a> to start a local OpenShift cluster on my laptop to run these examples, but any OpenShift environment will work.</p>
+</div>
+<div class="paragraph">
+<p>I’ll start my minishift environment:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/minishift_start.png" alt="minishift start">
+</div>
+</div>
+<div class="paragraph">
+<p>Once I have my local environment up and running, I’ll create a new-project to isolate all the changes I do:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/1-newproject.png" alt="New project">
+</div>
+</div>
+<div class="paragraph">
+<p>In this example, I’m going to chain two builds. The first build will use any of the available java based s2i builders in OpenShift, as I only want to build my Java artifact using maven. I’ll use the <a href="https://hub.docker.com/r/openshift/wildfly-101-centos7/">s2i-wildfly builder image</a>, and will build a <a href="https://github.com/OpenShiftDemos/os-sample-java-web">sample Java application which I have available in GitHub</a>. Additionally I’ll give this build a name. Let’s keep it simple and call it “<strong>builder</strong>”.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/1-newbuild-builder.png" alt="Builder image build">
+</div>
+</div>
+<div class="paragraph">
+<p>Once the build has finished, which you can verify by watching the build log, I’ll create a second build that will copy the generated artifact from the first build into the second. This second build will use jboss/wildfly image as base, and will copy the ROOT.war artifact from the builder image into the appropriate location. This second build will be a docker build and not a source build, like the previous. I’ll give this build a representative name again. This time the name will be “<strong>runtime</strong>”.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/1-newbuild-runtime.png" alt="Runtime image build">
+</div>
+</div>
+<div class="paragraph">
+<p>Now I already have my runtime image built, with the application artifact. The only thing missing is to have the application deployed, so I’ll start a new-app from the “runtime” image, and will give it again a meaningful name, “<strong>my-application</strong>”. Then, I’ll create a route and verify that the application is up and running.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/1-new-app.png" alt="New application">
+</div>
+</div>
+<div class="paragraph">
+<p>This is a simple example where I’m using a non-s2i image to run my application built in OpenShift. I could have used any Docker image, it doesn’t need to be jboss/wildfly, but I used this one since you already know where I work ;-)</p>
+</div>
+<div class="paragraph">
+<p>You’ll see this application like any other application on the OpenShift Overview.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/1-overview.png" alt="Overview UI">
+</div>
+</div>
+<div class="paragraph">
+<p>The main difference is that your application will have two builds, and the application itself, the code, will be built by the “builder” build, in case you want to set a GitHub webhook for your source code.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/1-builds.png" alt="Builds">
+</div>
+</div>
+<div class="paragraph">
+<p>If you want to exercise all the code yourself, you only need to copy and paste the following snippet, which is also available in <a href="https://github.com/jorgemoralespou/ose-chained-builds/blob/master/maven-jbosswildfly/example.sh">GitHub</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">oc new-project maven-jbosswildfly
+oc new-build wildfly~https://github.com/OpenShiftDemos/os-sample-java-web --name=builder
+
+# watch the logs
+oc logs -f bc/builder --follow
+
+# Generated artifact is located in /wildfly/standalone/deployments/ROOT.war
+oc new-build --name=runtime --docker-image=jboss/wildfly \
+     --source-image=builder \
+     --source-image-path=/wildfly/standalone/deployments/ROOT.war:. \
+     --dockerfile=$'FROM jboss/wildfly\nCOPY ROOT.war /opt/jboss/wildfly/standalone/deployments/ROOT.war'
+
+
+oc logs -f bc/runtime --follow
+
+# Deploy and expose the app once built
+oc new-app runtime --name=my-application
+oc expose svc/my-application
+
+# Print the endpoint URL
+echo “Access the service at http://$(oc get route/my-application -o jsonpath='{.status.ingress[0].host}')/”</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let’s now explore a different use case for which chained builds can be helpful.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_example_2_gradle_builder_jdk_runtime">Example 2: Gradle builder + JDK Runtime</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>What happens when you want to to run your application with our officially supported OpenJDK image which has been created to run your Java based microservices, but your source code needs to be built using “Gradle”, which is not available in that image?</p>
+</div>
+<div class="paragraph">
+<p>In this example I will leverage a builder image I created with support for Gradle (<a href="https://github.com/jorgemoralespou/s2i-java">jorgemoralespou/s2i-java</a>) for a <a href="https://blog.openshift.com/using-openshift-enterprise-grade-spring-boot-deployments/">previous post</a>, and then, as in the previous example, I will copy the generated artifact into the official openjdk18-openshift image.</p>
+</div>
+<div class="paragraph">
+<p>For brevity I will only paste the snippet that does all, as the process was already explained in the previous example.</p>
+</div>
+<div class="paragraph">
+<p>The only caveat to this process is that you need to know where the built artifact is left in the builder image and where you need to place the artifact in the runtime image.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">oc new-project gradle-jdk
+oc new-build jorgemoralespou/s2i-java~https://github.com/jorgemoralespou/s2i-java \
+   --context-dir=/test/test-app-gradle/ --name=builder
+
+sleep 1
+
+# watch the logs
+oc logs -f bc/builder --follow
+
+# Generated artifact is located in /wildfly/standalone/deployments/ROOT.war
+oc new-build --name=runtime \
+   --docker-image=registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift \
+   --source-image=builder --source-image-path=/opt/openshift/app.jar:. \
+   --dockerfile=$'FROM registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift\nCOPY app.jar /deployments/app.jar'
+
+sleep 1
+
+oc logs -f bc/runtime --follow
+
+# Deploy and expose the app once built
+oc new-app runtime --name=my-application
+oc expose svc/my-application
+
+# Print the endpoint URL
+echo “Access the service at http://$(oc get route/my-application -o jsonpath='{.status.ingress[0].host}')/”</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We have created two different builds, one for building my application and another one for creating the runtime application.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/2-builds.png" alt="Builds">
+</div>
+</div>
+<div class="paragraph">
+<p>The deployed application can be seen in the overview page.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/2-overview.png" alt="Overview UI">
+</div>
+</div>
+<div class="paragraph">
+<p>Clicking on the route you’ll see the cool example in action.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/2-app.png" alt="Application">
+</div>
+</div>
+<div class="paragraph">
+<p>As can be seen, in the process, there are 4 ImageStreams involved:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/2-imagestreams.png" alt="ImageStreams">
+</div>
+</div>
+<div class="paragraph">
+<p>The two base images used, s2i-java for building using Gradle, and openjdk18-openshift to be used as base for running our application. Also there is a builder and runtime ImageStream as result of our builds. Our deployment is based on the “runtime” ImageStream.</p>
+</div>
+<div class="paragraph">
+<p>Now that we’ve seen how to use a different builder technology than the available in the images we want to run, let’s explore a final example on how to get a minimal runtime image.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_example_3_s2i_go_builder_scratch_runtime">Example 3: S2I Go builder + Scratch Runtime</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Go is a language where you run a “standalone” binary that can be statically compiled to have all the dependencies it requires. In this way, you can run a minimal image with a go binary that is easy to distribute.</p>
+</div>
+<div class="paragraph">
+<p>As there is no official go-s2i image, I have modified the one available in <a href="https://github.com/openshift-s2i/s2i-go">GitHub</a> to statically build a binary. The source code for this image is available in <a href="https://github.com/jorgemoralespou/s2i-go">GitHub</a> and the image is published in Docker Hub under <a href="https://hub.docker.com/r/jorgemoralespou/s2i-go/">jorgemoralespou/s2i-go</a>. Keep in mind this image has been built just to prove this use case and that given my lack of expertise in go, you shouldn’t trust it (or use it) for anything important.</p>
+</div>
+<div class="paragraph">
+<p>I have an example go application that is a web server showing a <a href="https://github.com/jorgemoralespou/ose-chained-builds/blob/master/go-scratch/hello_world/main.go">hello-world in GitHub</a>, and will be used for this third example.</p>
+</div>
+<div class="paragraph">
+<p>As before, and given that the process is the same, I’ll just paste the code snippet that you can copy and paste in your terminal to verify yourself.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">oc new-project go-scratch
+oc import-image jorgemoralespou/s2i-go --confirm
+oc new-build s2i-go~https://github.com/jorgemoralespou/ose-chained-builds \
+   --context-dir=/go-scratch/hello_world --name=builder
+
+sleep 1
+
+# watch the logs
+oc logs -f bc/builder --follow
+
+# Generated artifact is located in /opt/app-root/src/go/src/main/main
+oc new-build --name=runtime \
+   --docker-image=scratch \
+   --source-image=builder \
+   --source-image-path=/opt/app-root/src/go/src/main/main:. \
+   --dockerfile=$'FROM scratch\nCOPY main /main\nEXPOSE 8080\nENTRYPOINT ["/main"]'
+
+sleep 1
+
+oc logs -f bc/runtime --follow
+
+# Deploy and expose the app once built
+oc new-app runtime --name=my-application
+oc expose svc/my-application
+
+# Print the endpoint URL
+echo “Access the service at http://$(oc get route/my-application -o jsonpath='{.status.ingress[0].host}')/”</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once the process has finished, we can compare the size of the images. The builder image would be my application image if I wouldn’t have chained into a new build. The runtime image, as it is based off SCRATCH and has just the statically built binary, is 150x smaller in size.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/3-imagesize.png" alt="Image sizes">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_make_it_simple_make_it_repeatable">Make it simple, make it repeatable</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now that we have set up 3 different use cases to which chaining builds can provide some benefit, we can abstract all these complexity in a template, so we just need to instantiate a template providing the location of our source code repository and the name of our application.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/3-template.png" alt="Template">
+</div>
+</div>
+<div class="paragraph">
+<p>Additionally we can augment this template with any parameterization we might want to make configurable.</p>
+</div>
+<div class="paragraph">
+<p>It is also important to note that using some of the building capabilities provided by OpenShift we have set up an ImageChangeTrigger on the second build so there is no need to manually launch both builds. The second build will be started by OpenShift once the first has finished as a result of the new image being created by the first build.</p>
+</div>
+<div class="paragraph">
+<p>Using a template simplifies your user experience and provides you a mechanism to create this type of applications with a single command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">oc new-app go-scratch \
+           -p name=my-application \
+           -p GIT_URI= https://github.com/jorgemoralespou/ose-chained-builds \
+           -p CONTEXT_DIR=/go-scratch/hello_world</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusions">Conclusions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To conclude this article, I want you to think about all the capabilities that the platform provides and that sometimes are not obvious to us. With this technique, we can do much more fancy things, that I will show in a follow up blog.</p>
+</div>
+<div class="paragraph">
+<p>Also, as many of you would have probably figured out, there’s not only benefits in what I just showed. There will be two docker images being built, pushed and stored in the registry and there will be a bigger maintenance burden. But, the most important thing to understand is that the platform does not limit us in many ways that we could have thought of.</p>
+</div>
+<div class="paragraph">
+<p>As always, the complete content used for this blog is available in <a href="https://github.com/jorgemoralespou/ose-chained-builds">GitHub</a>.</p>
+</div>
+<div class="paragraph">
+<p>I hope that this has given you some food for thought. Happy to chat about it.</p>
+</div>
+</div>
+</div></p>
+               -->
+           </article>
+       </div>
+    
+       <div class="list__item">
+           <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
                <h2 class="archive__item-title" itemprop="headline"><a href="/2017/04/developing-locally-openshift-minishift/">Developing locally with OpenShift - minishift, bringing it all together</a></h2>
                <p class="page__meta">
                   <i class="fa fa-clock-o" aria-hidden="true"></i> 4 minutes
@@ -634,456 +1017,6 @@ All this feedback is being constantly shared with the people working on “oc cl
 </div>
 <div class="paragraph">
 <p>In the next blogs I’ll talk about the Origin all-on-one VM (and the Container Development Kit/CDK) using virtualization and Vagrant. Then I’ll move into a pure docker solution with “oc cluster up” and I’ll end up with minishift, a lightweight virtualized option.</p>
-</div></p>
-               -->
-           </article>
-       </div>
-    
-       <div class="list__item">
-           <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
-               <h2 class="archive__item-title" itemprop="headline"><a href="/2016/10/developing-locally-with-openshift/">Developing locally with OpenShift</a></h2>
-               <p class="page__meta">
-                  <i class="fa fa-clock-o" aria-hidden="true"></i> 12 minutes
-                  Posted: 20/Oct/2016 by Jorge Morales
-               </p>
-               <p class="archive__item-excerpt" itemprop="description">In this blog, I'm going to describe what are my requirements when looking for a way to develop locally using OpenShift</p>
-               <!--
-               <p class="archive__item-excerpt" itemprop="description"><div class="paragraph">
-<p>In this blog, I&#8217;m going to describe what are my requirements when looking for a way to develop locally using OpenShift, and I&#8217;ll describe a tool I have created to help me with this workflow.</p>
-</div>
-<div class="paragraph">
-<p>First of all, I have to say that I&#8217;m not only a developer, so maybe the workflow I&#8217;m looking for is too complex, so I&#8217;m still experimenting to refine not only the workflow but also the tooling. I&#8217;ll give some comments on what I would like from my ideal tool.</p>
-</div>
-<div class="paragraph">
-<p>Also, I need to say that this workflow is to work on OpenShift, as a developer, as an evangelist, as a product manager, as a tester, as a customer, as a user and the many roles I have throughout my day.</p>
-</div>
-<div class="paragraph">
-<p>I&#8217;ll use oc-cluster as the name of the command to show my needs. Why I used this name? Read to the end and I&#8217;ll give you an answer and also a reason why the name will eventually change.</p>
-</div>
-<div class="paragraph">
-<p>First, I want an easy way to start and stop an OpenShift install locally, on my laptop.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">oc-cluster up
-oc-cluster down</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>I&#8217;m somehow biased by some of the option names used by Vagrant, as I&#8217;ve been a Vagrant user for many years, and still am, and I think some of the command names fits really well to be self descriptive.</p>
-</div>
-<div class="paragraph">
-<p>One important thing for me is that the cluster I create will survive multiple days, as I will be using it for a while, so I need it to be persistent. That means that if I need a new cluster, I&#8217;ll have to delete the current one, with:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">oc-cluster destroy</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Another important factor for me as I&#8217;m multitasked, is to be able to have different clusters, with different stuff, that I can switch between them at will, so I have used the term <strong>profile</strong> for this, and when starting, stoping and destroying a cluster I can use the profile name.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">oc-cluster up java
-oc-cluster down
-oc-cluster up demo
-oc-cluster down
-oc-cluster destroy demo</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>While I can have everything in one single cluster, in different projects, if I end up adding a lot of applications to a cluster, the amount of resources I would use, and the time it would take to start would be high, so I&#8217;d rather split my clusters into different responsibilities. I can create a cluster for Java development, configure it with a nexus artifact repository manager, and have templates configured to always use nexus, or have a buildOverrides for that. If I started a demo cluster, I would not be interfered by the work I do as a Java developer.</p>
-</div>
-<div class="paragraph">
-<p>Next, as there can be multiple profiles, I need a way to know what profiles I have created, so I can pass the appropriate name to the <strong>up</strong> command:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">oc-cluster list</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Also, it&#8217;s very important to know if I already have a cluster up and running and which cluster is it:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">oc-cluster status</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>So far, this is a basic workflow to start and stop, create and destroy, list and status the clusters I have.</p>
-</div>
-<div class="paragraph">
-<p>One important note is that since the create and start command is the same, the command needs to make sure that the first time is invoked will create the cluster, but the subsequent calls will just bring it up, and not do any creational steps.</p>
-</div>
-<div class="paragraph">
-<p>Now, some of the needs that as a developer on OpenShift I have are to work with persistence volumes, so there are helper commands that helps on that goal.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">oc-cluster create-volume volumeName [size|10Gi] [path|$HOME/.oc/profiles/{profile}/volumes/{volumeName}]
-oc-cluster create-shared-volume project/volumeName [size|10Gi] [path|$HOME/.oc/volumes/{volumeName}]</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The first command will create an OpenShift PV, that is only available to the profile in use, that means that whenever I destroy the cluster represented by that profile, all the date stored in that volume will be removed as well. Like every developer, I expect that all the defaults are good enough for me to use, so I limit the amount of required params to just the name. This could also be reduced to use random names, and it&#8217;s something I&#8217;ll think about.</p>
-</div>
-<div class="paragraph">
-<p>The second command, bring the difference that provides a shared storage between clusters. This way I can mount the same volume on multiple clusters. The main use case I have so far is to be used by persistent applications that I use in many clusters and that are used as infrastructure type of services. A good example for this is nexus artifact repository manager, where I want every dependency that I have already pulled down to be available to every cluster I use.</p>
-</div>
-<div class="paragraph">
-<p>Also, talking about OpenShift, I will probably want to get into the OpenShift runner. What I mean with the OpenShift runner is the place where OpenShift is actually running, whether this is a VM or a docker container, and I want to do this in a consistent way and in a way that I will understand. For this I use:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">oc-cluster ssh</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now, I&#8217;ll talk about some of the problems that my clusters could suffer and some solutions to those:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Adding functionality to the tool.</p>
-</li>
-<li>
-<p>Bootstrapping users</p>
-</li>
-<li>
-<p>Bootstrapping the cluster</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Configuration bootstrap</p>
-</li>
-<li>
-<p>Deployments bootstrap</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Reproducibility</p>
-</li>
-<li>
-<p>Packaging/Transport</p>
-</li>
-<li>
-<p>Using proxies</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>I&#8217;ll try to dive into all these topics, one by one.</p>
-</div>
-<div class="sect1">
-<h2 id="_adding_functionality_to_the_tool">Adding functionality to the tool</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Sometimes I find that what I can do, or what I want to do, is not covered by the tool, and I understand that also my use case can be quite different from other&#8217;s use cases. To solve this, the tool needs to support the ability to provide plugins that will help on different tasks. These tasks can be:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Bootstrapping tasks. Adding stuff to the cluster. Whether it&#8217;s configuration or deployments.</p>
-</li>
-<li>
-<p>New commands. Having commands that extend how the tool works, and that are not considered bootstrapping but more management.</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_bootstrapping_users">Bootstrapping users</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Users is a key part of local development environments, but it&#8217;s more important when you want to use the local development environment for demos, as you&#8217;ll probably want to have different users, with different roles and belonging to different projects, so you can show things like application promotions, or the difference way of working of a developer compared to an administrator.
-For me, one of the most important parts, now that it is possible, is to have my regular user act as a <strong>sudoer</strong>, so I can just execute admin commands if I need to without needing to change user.</p>
-</div>
-<div class="paragraph">
-<p>This can be done by adding your user the following:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">oc adm policy add-cluster-role-to-user sudoer developer</code></pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-My user is developer.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Also, I will probably need to log in as administrator to the web interface, so I need a full user with cluster-admin role.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">oc adm policy add-cluster-role-to-user cluster-admin admin</code></pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-This action needs to be done as a system:admin, but the tooling we&#8217;ve built take care of this.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Additionally I want to be able to create/delete users, and force them roles, so I can bootstrap a demo cluster for things like application promotions. I need some simple commands that will be able to bootstrap whatever is needed for me, no matter what underlying identity provider is used.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">oc-cluster create-user {username} {role} [{project}]
-oc-cluster remove-user {username}
-oc-cluster login {username}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You&#8217;ll probably be wondering why there&#8217;s a login and logout commands. This are needed as usually one can have multiple clusters created, with the same configuration, but sadly every cluster you create will have it&#8217;s own self signed certificates for authenticating. There&#8217;s a need to set in the local oc context the proper cluster and certificates, to avoid errors. This is handled by the <strong>login</strong> command. As this is a <strong>local</strong> environment, security is not much of a concern, and passwords can be generalized.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_bootstrapping_the_cluster">Bootstrapping the cluster</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Following with the things that need to be done are the need to provide some bootstrapping for the clusters, as there will be things I will need always to be provisioned/available in certain clusters.
-For this, I think that it&#8217;s important to have 2 possibilities, when creating clusters. First of all, is to blueprinting a cluster, so that every time you create a cluster with a certain blueprint, all the bootstrapping will be provided. And additionally, there needs to be a way to bootstrap one-shot clusters, for things you don&#8217;t want so frequently.</p>
-</div>
-<div class="paragraph">
-<p>To these, you have blueprints, that will be executed on cluster first bootstrap:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">oc-cluster up {profile_name} {blueprint}
-oc-cluster up demo pipelines-demo</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Or you can do the provisioning afterwards, as a one-shot, as this will be executed in the same way:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">oc-cluster provision {blueprint}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>How do you know what blueprints you have?</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">oc-cluster blueprints-list</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>All blueprints can be made composable, so there can be a repository with single actions (enable-pipelines, add-user, add-project, deploy-app) or a composed action (pipelines-demo,msa-demo,&#8230;&#8203;)</p>
-</div>
-<div class="sect2">
-<h3 id="_configuration_bootstrap">Configuration bootstrap</h3>
-<div class="paragraph">
-<p>Configuration bootstrapping is the one that requires changes in master or node config&#8217;s file or any other configuration file and that probably will require a restart of the OpenShift process.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_deployments_bootstrap">Deployments bootstrap</h3>
-<div class="paragraph">
-<p>Deployments bootstrap does not require to restart any process as it will only interact with OpenShift deployable resources, like projects, users, services, routes, deployments, and off course, pulling down all the required images.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_reproducibility">Reproducibility</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>One of the most important things when developing is that you know that at some point we can screw our environment, and will need to start over. There&#8217;s times where we know the action we&#8217;re going to do can be problematic, and we could probably make a safe point, so if we do something wrong, we can easily revert back the state. This is easy if you just save the configuration to be able to revert back.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">oc-cluster snapshot-save</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>In the event of a problem, you&#8217;ll might want to go back to a safe configuration:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">oc-cluster snapshot-list
-oc-cluster snapshot-restore {snapshot-id}</code></pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-For simplicity, snapshots are made only on running clusters, but can be restored if there&#8217;s no running cluster or the cluster running is the one for the snapshot.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>This concept of making save points can be greatly extended, and also is prone to errors if when you restore an environment some images are no longer available. This problem is mostly for self built images.
-One extension to this concept is having the ability to provide local snapshots, that will be removed if the cluster is removed, and global snapshots, that can be used to recreate a cluster at any moment, and could be made transportable. And this leads us to our next topic.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_packaging_transport">Packaging/Transport</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Packaging of a cluster is a concept very important for when doing workshops. I do want 40 people in a room to have the exact same thing so I can teach them a lesson and they can experiment themselves. For this, there&#8217;s no easy solution, but as long as they have the tooling, a full cluster can be fully automated for a workshop. How?</p>
-</div>
-<div class="paragraph">
-<p>Providing a download link that will do the installation/bootstrapping of all the needed things, a-la installer. So really there&#8217;s no transport, but there&#8217;s a way to bootstrap the same package for everyone.</p>
-</div>
-<div class="paragraph">
-<p>This, that sounds really cool and easy, it&#8217;s the most complex of all the tasks, and it is mainly because of the variety of operating systems existing out there. If I just had to focus on mac and linux, it could be very simple, but having to also support windows users it becomes an impossible. At least for me. Hence this requirement is not yet fulfilled.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">oc-cluster install {URL}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_using_proxies">Using proxies</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>And last but not least, the support for proxies. This one, that seems easy, is also one of the most complex topics, and this is mostly because the support that OpenShift provides for proxies is not transportable. I&#8217;ll explain myself better. As a developer, I might need to work some time at the office, where I have a proxy to access the internet. At home I might not need the proxy. This scenario is not easily solved in OpenShift, where you&#8217;d need to play with ENV variables being set/unset for every build/deployment every time you move in or out.</p>
-</div>
-<div class="paragraph">
-<p>My idea would be something like this:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">oc-cluster enable-proxy {proxy}
-oc-cluster disable-proxy</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>But as easy as it looks, I haven&#8217;t figured out yet if this is possible, and how.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_existing_tooling">Existing tooling</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>As I said at the beginning, I&#8217;m using a command called <strong>oc-cluster</strong> and it&#8217;s because it uses internally OpenShift&#8217;s <strong>oc</strong> client tool and the <strong>cluster</strong> option. I found this <strong>oc cluster</strong> a good way to bootstrap and use a cluster locally on my <strong>mac</strong> but even on <strong>linux</strong> as it can use Docker native. If you decide to use <strong>docker-machine</strong> my command will not work. There&#8217;s many advantages to using docker locally, but there&#8217;s also some disadvantages. Hopefully the disadvantages can be easily solved but the advantages can not be easily taken with other approaches, as when using <strong>docker-machine</strong>.</p>
-</div>
-<div class="paragraph">
-<p>Advantages I see:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>You can use your local file system for persistent volumes.</p>
-</li>
-<li>
-<p>You don&#8217;t have a virtualization layer.</p>
-</li>
-<li>
-<p>Image are directly available to all the clusters once pulled.</p>
-</li>
-<li>
-<p>You can share volumes between different clusters, even if they are not running.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Disadvantages I see:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Packaging and transportation with VM could be made easy, but then, there&#8217;s many virtualization out there to make it work on all, or the most important.</p>
-</li>
-<li>
-<p>Removal of built images is easier, as the images are built into the VM. Deleting the VM, deletes all built images. This can also be solved with the tooling, as there is a feature coming that will provide labels to the images created, so every cluster will label their images. Removing the cluster, will remove their images.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Probably there&#8217;s more, but these are the ones I can think of right now.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_options">Options</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>There are some options out there, some of them more portable, but also, less flexible. As I&#8217;m developing this tool just for me, I focus on something that will work for me, but as I think that most of what works for me could be made work for anyone, I&#8217;m here sharing these thoughts with you.</p>
-</div>
-<div class="paragraph">
-<p>Options:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>CDK, ADB</strong>: Using Virtualization through Vagrant and using vagrant plugins. It&#8217;s portable but very heavy weight and outdated.</p>
-</li>
-<li>
-<p><strong>OpenShift.org All-in-one</strong>: Same as before. Although it&#8217;s up to date and it doesn&#8217;t use plugins it&#8217;s heavyweight. Even I&#8217;m the author of it, I know it has many limitations, and I&#8217;m just limiting the use of it to those use cases I can not still cover, like doing workshops with Windows users :-(</p>
-</li>
-<li>
-<p><strong>Minishift</strong>: It uses lightweight virtualization, but still don&#8217;t provide many of the additional features I need. I would used it and extend it, but since it&#8217;s written in go, I can not contribute to it. I find this a great option, probably the best. Although I don&#8217;t like the name of the commands used, I think will be the way to move forward, and also it is based on <strong>minikube</strong>, which seems to have adoption on <strong>Kubernetes</strong> community, which is also great. The maintainer is a great guy.</p>
-</li>
-<li>
-<p><strong>Plain oc cluster</strong>: This provides a great foundation, but in no way is something usable per se for developers. Just having a default that makes configuration ephemeral is something that for a developer is not interesting. But as the tool is a great cluster bootstrapper, I use it, and try to ask for features that will make developer&#8217;s use case through our tool more interesting and easy. Also the maintainer is a great guy.</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_final_comments">Final comments</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>I love OpenShift, I love Kubernetes. I think it is a great platform to run your containers at scale, but I still see that for developers there&#8217;s a steep learning and usability curve. I hope that one day, Java developers (well really any developer) will deploy locally on Kubernetes/OpenShift and not plain docker. Also that they keep developing in plain Java, using their IDEs, building their artifacts or images however they want (s2i, docker build on OpenShift or maven and docker build locally), but that the proces it&#8217;s easy for them to use.
-I think that for them to adopt a platform like this, the development process needs to be:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Easy. Not many additional steps to use the local platform.</p>
-</li>
-<li>
-<p>Fast. It needs to be as fast as without using the local platform.</p>
-</li>
-<li>
-<p>Integrated. They can use the same tools to work on their local platform.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>This is one of the required steps to have an environment (local platform) to use. Following should be to be easy to collaborate between your local and remote environments. But that, should be the topic of another post.</p>
-</div>
-<div class="paragraph">
-<p>As always, if you want to comment, please use tweeter.</p>
-</div>
-<div class="paragraph">
-<p>Download the <strong><a href="https://github.com/openshift-evangelists/oc-cluster-wrapper">oc-cluster</a></strong></p>
-</div>
-</div>
 </div></p>
                -->
            </article>

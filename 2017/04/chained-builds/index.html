@@ -1,0 +1,568 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <!-- begin SEO -->
+    <title>Learn the Origin</title>
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Learn the Origin">
+    <meta property="og:title" content="Learn the Origin">
+    <link rel="canonical" href="http://jorgemoral.es/">
+    <meta property="og:url" content="http://jorgemoral.es/">
+    <meta name="twitter:site" content="@UnPOUcoDe">
+    <meta name="twitter:title" content="Learn the Origin">
+    <meta name="twitter:description" content="Touching containers, orchestration and application development properly mixed with a little touch of real life experience">
+    <meta name="twitter:url" content="http://jorgemoral.es/">
+    <meta name="twitter:card" content="summary">
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "Person",
+            "name": "Jorge Morales Pou",
+            "url": "http://jorgemoral.es",
+            "sameAs": ["https://twitter.com/UnPOUcoDe", "https://www.linkedin.com/in/jorgemoralespou", "https://github.com/jorgemoralespou"]
+        }
+    </script>
+    <!-- end SEO -->
+    <link href="http://jorgemoral.es/feed.xml" type="application/atom+xml" rel="alternate" title="Learn the Origin Feed">
+    <title>jorgemoral.es ::
+        Enhancing your Builds on OpenShift. Chaining Builds.
+    </title>
+    <!--
+    <link rel="stylesheet" href="/css/stylesheet.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    -->
+    <meta name="generator" content="Nanoc 4.7.5">
+
+    <!-- For all browsers -->
+    <link rel="stylesheet" href="/css/main.css">
+    <meta http-equiv="cleartype" content="on">
+    <!-- start custom head snippets -->
+    <!-- insert favicons. use http://realfavicongenerator.net/ -->
+    <link rel="stylesheet" href="/css/asciidoc-pygments.css">
+</head>
+
+<body  class="layout--single">
+    <div class="masthead">
+        <div class="masthead__inner-wrap">
+            <div class="masthead__menu">
+                <nav id="site-nav" class="greedy-nav">
+                    <button><div class="navicon"></div></button>
+                    <ul class="visible-links">
+                        <li class="masthead__menu-item masthead__menu-item--lg"><a href="/">Learn the Origin</a></li>
+<!-- UNCOMMENT WHEN IMPLEMENTED
+                        <li class="masthead__menu-item"><a href="/categories">Categories</a></li>
+-->
+<!-- UNCOMMENT WHEN IMPLEMENTED
+                        <li class="masthead__menu-item"><a href="/tags">Tags</a></li>
+-->
+<!-- UNCOMMENT WHEN IMPLEMENTED
+                        <li class="masthead__menu-item"><a href="/all-posts">All posts</a></li>
+-->
+                        <!--
+                        <li class="masthead__menu-item"><a href="/year-archive">By year</a></li>
+                        -->
+<!-- UNCOMMENT WHEN IMPLEMENTED
+                        <li class="masthead__menu-item"><a href="/presentations">Presentations</a></li>
+-->
+<!-- UNCOMMENT WHEN IMPLEMENTED
+                        <li class="masthead__menu-item"><a href="/conferences">Conferences</a></li>
+-->
+                        <li class="masthead__menu-item"><a href="/about">About me</a></li>
+                    </ul>
+                    <ul class="hidden-links hidden"></ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+<!--  USE Breadcrumbs Helper
+
+    <nav class="breadcrumbs">
+      <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+              <a href="http://jorgemoral.es/" itemprop="item"><span itemprop="name">Home</span></a>
+              <meta itemprop="position" content="1" />
+            </li>
+            <span class="sep">/</span>
+            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+              <a href="http://jorgemoral.esdevexp" itemprop="item"><span itemprop="name">Devexp</span></a>
+              <meta itemprop="position" content="2" />
+            </li>
+            <span class="sep">/</span>
+            <li class="current">Configuring your application, Part 2</li>
+      </ol>
+    </nav>
+-->
+
+    <div id="main" role="main">
+        <div class="sidebar sticky">
+            <div itemscope itemtype="http://schema.org/Person">
+                <div class="author__avatar">
+                    <img src="/images/bio-photo.jpg" class="author__avatar" alt="Jorge Morales">
+                </div>
+                <div class="author__content">
+                    <h3 class="author__name">Jorge Morales</h3>
+                    <p class="author__bio">OpenShift Field Product Manager and Developer Advocate working for Red Hat.<br/>Drop me a tweet if you want me to blog about a topic</p>
+                </div>
+
+                <div class="author__urls-wrapper">
+                    <button class="btn btn--inverse">Follow</button>
+                    <ul class="author__urls social-icons">
+                        <li><i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> Madrid, Spain</li>
+                        <li><a href="https://twitter.com/UnPOUcoDe"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+                        <li><a href="https://github.com/jorgemoralespou"><i class="fa fa-fw fa-github-square" aria-hidden="true"></i> GitHub</a></li>
+                        <li><a href="https://gitlab.com/jorgemoralespou"><i class="fa fa-fw fa-github-square" aria-hidden="true"></i> GitLab</a></li>
+                        <li><a href="https://www.linkedin.com/in/jorgemoralespou"><i class="fa fa-fw fa-linkedin-square" aria-hidden="true"></i> LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        
+<article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <div class="page__inner-wrap">
+        <header>
+            <h1 class="page__title" itemprop="headline">Enhancing your Builds on OpenShift. Chaining Builds.</h1>
+            <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i>
+                16 minutes
+                    Posted:
+                    19/Apr/2017 by
+                        Jorge Morales
+            </p>
+        </header>
+        <div class="paragraph">
+<p>OpenShift provides different options for building and deploying containers on the platform.  These generally include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Build and deploy from application source code</strong> - Users can specify the location of their source code in a GIT repository.  OpenShift will build the application binaries, then build the container images that include those binaries and deploy to OpenShift. Users can also specify a dockerfile as the source code to build container images from.</p>
+</li>
+<li>
+<p><strong>Build and deploy from application binaries</strong> - Users can also specify the location of their application binaries, coming from their existing application build process and tools.  OpenShift will just build the container images that include those provided binaries and deploy to OpenShift.</p>
+</li>
+<li>
+<p><strong>Build outside of OpenShift</strong> - Users can build their applications and container images completely outside of OpenShift, coming from their existing application and container image build process and tools, and specify the location of those images to pull in. OpenShift will just deploy those container image as provided.</p>
+</li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="_enhancing_your_builds_on_openshift_chaining_builds">Enhancing your Builds on OpenShift: Chaining Builds.</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As previously described, OpenShift provides a mechanism to bring your applications to run in containers on the platform, while abstracting much of the detail of the underlying container runtime, Kubernetes orchestration, and platform itself. This mechanism is called <a href="https://docs.openshift.org/latest/architecture/core_concepts/builds_and_image_streams.html#source-build">s2i (source-to-image)</a> which uses builder images to build your applications in containers. A builder image is a standard Docker/OCI image that contains additional builder scripts which can build your applications from source or binaries. In the case of Java, the builder images use Java build tools like Maven or Gradle to build an artifact type (jar, war, or ear) and will layer that on a java runtime (JDK, Tomcat, JBoss EAP, Wildfly-Swarm,&#8230;&#8203;) and the end result result will be packaged as a new container image for your application and deployed as a container.</p>
+</div>
+<div class="paragraph">
+<p>In addition to the typical scenario of using source code as the input to a build, OpenShift build capabilities provides another build input type called “Image source”, that will stream content from one image (source) into another (destination).</p>
+</div>
+<div class="paragraph">
+<p>Using this, we can combine source from one or multiple source images. And we can pass one or multiple files and/or folders from a source image to a destination image. Once the destination image has been built it will be pushed into the registry (or an <a href="https://blog.openshift.com/pushing-application-images-to-an-external-registry/">external registry</a>), and will be ready to be deployed.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/image_source.png" alt="Image Source">
+</div>
+</div>
+<div class="paragraph">
+<p>Using an image (or multiple) as the source of the content you want to stream into the destination image may appear unnecessarily complicated, but it opens the door to splitting the build process into two (or even more) different stages: <strong>build</strong> and <strong>assemble</strong>.</p>
+</div>
+<div class="paragraph">
+<p>The <strong>build</strong> stage will use a regular source to image process and will pull down your application source code from Git and build it into an application artifact, publishing a new image that contains the built artifact. That’s the sole goal for this stage. For this reason, we can have specialized images that will know how to build an application artifact (or binary) using building tools, like maven, Gradle, go, …</p>
+</div>
+<div class="paragraph">
+<p>The <strong>assemble</strong> stage will copy the binary artifact from the “source” image built in the previous stage and put it in a well known location that a runtime image will use to look for this artifact. Examples of such images could be Wildfly, JBoss EAP, Tomcat, Java OpenJDK, or even scratch (a special image without a base). In this stage we will just need to indicate where the are artifacts located in the source image and where they need to be copied in the destination image. The build process will create an image that will be pushed into the registry and will be known as the application image.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/chaining.png" alt="Chaining builds">
+</div>
+</div>
+<div class="paragraph">
+<p>Now, I’m going to demonstrate this process with three different examples, that will give us the following benefits:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Build the app binaries with a regular s2i builder image and run the app using a vanilla (non s2i) image as the base image.</p>
+</li>
+<li>
+<p>Build the app binaries with a custom s2i builder image with a build tool (like Gradle), and run the app using an officially supported s2i image as the base.</p>
+</li>
+<li>
+<p>Make a minimal runtime image (which has many side benefits).</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+At the end of each example there is the complete code snippet that you can use to reproduce the example in your own environment.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_example_1_maven_builder_non_s2i_wildfly_runtime">Example 1: Maven builder + non-s2i Wildfly Runtime</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this example I will use as runtime image a vanilla wildfly image, which will give me a smaller final image size compared to the s2i version of wildfly. I will use <a href="https://hub.docker.com/r/jboss/wildfly/">the community version of wildfly available at Docker Hub</a>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/1-wildfly-size.png" alt="Wildfly image sizes">
+</div>
+</div>
+<div class="paragraph">
+<p>I’ll use <a href="https://github.com/minishift/minishift">minishift</a> to start a local OpenShift cluster on my laptop to run these examples, but any OpenShift environment will work.</p>
+</div>
+<div class="paragraph">
+<p>I’ll start my minishift environment:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/minishift_start.png" alt="minishift start">
+</div>
+</div>
+<div class="paragraph">
+<p>Once I have my local environment up and running, I’ll create a new-project to isolate all the changes I do:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/1-newproject.png" alt="New project">
+</div>
+</div>
+<div class="paragraph">
+<p>In this example, I’m going to chain two builds. The first build will use any of the available java based s2i builders in OpenShift, as I only want to build my Java artifact using maven. I’ll use the <a href="https://hub.docker.com/r/openshift/wildfly-101-centos7/">s2i-wildfly builder image</a>, and will build a <a href="https://github.com/OpenShiftDemos/os-sample-java-web">sample Java application which I have available in GitHub</a>. Additionally I’ll give this build a name. Let’s keep it simple and call it “<strong>builder</strong>”.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/1-newbuild-builder.png" alt="Builder image build">
+</div>
+</div>
+<div class="paragraph">
+<p>Once the build has finished, which you can verify by watching the build log, I’ll create a second build that will copy the generated artifact from the first build into the second. This second build will use jboss/wildfly image as base, and will copy the ROOT.war artifact from the builder image into the appropriate location. This second build will be a docker build and not a source build, like the previous. I’ll give this build a representative name again. This time the name will be “<strong>runtime</strong>”.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/1-newbuild-runtime.png" alt="Runtime image build">
+</div>
+</div>
+<div class="paragraph">
+<p>Now I already have my runtime image built, with the application artifact. The only thing missing is to have the application deployed, so I’ll start a new-app from the “runtime” image, and will give it again a meaningful name, “<strong>my-application</strong>”. Then, I’ll create a route and verify that the application is up and running.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/1-new-app.png" alt="New application">
+</div>
+</div>
+<div class="paragraph">
+<p>This is a simple example where I’m using a non-s2i image to run my application built in OpenShift. I could have used any Docker image, it doesn’t need to be jboss/wildfly, but I used this one since you already know where I work ;-)</p>
+</div>
+<div class="paragraph">
+<p>You’ll see this application like any other application on the OpenShift Overview.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/1-overview.png" alt="Overview UI">
+</div>
+</div>
+<div class="paragraph">
+<p>The main difference is that your application will have two builds, and the application itself, the code, will be built by the “builder” build, in case you want to set a GitHub webhook for your source code.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/1-builds.png" alt="Builds">
+</div>
+</div>
+<div class="paragraph">
+<p>If you want to exercise all the code yourself, you only need to copy and paste the following snippet, which is also available in <a href="https://github.com/jorgemoralespou/ose-chained-builds/blob/master/maven-jbosswildfly/example.sh">GitHub</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">oc new-project maven-jbosswildfly
+oc new-build wildfly~https://github.com/OpenShiftDemos/os-sample-java-web --name=builder
+
+# watch the logs
+oc logs -f bc/builder --follow
+
+# Generated artifact is located in /wildfly/standalone/deployments/ROOT.war
+oc new-build --name=runtime --docker-image=jboss/wildfly \
+     --source-image=builder \
+     --source-image-path=/wildfly/standalone/deployments/ROOT.war:. \
+     --dockerfile=$'FROM jboss/wildfly\nCOPY ROOT.war /opt/jboss/wildfly/standalone/deployments/ROOT.war'
+
+
+oc logs -f bc/runtime --follow
+
+# Deploy and expose the app once built
+oc new-app runtime --name=my-application
+oc expose svc/my-application
+
+# Print the endpoint URL
+echo “Access the service at http://$(oc get route/my-application -o jsonpath='{.status.ingress[0].host}')/”</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let’s now explore a different use case for which chained builds can be helpful.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_example_2_gradle_builder_jdk_runtime">Example 2: Gradle builder + JDK Runtime</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>What happens when you want to to run your application with our officially supported OpenJDK image which has been created to run your Java based microservices, but your source code needs to be built using “Gradle”, which is not available in that image?</p>
+</div>
+<div class="paragraph">
+<p>In this example I will leverage a builder image I created with support for Gradle (<a href="https://github.com/jorgemoralespou/s2i-java">jorgemoralespou/s2i-java</a>) for a <a href="https://blog.openshift.com/using-openshift-enterprise-grade-spring-boot-deployments/">previous post</a>, and then, as in the previous example, I will copy the generated artifact into the official openjdk18-openshift image.</p>
+</div>
+<div class="paragraph">
+<p>For brevity I will only paste the snippet that does all, as the process was already explained in the previous example.</p>
+</div>
+<div class="paragraph">
+<p>The only caveat to this process is that you need to know where the built artifact is left in the builder image and where you need to place the artifact in the runtime image.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">oc new-project gradle-jdk
+oc new-build jorgemoralespou/s2i-java~https://github.com/jorgemoralespou/s2i-java \
+   --context-dir=/test/test-app-gradle/ --name=builder
+
+sleep 1
+
+# watch the logs
+oc logs -f bc/builder --follow
+
+# Generated artifact is located in /wildfly/standalone/deployments/ROOT.war
+oc new-build --name=runtime \
+   --docker-image=registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift \
+   --source-image=builder --source-image-path=/opt/openshift/app.jar:. \
+   --dockerfile=$'FROM registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift\nCOPY app.jar /deployments/app.jar'
+
+sleep 1
+
+oc logs -f bc/runtime --follow
+
+# Deploy and expose the app once built
+oc new-app runtime --name=my-application
+oc expose svc/my-application
+
+# Print the endpoint URL
+echo “Access the service at http://$(oc get route/my-application -o jsonpath='{.status.ingress[0].host}')/”</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We have created two different builds, one for building my application and another one for creating the runtime application.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/2-builds.png" alt="Builds">
+</div>
+</div>
+<div class="paragraph">
+<p>The deployed application can be seen in the overview page.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/2-overview.png" alt="Overview UI">
+</div>
+</div>
+<div class="paragraph">
+<p>Clicking on the route you’ll see the cool example in action.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/2-app.png" alt="Application">
+</div>
+</div>
+<div class="paragraph">
+<p>As can be seen, in the process, there are 4 ImageStreams involved:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/2-imagestreams.png" alt="ImageStreams">
+</div>
+</div>
+<div class="paragraph">
+<p>The two base images used, s2i-java for building using Gradle, and openjdk18-openshift to be used as base for running our application. Also there is a builder and runtime ImageStream as result of our builds. Our deployment is based on the “runtime” ImageStream.</p>
+</div>
+<div class="paragraph">
+<p>Now that we’ve seen how to use a different builder technology than the available in the images we want to run, let’s explore a final example on how to get a minimal runtime image.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_example_3_s2i_go_builder_scratch_runtime">Example 3: S2I Go builder + Scratch Runtime</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Go is a language where you run a “standalone” binary that can be statically compiled to have all the dependencies it requires. In this way, you can run a minimal image with a go binary that is easy to distribute.</p>
+</div>
+<div class="paragraph">
+<p>As there is no official go-s2i image, I have modified the one available in <a href="https://github.com/openshift-s2i/s2i-go">GitHub</a> to statically build a binary. The source code for this image is available in <a href="https://github.com/jorgemoralespou/s2i-go">GitHub</a> and the image is published in Docker Hub under <a href="https://hub.docker.com/r/jorgemoralespou/s2i-go/">jorgemoralespou/s2i-go</a>. Keep in mind this image has been built just to prove this use case and that given my lack of expertise in go, you shouldn’t trust it (or use it) for anything important.</p>
+</div>
+<div class="paragraph">
+<p>I have an example go application that is a web server showing a <a href="https://github.com/jorgemoralespou/ose-chained-builds/blob/master/go-scratch/hello_world/main.go">hello-world in GitHub</a>, and will be used for this third example.</p>
+</div>
+<div class="paragraph">
+<p>As before, and given that the process is the same, I’ll just paste the code snippet that you can copy and paste in your terminal to verify yourself.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">oc new-project go-scratch
+oc import-image jorgemoralespou/s2i-go --confirm
+oc new-build s2i-go~https://github.com/jorgemoralespou/ose-chained-builds \
+   --context-dir=/go-scratch/hello_world --name=builder
+
+sleep 1
+
+# watch the logs
+oc logs -f bc/builder --follow
+
+# Generated artifact is located in /opt/app-root/src/go/src/main/main
+oc new-build --name=runtime \
+   --docker-image=scratch \
+   --source-image=builder \
+   --source-image-path=/opt/app-root/src/go/src/main/main:. \
+   --dockerfile=$'FROM scratch\nCOPY main /main\nEXPOSE 8080\nENTRYPOINT ["/main"]'
+
+sleep 1
+
+oc logs -f bc/runtime --follow
+
+# Deploy and expose the app once built
+oc new-app runtime --name=my-application
+oc expose svc/my-application
+
+# Print the endpoint URL
+echo “Access the service at http://$(oc get route/my-application -o jsonpath='{.status.ingress[0].host}')/”</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once the process has finished, we can compare the size of the images. The builder image would be my application image if I wouldn’t have chained into a new build. The runtime image, as it is based off SCRATCH and has just the statically built binary, is 150x smaller in size.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/3-imagesize.png" alt="Image sizes">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_make_it_simple_make_it_repeatable">Make it simple, make it repeatable</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now that we have set up 3 different use cases to which chaining builds can provide some benefit, we can abstract all these complexity in a template, so we just need to instantiate a template providing the location of our source code repository and the name of our application.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/posts/images/chained_builds/3-template.png" alt="Template">
+</div>
+</div>
+<div class="paragraph">
+<p>Additionally we can augment this template with any parameterization we might want to make configurable.</p>
+</div>
+<div class="paragraph">
+<p>It is also important to note that using some of the building capabilities provided by OpenShift we have set up an ImageChangeTrigger on the second build so there is no need to manually launch both builds. The second build will be started by OpenShift once the first has finished as a result of the new image being created by the first build.</p>
+</div>
+<div class="paragraph">
+<p>Using a template simplifies your user experience and provides you a mechanism to create this type of applications with a single command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">oc new-app go-scratch \
+           -p name=my-application \
+           -p GIT_URI= https://github.com/jorgemoralespou/ose-chained-builds \
+           -p CONTEXT_DIR=/go-scratch/hello_world</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusions">Conclusions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To conclude this article, I want you to think about all the capabilities that the platform provides and that sometimes are not obvious to us. With this technique, we can do much more fancy things, that I will show in a follow up blog.</p>
+</div>
+<div class="paragraph">
+<p>Also, as many of you would have probably figured out, there’s not only benefits in what I just showed. There will be two docker images being built, pushed and stored in the registry and there will be a bigger maintenance burden. But, the most important thing to understand is that the platform does not limit us in many ways that we could have thought of.</p>
+</div>
+<div class="paragraph">
+<p>As always, the complete content used for this blog is available in <a href="https://github.com/jorgemoralespou/ose-chained-builds">GitHub</a>.</p>
+</div>
+<div class="paragraph">
+<p>I hope that this has given you some food for thought. Happy to chat about it.</p>
+</div>
+</div>
+</div>
+
+        <p>I would like to hear from you! If you have some ideas or comments, please do not hesitate to <a href="https://twitter.com/UnPOUcoDe">tweet me</a> your comments.</p>
+    </div>
+
+    <footer class="page__meta">
+      <p class="page__taxonomy">
+         <strong><i class="fa fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+         <span itemprop="keywords">
+               <a href="/tags/#openshift" class="page__taxonomy-item" rel="tag">openshift</a><a href="/tags/#origin" class="page__taxonomy-item" rel="tag">origin</a><a href="/tags/#development" class="page__taxonomy-item" rel="tag">development</a><a href="/tags/#local" class="page__taxonomy-item" rel="tag">local</a><a href="/tags/#devexp" class="page__taxonomy-item" rel="tag">devexp</a><a href="/tags/#minishift" class="page__taxonomy-item" rel="tag">minishift</a><a href="/tags/#build" class="page__taxonomy-item" rel="tag">build</a>
+         </span>
+      </p>
+
+      <p class="page__taxonomy">
+         <strong><i class="fa fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+         <span itemprop="keywords">
+            <a href="/categories/#build" class="page__taxonomy-item" rel="categories">build</a>
+         </span>
+      </p>
+
+      <p class="page__date">
+            <strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:  </strong>April 19, 2017</p>
+   </footer>
+
+   <section class="page__share">
+      <h4 class="page__share-title">Share on</h4>
+         <a href="https://twitter.com/intent/tweet?via=UnPOUcoDe&text=Enhancing your Builds on OpenShift. Chaining Builds. http://jorgemoral.es/2017/04/chained-builds/" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+   </section>
+</article>
+
+    </div>
+
+    <div class="page__footer">
+        <footer>
+            <!-- start custom footer snippets -->
+            <!-- end custom footer snippets -->
+            <div class="page__footer-follow">
+                <ul class="social-icons">
+                    <li><strong>Follow:</strong></li>
+                    <li><a href="https://twitter.com/UnPOUcoDe"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+                    <li><a href="/atom.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+                </ul>
+            </div>
+            <div class="page__footer-copyright">&copy; 2016 Jorge Morales Pou.</div>
+        </footer>
+    </div>
+    <script src="/js/main.min.js"></script>
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-81343831-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+</body>
+
+</html>
+
