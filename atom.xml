@@ -39,7 +39,7 @@
 &lt;h2 id="_enhancing_your_builds_on_openshift_chaining_builds"&gt;Enhancing your Builds on OpenShift: Chaining Builds.&lt;/h2&gt;
 &lt;div class="sectionbody"&gt;
 &lt;div class="paragraph"&gt;
-&lt;p&gt;As previously described, OpenShift provides a mechanism to bring your applications to run in containers on the platform, while abstracting much of the detail of the underlying container runtime, Kubernetes orchestration, and platform itself. This mechanism is called &lt;a href="https://docs.openshift.org/latest/architecture/core_concepts/builds_and_image_streams.html#source-build"&gt;s2i (source-to-image)&lt;/a&gt; which uses builder images to build your applications in containers. A builder image is a standard Docker/OCI image that contains additional builder scripts which can build your applications from source or binaries. In the case of Java, the builder images use Java build tools like Maven or Gradle to build an artifact type (jar, war, or ear) and will layer that on a java runtime (JDK, Tomcat, JBoss EAP, Wildfly-Swarm,&amp;#8230;&amp;#8203;) and the end result result will be packaged as a new container image for your application and deployed as a container.&lt;/p&gt;
+&lt;p&gt;As previously described, OpenShift provides a mechanism to bring your applications to run in containers on the platform, while abstracting much of the detail of the underlying container runtime, Kubernetes orchestration, and platform itself. This mechanism is called &lt;a href="https://docs.openshift.org/latest/architecture/core_concepts/builds_and_image_streams.html#source-build"&gt;s2i (source-to-image)&lt;/a&gt; which uses builder images to build your applications in containers. A builder image is a standard Docker/OCI image that contains additional builder scripts which can build your applications from source or binaries. In the case of Java, the builder images use Java build tools like Maven or Gradle to build an artifact type (jar, war, or ear) and will layer that on a java runtime (JDK, Tomcat, JBoss EAP, Wildfly-Swarm,&amp;#8230;&amp;#8203;) and the end result will be packaged as a new container image for your application and deployed as a container.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="paragraph"&gt;
 &lt;p&gt;In addition to the typical scenario of using source code as the input to a build, OpenShift build capabilities provides another build input type called “Image source”, that will stream content from one image (source) into another (destination).&lt;/p&gt;
@@ -59,7 +59,7 @@
 &lt;p&gt;The &lt;strong&gt;build&lt;/strong&gt; stage will use a regular source to image process and will pull down your application source code from Git and build it into an application artifact, publishing a new image that contains the built artifact. That’s the sole goal for this stage. For this reason, we can have specialized images that will know how to build an application artifact (or binary) using building tools, like maven, Gradle, go, …&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="paragraph"&gt;
-&lt;p&gt;The &lt;strong&gt;assemble&lt;/strong&gt; stage will copy the binary artifact from the “source” image built in the previous stage and put it in a well known location that a runtime image will use to look for this artifact. Examples of such images could be Wildfly, JBoss EAP, Tomcat, Java OpenJDK, or even scratch (a special image without a base). In this stage we will just need to indicate where the are artifacts located in the source image and where they need to be copied in the destination image. The build process will create an image that will be pushed into the registry and will be known as the application image.&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;assemble&lt;/strong&gt; stage will copy the binary artifact from the “source” image built in the previous stage and put it in a well known location that a runtime image will use to look for this artifact. Examples of such images could be Wildfly, JBoss EAP, Tomcat, Java OpenJDK, or even scratch (a special image without a base). In this stage we will just need to indicate where the artifacts are located in the source image and where they need to be copied in the destination image. The build process will create an image that will be pushed into the registry and will be known as the application image.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="imageblock"&gt;
 &lt;div class="content"&gt;
@@ -178,7 +178,7 @@ At the end of each example there is the complete code snippet that you can use t
 oc new-build wildfly~https://github.com/OpenShiftDemos/os-sample-java-web --name=builder
 
 # watch the logs
-oc logs -f bc/builder --follow
+oc logs -f bc/builder
 
 # Generated artifact is located in /wildfly/standalone/deployments/ROOT.war
 oc new-build --name=runtime --docker-image=jboss/wildfly \
@@ -187,7 +187,7 @@ oc new-build --name=runtime --docker-image=jboss/wildfly \
      --dockerfile=$'FROM jboss/wildfly\nCOPY ROOT.war /opt/jboss/wildfly/standalone/deployments/ROOT.war'
 
 
-oc logs -f bc/runtime --follow
+oc logs -f bc/runtime
 
 # Deploy and expose the app once built
 oc new-app runtime --name=my-application
@@ -226,7 +226,7 @@ oc new-build jorgemoralespou/s2i-java~https://github.com/jorgemoralespou/s2i-jav
 sleep 1
 
 # watch the logs
-oc logs -f bc/builder --follow
+oc logs -f bc/builder
 
 # Generated artifact is located in /wildfly/standalone/deployments/ROOT.war
 oc new-build --name=runtime \
@@ -236,7 +236,7 @@ oc new-build --name=runtime \
 
 sleep 1
 
-oc logs -f bc/runtime --follow
+oc logs -f bc/runtime
 
 # Deploy and expose the app once built
 oc new-app runtime --name=my-application
@@ -311,7 +311,7 @@ oc new-build s2i-go~https://github.com/jorgemoralespou/ose-chained-builds \
 sleep 1
 
 # watch the logs
-oc logs -f bc/builder --follow
+oc logs -f bc/builder
 
 # Generated artifact is located in /opt/app-root/src/go/src/main/main
 oc new-build --name=runtime \
@@ -322,7 +322,7 @@ oc new-build --name=runtime \
 
 sleep 1
 
-oc logs -f bc/runtime --follow
+oc logs -f bc/runtime
 
 # Deploy and expose the app once built
 oc new-app runtime --name=my-application
