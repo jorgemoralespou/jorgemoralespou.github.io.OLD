@@ -1,0 +1,301 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <!-- begin SEO -->
+    <title>Learn the Origin</title>
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Learn the Origin">
+    <meta property="og:title" content="Learn the Origin">
+    <link rel="canonical" href="http://jorgemoral.es/">
+    <meta property="og:url" content="http://jorgemoral.es/">
+    <meta name="twitter:site" content="@UnPOUcoDe">
+    <meta name="twitter:title" content="Learn the Origin">
+    <meta name="twitter:description" content="Touching containers, orchestration and application development properly mixed with a little touch of real life experience">
+    <meta name="twitter:url" content="http://jorgemoral.es/">
+    <meta name="twitter:card" content="summary">
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "Person",
+            "name": "Jorge Morales Pou",
+            "url": "http://jorgemoral.es",
+            "sameAs": ["https://twitter.com/UnPOUcoDe", "https://www.linkedin.com/in/jorgemoralespou", "https://github.com/jorgemoralespou"]
+        }
+    </script>
+    <!-- end SEO -->
+    <link href="http://jorgemoral.es/feed.xml" type="application/atom+xml" rel="alternate" title="Learn the Origin Feed">
+    <title>jorgemoral.es ::
+        Enhancing the local development experience. Trusting your self-signed certificates
+    </title>
+    <!--
+    <link rel="stylesheet" href="/css/stylesheet.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    -->
+    <meta name="generator" content="Nanoc 4.7.5">
+
+    <!-- For all browsers -->
+    <link rel="stylesheet" href="/css/main.css">
+    <meta http-equiv="cleartype" content="on">
+    <!-- start custom head snippets -->
+    <!-- insert favicons. use http://realfavicongenerator.net/ -->
+    <link rel="stylesheet" href="/css/asciidoc-pygments.css">
+</head>
+
+<body  class="layout--single">
+    <div class="masthead">
+        <div class="masthead__inner-wrap">
+            <div class="masthead__menu">
+                <nav id="site-nav" class="greedy-nav">
+                    <button><div class="navicon"></div></button>
+                    <ul class="visible-links">
+                        <li class="masthead__menu-item masthead__menu-item--lg"><a href="/">Learn the Origin</a></li>
+<!-- UNCOMMENT WHEN IMPLEMENTED
+                        <li class="masthead__menu-item"><a href="/categories">Categories</a></li>
+-->
+<!-- UNCOMMENT WHEN IMPLEMENTED
+                        <li class="masthead__menu-item"><a href="/tags">Tags</a></li>
+-->
+                        <li class="masthead__menu-item"><a href="/all-posts">All posts</a></li>
+                        <!--
+                        <li class="masthead__menu-item"><a href="/year-archive">By year</a></li>
+                        -->
+<!-- UNCOMMENT WHEN IMPLEMENTED
+                        <li class="masthead__menu-item"><a href="/presentations">Presentations</a></li>
+-->
+<!-- UNCOMMENT WHEN IMPLEMENTED
+                        <li class="masthead__menu-item"><a href="/conferences">Conferences</a></li>
+-->
+                        <li class="masthead__menu-item"><a href="/about">About me</a></li>
+                    </ul>
+                    <ul class="hidden-links hidden"></ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+<!--  USE Breadcrumbs Helper
+
+    <nav class="breadcrumbs">
+      <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+              <a href="http://jorgemoral.es/" itemprop="item"><span itemprop="name">Home</span></a>
+              <meta itemprop="position" content="1" />
+            </li>
+            <span class="sep">/</span>
+            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+              <a href="http://jorgemoral.esdevexp" itemprop="item"><span itemprop="name">Devexp</span></a>
+              <meta itemprop="position" content="2" />
+            </li>
+            <span class="sep">/</span>
+            <li class="current">Configuring your application, Part 2</li>
+      </ol>
+    </nav>
+-->
+
+    <div id="main" role="main">
+        <div class="sidebar sticky">
+            <div itemscope itemtype="http://schema.org/Person">
+                <div class="author__avatar">
+                    <img src="/images/bio-photo.jpg" class="author__avatar" alt="Jorge Morales">
+                </div>
+                <div class="author__content">
+                    <h3 class="author__name">Jorge Morales</h3>
+                    <p class="author__bio">OpenShift Field Product Manager and Developer Advocate working for Red Hat.<br/>Drop me a tweet if you want me to blog about a topic</p>
+                </div>
+
+                <div class="author__urls-wrapper">
+                    <button class="btn btn--inverse">Follow</button>
+                    <ul class="author__urls social-icons">
+                        <li><i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> Madrid, Spain</li>
+                        <li><a href="https://twitter.com/UnPOUcoDe"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+                        <li><a href="https://github.com/jorgemoralespou"><i class="fa fa-fw fa-github-square" aria-hidden="true"></i> GitHub</a></li>
+                        <li><a href="https://gitlab.com/jorgemoralespou"><i class="fa fa-fw fa-github-square" aria-hidden="true"></i> GitLab</a></li>
+                        <li><a href="https://www.linkedin.com/in/jorgemoralespou"><i class="fa fa-fw fa-linkedin-square" aria-hidden="true"></i> LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        
+<article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <div class="page__inner-wrap">
+        <header>
+            <h1 class="page__title" itemprop="headline">Enhancing the local development experience. Trusting your self-signed certificates</h1>
+            <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i>
+                8 minutes
+                    Posted:
+                    17/Jul/2017 by
+                        Jorge Morales
+            </p>
+        </header>
+        <p>One of my biggest interests is how to make local development experience with OpenShift as easy as possible. I’m constantly exploring what needs to be enhanced to our current experience as I develop applications for OpenShift very frequently. I work hard to understand developers requirements and eventually provide solutions in the tooling we provide. I use to incubate ideas in a project my team owns, <a href="https://github.com/openshift-evangelists/oc-cluster-wrapper">oc-cluster-wrapper</a>. I work very close with our engineering teams to solve these use cases in “oc cluster” or “minishift” depending on the nature of the problem, as even if they both can stand up an OpenShift all-in-one instance for local development, they both have different goals.</p>
+
+<p>Minishift/CDK is the tool that has been created for the end user (a.k.a developer) of OpenShift, where we are trying to streamline and simplify many of the common tasks a developer will do on the platform. It’s an extensible tool, that has recently introduced the notion of “<a href="https://docs.openshift.org/latest/minishift/using/addons.html">addons</a>” to allow users and organizations to provide common bootstrapping to their clusters. (I will talk about this in another post).</p>
+
+<p>In this post I want to focus on something that really annoys me, as a developer, and I will show the solution I have found for this problem. As always, if the community sees that this is convenient for the general user, the developer, we will make sure that minishift implements this solution out of the box.</p>
+
+<p>Now, after reading this blog for a minute, you’ll be wondering what’s my problem. Let me describe it.</p>
+
+<h2 id="the-problem">The problem</h2>
+
+<p>I create and destroy <strong>oc cluster</strong>’s on a daily basis, mainly when I want to work on a branch, on a feature, on a demo, I create a new <strong>oc cluster</strong>, and when I have finished working on that task, and I know I will no longer work on it, I destroy it. Every time I do this, and I access the OpenShift web UI, I am prompted to accept a certificate. OpenShift’s web UI is exposed through https, and <strong>oc cluster</strong> uses self signed certificates for this communication.</p>
+
+<p><img src="/posts/images/trusting_your_certs/web_not_secure.png" alt="Web not secure" title="Web not secure" /></p>
+
+<p>Once the certificate has been accepted, I will not be prompted again. Although the communication is not trusted, I have voluntarily agreed to trust that certificate. 
+If I open a different browser, I will be prompted again to “proceed” understanding the risks that using a self signed certificate implies.</p>
+
+<p><img src="/posts/images/trusting_your_certs/web_login.png" alt="Web login insecure" title="Web login insecure" /></p>
+
+<p>Now, the truth is that I’m not accepting any random certificate on the interwebs that who knows who’s managing it. I’m a developer that has created a cluster on my local machine for self use. That means, that at the end of the day what I’m really doing is trusting me, which is something that I usually do.</p>
+
+<p>The second problem comes when I look into how “<strong>oc cluster</strong>” works, and I see that every time I stand up a new all-in-one instance via “<strong>oc cluster up</strong>” I get a new certificate. Even though I may have accepted already a certificate before for a previous instance, I will again be prompted to trust another certificate. </p>
+
+<p>I’m a mostly Java developer and I’m not an expert on certificates, so after digging a little bit on the internet I learnt that a certificate is signed by what is called a <em>Certificate Authority</em>, which is an entity that is “globally trusted” that validates that who is using the certificate can also be trusted. This is know as a chain of trust. </p>
+
+<p>The process of having a CA validating who you are and what you do so you can be trusted is a complex and costly process, that most of the time is not convenient for ephemeral certificates, those that will live for some time, and are somehow meant for development or testing purposes. That is the reason why “<strong>oc cluster</strong>” provides it’s own Certificate Authority (CA) to be able to create all the certificates it will require when creating a cluster. This Certificate Authority is also created with every new “<strong>oc cluster</strong>”.</p>
+
+<h2 id="what-can-i-do-then">What can I do then?</h2>
+
+<p>First and easiest option is to create a CA myself and provide it to “<strong>oc cluster</strong>” so that every certificate that get’s created is signed by this Certificate Authority. I can then add this CA to the CAs I trust in my laptop, so I will never be prompted again to accept a certificate that is signed by it. This is fairly easy to do as OpenShift provides a convenience command that can be used to create a CA:</p>
+
+<p><code>
+$ oc adm ca create-signer-cert \
+                     --cert "my-ca.crt" \
+                     --key "my-ca.key" \
+                     --serial "my-ca.serial.txt" \
+                     --name="jorge@localhost"
+</code></p>
+
+<p>Then you can just provide this CA to the “<strong>oc cluster up</strong>” command line, and it will be used.</p>
+
+<p><code>
+$ oc cluster up --certificate-authority=my-ca.crt
+</code></p>
+
+<p>This is a really easy solution, but it falls short. This was the time when I got enlightened by one of my colleagues about the risks of this option. <em>If I do globally trust this CA in my laptop and somehow this CA gets leaked from my laptop to someone else, he could just use it malicious purposes that I would blindly “trust”</em>. <strong>This is not a good idea</strong>. </p>
+
+<p>This colleague explained to me that what I should be doing is creating just a certificate that I should reuse between all my <strong>oc cluster</strong>`s, and that this certificate is what I should globally trust on my laptop. This wouldn’t generate any security risk at all.</p>
+
+<p>OK, let’s explore this option then.</p>
+
+<p>One of the characteristics of “<strong>oc cluster</strong>” is that in the bootstrapping process, if there’s already configuration for the instance, it will reuse it (unless it’s not compatible). So, the only thing I need to do is, instead of creating a CA I need to create the certificates that the Web UI will use whenever I access it. </p>
+
+<p>It happens that there’s multiple certificates used by an OpenShift instance, and that the CA that will sign these certificates will be different from instance to instance unless reused. So eventually, I need to create the CA and all the certificates, and provide these to every instance I create.</p>
+
+<p>For this purpose, there is again an “<strong>oc</strong>” command:</p>
+
+<p><code>
+$ oc adm ca create-master-certs \
+                 --cert-dir=./certs \
+                 --master=https://127.0.0.1:8443 \
+                 --public-master=https://127.0.0.1:8443  \
+                 --hostnames=kubernetes,kubernetes.default,kubernetes.default.svc,kubernetes.default.svc.cluster,kubernetes.default.svc.cluster.local,localhost,openshift,openshift.default,openshift.default.svc,openshift.default.svc.cluster,openshift.default.svc.cluster.local,127.0.0.1,172.17.0.1,172.30.0.1,192.168.65.2
+</code></p>
+
+<p>As you can see, this command needs quite some different information. I will indicate the directory where to leave all the certificates, then the API server’s internal and external URLs and a list of hostnames or IPs that the server certificates should be valid for. This last part is the only challenging one, as it requires me to reuse the same IPs and names to be used for the cluster as part of the –public-hostname argument at bootstrapping time.</p>
+
+<p>Now, the only thing I need to do is, everytime I bootstrap a cluster I need to provide to it all these certificates. In order to do that, I place all these certificates on a well known location on my laptop and then we need to instruct <strong>oc cluster</strong>’s bootstrapping process to preserve the configuration and to use this “well known” location for the master’s config files.</p>
+
+<p>The following options will be required whenever I start an oc cluster:</p>
+
+<p><code>
+oc cluster ….. --host-config-dir=&lt;dir&gt;/config --use-existing-config
+</code></p>
+
+<p>Every cluster I bootstrap from this point will use the same certificates, so the only part left is to instruct my local development system (a.k.a my laptop) to trust this certificate for https communication.</p>
+
+<p>As I use mac, I will register my certificate using KeyChain. You can directly double-click on the certificate you want to add. In this case will be <em>master.server.crt</em>, and then trust the certificate. You can see the process in the following animated image. (There’s a similar process for every Operating System).</p>
+
+<p><img src="/posts/images/trusting_your_certs/trusting_your_cert_mac.gif" alt="Trust your cert" title="Trust your cert" /></p>
+
+<p>From this point, you will never be asked about this certificate by your browser, and you can create as many clusters as you want, as long as you share this certificate to all of them.</p>
+
+<h2 id="making-it-simple">Making it simple</h2>
+
+<p>As you have probably seen, making this tip work with “<strong>oc cluster</strong>” is not trivial. For that, my team has been working on a script that simplifies working with “oc cluster” locally really simple. The script is called “(oc-cluster)[https://github.com/openshift-evangelists/oc-cluster-wrapper]” and works in the same way as the base command “oc cluster” but in a simpler way. </p>
+
+<p>All these boilerplate that I have presented here is already built into that script, and you can just create a cluster by:</p>
+
+<p><code>
+oc-cluster up
+</code></p>
+
+<p>The only step left to you is to trust the certificate. If you do it, the burden of being asked for every cluster you create will be removed.</p>
+
+<p>All the convenience this script provides (which is not the topic of this blog), is used as incubation for developer usability requirements that will get introduced into <a href="https://github.com/minishift/minishift">minishift</a>, meaning that eventually minishift will support similar functions.  </p>
+
+<h2 id="wrap-up">Wrap up</h2>
+
+<p>Here I have presented a way of making your local development experience easier by avoiding you the naggy behaviour of having to accept the self signed certificate every time you create a cluster with oc cluster. </p>
+
+<p>There are a lot of small improvements one can make to improve their day to day experience, and that is what we are exploring and contributing into minishift. Minishift is the most streamlined way of working locally with openshift clusters for developers and what I recommend all of you to use, although some of the ideas we experiment in “oc-cluster” are not yet implemented, but they will soon be.</p>
+
+<p>But remember, minishift is not a “production ready cluster” or a tool for “operations”. It is just meant to be used as the cluster where developers will test their applications early in the process. This is very important to remember. The experience in minishift is and will further be streamlined for development.&lt;/dir&gt;</p>
+
+
+        <p>I would like to hear from you! If you have some ideas or comments, please do not hesitate to <a href="https://twitter.com/UnPOUcoDe">tweet me</a> your comments.</p>
+    </div>
+
+    <footer class="page__meta">
+      <p class="page__taxonomy">
+         <strong><i class="fa fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+         <span itemprop="keywords">
+               <a href="/tags/#openshift" class="page__taxonomy-item" rel="tag">openshift</a><a href="/tags/#origin" class="page__taxonomy-item" rel="tag">origin</a><a href="/tags/#development" class="page__taxonomy-item" rel="tag">development</a><a href="/tags/#local" class="page__taxonomy-item" rel="tag">local</a><a href="/tags/#devexp" class="page__taxonomy-item" rel="tag">devexp</a><a href="/tags/#minishift" class="page__taxonomy-item" rel="tag">minishift</a><a href="/tags/#build" class="page__taxonomy-item" rel="tag">build</a>
+         </span>
+      </p>
+
+      <p class="page__taxonomy">
+         <strong><i class="fa fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+         <span itemprop="keywords">
+            <a href="/categories/#devexp" class="page__taxonomy-item" rel="categories">devexp</a>
+         </span>
+      </p>
+
+      <p class="page__date">
+            <strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:  </strong>July 17, 2017</p>
+   </footer>
+
+   <section class="page__share">
+      <h4 class="page__share-title">Share on</h4>
+         <a href="https://twitter.com/intent/tweet?via=UnPOUcoDe&text=Enhancing the local development experience. Trusting your self-signed certificates http://jorgemoral.es/2017/07/trust-your-certs/" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+   </section>
+</article>
+
+    </div>
+
+    <div class="page__footer">
+        <footer>
+            <!-- start custom footer snippets -->
+            <!-- end custom footer snippets -->
+            <div class="page__footer-follow">
+                <ul class="social-icons">
+                    <li><strong>Follow:</strong></li>
+                    <li><a href="https://twitter.com/UnPOUcoDe"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+                    <li><a href="/atom.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+                </ul>
+            </div>
+            <div class="page__footer-copyright">&copy; 2016 Jorge Morales Pou.</div>
+        </footer>
+    </div>
+    <script src="/js/main.min.js"></script>
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-81343831-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+</body>
+
+</html>
+

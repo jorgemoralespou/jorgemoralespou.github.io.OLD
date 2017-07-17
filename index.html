@@ -57,9 +57,7 @@
 <!-- UNCOMMENT WHEN IMPLEMENTED
                         <li class="masthead__menu-item"><a href="/tags">Tags</a></li>
 -->
-<!-- UNCOMMENT WHEN IMPLEMENTED
                         <li class="masthead__menu-item"><a href="/all-posts">All posts</a></li>
--->
                         <!--
                         <li class="masthead__menu-item"><a href="/year-archive">By year</a></li>
                         -->
@@ -125,6 +123,124 @@
     <h1 class="page__title"></h1>
     <p></p>
     <h3 class="archive__subtitle">Recent Posts</h3>
+    
+       <div class="list__item">
+           <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+               <h2 class="archive__item-title" itemprop="headline"><a href="/2017/07/trust-your-certs/">Enhancing the local development experience. Trusting your self-signed certificates</a></h2>
+               <p class="page__meta">
+                  <i class="fa fa-clock-o" aria-hidden="true"></i> 8 minutes
+                  Posted: 17/Jul/2017 by Jorge Morales
+               </p>
+               <p class="archive__item-excerpt" itemprop="description">One of my biggest interests is how to make local development experience with OpenShift as easy as possible. I’m constantly exploring what needs to be enhanced to our current experience as I develop applications for OpenShift very frequently.</p>
+               <!--
+               <p class="archive__item-excerpt" itemprop="description"><p>One of my biggest interests is how to make local development experience with OpenShift as easy as possible. I’m constantly exploring what needs to be enhanced to our current experience as I develop applications for OpenShift very frequently. I work hard to understand developers requirements and eventually provide solutions in the tooling we provide. I use to incubate ideas in a project my team owns, <a href="https://github.com/openshift-evangelists/oc-cluster-wrapper">oc-cluster-wrapper</a>. I work very close with our engineering teams to solve these use cases in “oc cluster” or “minishift” depending on the nature of the problem, as even if they both can stand up an OpenShift all-in-one instance for local development, they both have different goals.</p>
+
+<p>Minishift/CDK is the tool that has been created for the end user (a.k.a developer) of OpenShift, where we are trying to streamline and simplify many of the common tasks a developer will do on the platform. It’s an extensible tool, that has recently introduced the notion of “<a href="https://docs.openshift.org/latest/minishift/using/addons.html">addons</a>” to allow users and organizations to provide common bootstrapping to their clusters. (I will talk about this in another post).</p>
+
+<p>In this post I want to focus on something that really annoys me, as a developer, and I will show the solution I have found for this problem. As always, if the community sees that this is convenient for the general user, the developer, we will make sure that minishift implements this solution out of the box.</p>
+
+<p>Now, after reading this blog for a minute, you’ll be wondering what’s my problem. Let me describe it.</p>
+
+<h2 id="the-problem">The problem</h2>
+
+<p>I create and destroy <strong>oc cluster</strong>’s on a daily basis, mainly when I want to work on a branch, on a feature, on a demo, I create a new <strong>oc cluster</strong>, and when I have finished working on that task, and I know I will no longer work on it, I destroy it. Every time I do this, and I access the OpenShift web UI, I am prompted to accept a certificate. OpenShift’s web UI is exposed through https, and <strong>oc cluster</strong> uses self signed certificates for this communication.</p>
+
+<p><img src="/posts/images/trusting_your_certs/web_not_secure.png" alt="Web not secure" title="Web not secure" /></p>
+
+<p>Once the certificate has been accepted, I will not be prompted again. Although the communication is not trusted, I have voluntarily agreed to trust that certificate. 
+If I open a different browser, I will be prompted again to “proceed” understanding the risks that using a self signed certificate implies.</p>
+
+<p><img src="/posts/images/trusting_your_certs/web_login.png" alt="Web login insecure" title="Web login insecure" /></p>
+
+<p>Now, the truth is that I’m not accepting any random certificate on the interwebs that who knows who’s managing it. I’m a developer that has created a cluster on my local machine for self use. That means, that at the end of the day what I’m really doing is trusting me, which is something that I usually do.</p>
+
+<p>The second problem comes when I look into how “<strong>oc cluster</strong>” works, and I see that every time I stand up a new all-in-one instance via “<strong>oc cluster up</strong>” I get a new certificate. Even though I may have accepted already a certificate before for a previous instance, I will again be prompted to trust another certificate. </p>
+
+<p>I’m a mostly Java developer and I’m not an expert on certificates, so after digging a little bit on the internet I learnt that a certificate is signed by what is called a <em>Certificate Authority</em>, which is an entity that is “globally trusted” that validates that who is using the certificate can also be trusted. This is know as a chain of trust. </p>
+
+<p>The process of having a CA validating who you are and what you do so you can be trusted is a complex and costly process, that most of the time is not convenient for ephemeral certificates, those that will live for some time, and are somehow meant for development or testing purposes. That is the reason why “<strong>oc cluster</strong>” provides it’s own Certificate Authority (CA) to be able to create all the certificates it will require when creating a cluster. This Certificate Authority is also created with every new “<strong>oc cluster</strong>”.</p>
+
+<h2 id="what-can-i-do-then">What can I do then?</h2>
+
+<p>First and easiest option is to create a CA myself and provide it to “<strong>oc cluster</strong>” so that every certificate that get’s created is signed by this Certificate Authority. I can then add this CA to the CAs I trust in my laptop, so I will never be prompted again to accept a certificate that is signed by it. This is fairly easy to do as OpenShift provides a convenience command that can be used to create a CA:</p>
+
+<p><code>
+$ oc adm ca create-signer-cert \
+                     --cert "my-ca.crt" \
+                     --key "my-ca.key" \
+                     --serial "my-ca.serial.txt" \
+                     --name="jorge@localhost"
+</code></p>
+
+<p>Then you can just provide this CA to the “<strong>oc cluster up</strong>” command line, and it will be used.</p>
+
+<p><code>
+$ oc cluster up --certificate-authority=my-ca.crt
+</code></p>
+
+<p>This is a really easy solution, but it falls short. This was the time when I got enlightened by one of my colleagues about the risks of this option. <em>If I do globally trust this CA in my laptop and somehow this CA gets leaked from my laptop to someone else, he could just use it malicious purposes that I would blindly “trust”</em>. <strong>This is not a good idea</strong>. </p>
+
+<p>This colleague explained to me that what I should be doing is creating just a certificate that I should reuse between all my <strong>oc cluster</strong>`s, and that this certificate is what I should globally trust on my laptop. This wouldn’t generate any security risk at all.</p>
+
+<p>OK, let’s explore this option then.</p>
+
+<p>One of the characteristics of “<strong>oc cluster</strong>” is that in the bootstrapping process, if there’s already configuration for the instance, it will reuse it (unless it’s not compatible). So, the only thing I need to do is, instead of creating a CA I need to create the certificates that the Web UI will use whenever I access it. </p>
+
+<p>It happens that there’s multiple certificates used by an OpenShift instance, and that the CA that will sign these certificates will be different from instance to instance unless reused. So eventually, I need to create the CA and all the certificates, and provide these to every instance I create.</p>
+
+<p>For this purpose, there is again an “<strong>oc</strong>” command:</p>
+
+<p><code>
+$ oc adm ca create-master-certs \
+                 --cert-dir=./certs \
+                 --master=https://127.0.0.1:8443 \
+                 --public-master=https://127.0.0.1:8443  \
+                 --hostnames=kubernetes,kubernetes.default,kubernetes.default.svc,kubernetes.default.svc.cluster,kubernetes.default.svc.cluster.local,localhost,openshift,openshift.default,openshift.default.svc,openshift.default.svc.cluster,openshift.default.svc.cluster.local,127.0.0.1,172.17.0.1,172.30.0.1,192.168.65.2
+</code></p>
+
+<p>As you can see, this command needs quite some different information. I will indicate the directory where to leave all the certificates, then the API server’s internal and external URLs and a list of hostnames or IPs that the server certificates should be valid for. This last part is the only challenging one, as it requires me to reuse the same IPs and names to be used for the cluster as part of the –public-hostname argument at bootstrapping time.</p>
+
+<p>Now, the only thing I need to do is, everytime I bootstrap a cluster I need to provide to it all these certificates. In order to do that, I place all these certificates on a well known location on my laptop and then we need to instruct <strong>oc cluster</strong>’s bootstrapping process to preserve the configuration and to use this “well known” location for the master’s config files.</p>
+
+<p>The following options will be required whenever I start an oc cluster:</p>
+
+<p><code>
+oc cluster ….. --host-config-dir=&lt;dir&gt;/config --use-existing-config
+</code></p>
+
+<p>Every cluster I bootstrap from this point will use the same certificates, so the only part left is to instruct my local development system (a.k.a my laptop) to trust this certificate for https communication.</p>
+
+<p>As I use mac, I will register my certificate using KeyChain. You can directly double-click on the certificate you want to add. In this case will be <em>master.server.crt</em>, and then trust the certificate. You can see the process in the following animated image. (There’s a similar process for every Operating System).</p>
+
+<p><img src="/posts/images/trusting_your_certs/trusting_your_cert_mac.gif" alt="Trust your cert" title="Trust your cert" /></p>
+
+<p>From this point, you will never be asked about this certificate by your browser, and you can create as many clusters as you want, as long as you share this certificate to all of them.</p>
+
+<h2 id="making-it-simple">Making it simple</h2>
+
+<p>As you have probably seen, making this tip work with “<strong>oc cluster</strong>” is not trivial. For that, my team has been working on a script that simplifies working with “oc cluster” locally really simple. The script is called “(oc-cluster)[https://github.com/openshift-evangelists/oc-cluster-wrapper]” and works in the same way as the base command “oc cluster” but in a simpler way. </p>
+
+<p>All these boilerplate that I have presented here is already built into that script, and you can just create a cluster by:</p>
+
+<p><code>
+oc-cluster up
+</code></p>
+
+<p>The only step left to you is to trust the certificate. If you do it, the burden of being asked for every cluster you create will be removed.</p>
+
+<p>All the convenience this script provides (which is not the topic of this blog), is used as incubation for developer usability requirements that will get introduced into <a href="https://github.com/minishift/minishift">minishift</a>, meaning that eventually minishift will support similar functions.  </p>
+
+<h2 id="wrap-up">Wrap up</h2>
+
+<p>Here I have presented a way of making your local development experience easier by avoiding you the naggy behaviour of having to accept the self signed certificate every time you create a cluster with oc cluster. </p>
+
+<p>There are a lot of small improvements one can make to improve their day to day experience, and that is what we are exploring and contributing into minishift. Minishift is the most streamlined way of working locally with openshift clusters for developers and what I recommend all of you to use, although some of the ideas we experiment in “oc-cluster” are not yet implemented, but they will soon be.</p>
+
+<p>But remember, minishift is not a “production ready cluster” or a tool for “operations”. It is just meant to be used as the cluster where developers will test their applications early in the process. This is very important to remember. The experience in minishift is and will further be streamlined for development.&lt;/dir&gt;</p>
+</p>
+               -->
+           </article>
+       </div>
     
        <div class="list__item">
            <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
@@ -868,155 +984,6 @@ All this feedback is being constantly shared with the people working on “oc cl
 </div>
 <div class="paragraph">
 <p>Even though we could admit that the Origin all-in-one VM has been very successful, it has become less and less the defacto way of running a local OpenShift instance, and it will no longer be maintained, as we have <a href="https://blog.openshift.com/goodbye-openshift-all-in-one-vm-hello-minishift/">announced</a>. But don’t be afraid, that doesn’t mean there will be no solution. In the following posts I’ll be talking about more options, so stay tuned!</p>
-</div></p>
-               -->
-           </article>
-       </div>
-    
-       <div class="list__item">
-           <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
-               <h2 class="archive__item-title" itemprop="headline"><a href="/2017/04/developing-locally-openshift-state-of-the-art/">Developing locally with OpenShift - State of the art</a></h2>
-               <p class="page__meta">
-                  <i class="fa fa-clock-o" aria-hidden="true"></i> 5 minutes
-                  Posted: 05/Apr/2017 by Jorge Morales
-               </p>
-               <p class="archive__item-excerpt" itemprop="description">This is the first article of a series of blogs describing the state of the art related to local development using OpenShift as Container Application Platform</p>
-               <!--
-               <p class="archive__item-excerpt" itemprop="description"><div class="paragraph">
-<p>OpenShift v3 launched a year and a half ago and during this time we’ve been looking at different ways to run a local OpenShift development environment on the developer’s laptop. In this series of articles I will be introducing the options we have been providing and most importantly, I will describe the evolution in our approach..</p>
-</div>
-<div class="paragraph">
-<p>But before digging into any particular solution, we need to set the ground rules of what a local development environment is and why it is important.</p>
-</div>
-<div class="paragraph">
-<p>OpenShift is a Cloud Container Application Platform that will usually be installed on a datacenter for enterprise grade usage. This means that developers will have access to a set of nodes that will be acting as development environment for them. As you probably know, OpenShift runs applications packaged as Docker containers, so all that is required to use the platform is the Docker images to run. How you get to these images is not relevant for OpenShift, although it provides some mechanism out of the box that makes your life easier, what is really relevant is that your Docker image is available to the platform.</p>
-</div>
-<div class="paragraph">
-<p>As a developer, how can you make this happen? These are some options.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Provide source code to the platform and let the platform build it. There are 2 options:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Provide your application’s source code and let OpenShift build the Docker image using s2i.</p>
-</li>
-<li>
-<p>Provide a Dockerfile and let OpenShift build the Docker image using a Docker build for you.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Provide just your application binary to a special image that knows how to run it. This can be done in different ways but most likely:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Provide your application binary to OpenShift and let OpenShift build a Docker image with the binary on top of an existing base image.</p>
-</li>
-<li>
-<p>Provide your application binary as a parameter to your deployment that will use a generic Docker image and will pull it down at startup time. This goes against the model that the Docker image should container everything it needs, but still, is an option.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Create a Docker image and push it to the platform. There is multiple ways to create this Docker image, build it locally or in a CI server running internally or externally to openshift.</p>
-</li>
-<li>
-<p>Pull down into the platform an existing Docker image. The only difference is that in this case, you will not be building the image.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>But let’s step back a little. Since we are developers, it is quite important to us how we create those Docker images. The truth is that, as developers, we will be building our application and trying it out on the environment several times during the development cycle. While doing this using a clustered platform, remote to our laptops, is probably the easiest in terms of convenience, but the truth is that for most developers, like me, this will not be enough. I will probably be building the application several times a day, sometimes tens or even hundreds of times. I will probably like to debug the running application. I will probably want to do many other things that can be summarized in:</p>
-</div>
-<div class="paragraph">
-<p>“I want to develop applications for OpenShift as fast as I can develop an application running on my local development box”</p>
-</div>
-<div class="paragraph">
-<p>That probably means that</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>I need to be able to have the OpenShift environment as close and available to me as possible</p>
-</li>
-<li>
-<p>I want to have a streamlined process for developing against this local OpenShift environment.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>While you may not agree with what I just said, I can provide some good reasoning on why I would like this kind of development environment. Of course there’s always some drawbacks, but I think they can be overcome. Let’s start with the pros on why it is good to have an OpenShift local.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Independence of location</strong>. I no longer need to be attached to the company’s network to be able to work.</p>
-</li>
-<li>
-<p><strong>Independence of connectivity</strong>. I will no longer require an internet connection to work. This is not always true, but is true as long as you have your dependencies and base images locally available. And this will work especially well if you integrate your image repository or source code repository into the local OpenShift. For example, this can be accomplished with Gitlab.</p>
-</li>
-<li>
-<p><strong>Customization of the experience</strong>. I can customize the build experience so that it looks as close as possible to developing without OpenShift.</p>
-</li>
-<li>
-<p><strong>Faster development cycle</strong>. I can iterate faster on my development, code, test, deploy, code, test, deploy, debug,&#8230;&#8203;</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>And now, the few cons I can think of:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Solutions for multiple platforms</strong>. Developers might use Windows, Linux or Mac, so the local development environment needs to run on these Operating Systems.</p>
-</li>
-<li>
-<p><strong>Developer box resource requirements</strong>. Having a local OpenShift install means that the Developer Workstation needs to have enough resources to run it.</p>
-</li>
-<li>
-<p><strong>Administration rights to install the tools</strong>. Sometimes we have found that developer’s workstations are standardized and they are not allowed to install additional software.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Of these cons, the first one is Red Hat’s responsibility, as we should provide a solution for local development targeting these different environments. The others are something that Enterprises will need to think about when adopting new technology. As we are already in 2017 we need to understand that developers will not be productive using low resources workstations, it’s penny-wise pound foolish. I hope that at this point in time, enterprises understand that specs for developer workstations should no longer be such a big issue.</p>
-</div>
-<div class="paragraph">
-<p>There’s always alternatives to running a local OpenShift instance on the developer’s box, but I can not advocate for any solution that goes against the principles of test your production code as soon as possible, which for me, that means on my workstation.</p>
-</div>
-<div class="paragraph">
-<p>Most importantly,  there is multiple ways to bring your code into an application and that application to run it in your local OpenShift developer instance:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Building your application and rsync the compiled code into a running container.</p>
-</li>
-<li>
-<p>Rsync source code directly into a container when using non-compiled languages.</p>
-</li>
-<li>
-<p>Using a maven plugin to build the images on the host and push them into you local OpenShift environment.</p>
-</li>
-<li>
-<p>Many others&#8230;&#8203;</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Any option you take, should mean that at the end you, as a developer, can test your application running in an OpenShift environment. If on the contrary, you build and verify/test your application in a specific way that will be different as how the application will be run in production, there’s many chances that issues might occur. This should be avoided as much as possible if you want to fully embrace DevOps and agility.</p>
-</div>
-<div class="paragraph">
-<p>Now that I have presented the importance of having a local OpenShift environment available in your workstation, I’ll present the evolution of the “local OpenShift development environment” since we started to the present time, when I can say we have finally a really good solution that only can get better.</p>
-</div>
-<div class="paragraph">
-<p>In the next blogs I’ll talk about the Origin all-on-one VM (and the Container Development Kit/CDK) using virtualization and Vagrant. Then I’ll move into a pure docker solution with “oc cluster up” and I’ll end up with minishift, a lightweight virtualized option.</p>
 </div></p>
                -->
            </article>
