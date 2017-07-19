@@ -11,7 +11,7 @@
   </author>
   <entry>
     <id>tag:jorgemoral.es,2017-07-19:/2017/07/deploy-helm-charts-on-minishift/</id>
-    <title type="html">Deploy helm charts on minishift</title>
+    <title type="html">Deploy helm charts on OpenShift using minishift</title>
     <published>2017-07-19T11:00:00Z</published>
     <updated>2017-07-19T11:00:00Z</updated>
     <author>
@@ -23,7 +23,7 @@
 
 &lt;p&gt;One of the really nice features that &lt;a href="https://github.com/minishift/minishift"&gt;minishift&lt;/a&gt; &amp;gt;= 1.2.0 introduced was the concept of an &lt;a href="https://docs.openshift.org/latest/minishift/using/addons.html"&gt;addon&lt;/a&gt; which is a way to provide additional capabilities to your minishift local environment. As this feature is really interesting, and evolving really nicely, I have developed some addons that allow me to extend my minishift capabilities by issuing a single command.&lt;/p&gt;
 
-&lt;p&gt;In this blog I will describe how to deploy helm into minishift, and then I will deploy a sample application using a helm chart.&lt;/p&gt;
+&lt;p&gt;In this blog I will describe how to deploy helm into minishift OpenShift, and then I will deploy a sample application using a helm chart.&lt;/p&gt;
 
 &lt;h2 id="helm-in-a-handbasket"&gt;Helm in a Handbasket&lt;/h2&gt;
 &lt;p&gt;I have taken this part from the &lt;a href="https://github.com/kubernetes/helm#helm-in-a-handbasket"&gt;helm documentation&lt;/a&gt;, as it perfectly introduces helm in a few sentences:&lt;/p&gt;
@@ -221,7 +221,7 @@ To trail the logs for the Chronograf pod run the following:
 
 &lt;p&gt;As a developer you have just got access to more technology to use. But remember, not always the more is the better.&lt;/p&gt;
 </content>
-    <summary type="html">In this blog I will describe how to deploy helm into minishift, and then I will deploy a sample application using a helm chart.</summary>
+    <summary type="html">In this blog I will describe how to deploy helm into minishift OpenShift, and then I will deploy a sample application using a helm chart.</summary>
   </entry>
   <entry>
     <id>tag:jorgemoral.es,2017-07-17:/2017/07/trust-your-certs/</id>
