@@ -2,13 +2,227 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:base="http://jorgemoral.es/">
   <id>http://jorgemoral.es/</id>
   <title>Learn the Origin</title>
-  <updated>2017-07-17T11:00:00Z</updated>
+  <updated>2017-07-19T11:00:00Z</updated>
   <link rel="alternate" href="http://jorgemoral.es/"/>
   <link rel="self" href="http://jorgemoral.es/atom.xml"/>
   <author>
     <name>Jorge Morales</name>
     <uri>http://jorgemoral.es/about/</uri>
   </author>
+  <entry>
+    <id>tag:jorgemoral.es,2017-07-19:/2017/07/deploy-helm-charts-on-minishift/</id>
+    <title type="html">Deploy helm charts on minishift</title>
+    <published>2017-07-19T11:00:00Z</published>
+    <updated>2017-07-19T11:00:00Z</updated>
+    <author>
+      <name>Jorge Morales</name>
+      <uri>http://jorgemoral.es/about/</uri>
+    </author>
+    <link rel="alternate" href="http://jorgemoral.es/2017/07/deploy-helm-charts-on-minishift/"/>
+    <content type="html">&lt;p&gt;For some time I’ve been listening hear and there about &lt;a href="https://github.com/kubernetes/helm"&gt;Helm&lt;/a&gt; and have been asked about people how they could deploy into OpenShift applications defined as &lt;a href="https://github.com/kubernetes/charts"&gt;Charts&lt;/a&gt;, the format Helm uses to package an application.&lt;/p&gt;
+
+&lt;p&gt;One of the really nice features that &lt;a href="https://github.com/minishift/minishift"&gt;minishift&lt;/a&gt; &amp;gt;= 1.2.0 introduced was the concept of an &lt;a href="https://docs.openshift.org/latest/minishift/using/addons.html"&gt;addon&lt;/a&gt; which is a way to provide additional capabilities to your minishift local environment. As this feature is really interesting, and evolving really nicely, I have developed some addons that allow me to extend my minishift capabilities by issuing a single command.&lt;/p&gt;
+
+&lt;p&gt;In this blog I will describe how to deploy helm into minishift, and then I will deploy a sample application using a helm chart.&lt;/p&gt;
+
+&lt;h2 id="helm-in-a-handbasket"&gt;Helm in a Handbasket&lt;/h2&gt;
+&lt;p&gt;I have taken this part from the &lt;a href="https://github.com/kubernetes/helm#helm-in-a-handbasket"&gt;helm documentation&lt;/a&gt;, as it perfectly introduces helm in a few sentences:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/posts/images/helm_on_minishift/quote.png" alt="Helm in a Handbasket" /&gt;&lt;/p&gt;
+
+&lt;h2 id="install"&gt;Install&lt;/h2&gt;
+
+&lt;p&gt;You will definitely need to install helm on your laptop, as it consists of two parts, a client(helm) and a server(tiller). To find the latest client go &lt;a href="https://github.com/kubernetes/helm#install"&gt;here&lt;/a&gt; and find the binary that suits your Operating System.&lt;/p&gt;
+
+&lt;p&gt;Unpack the helm binary and add it to your PATH and you are good to go!&lt;/p&gt;
+
+&lt;p&gt;The server part, tiller, will be installed in minishift via an addon.&lt;/p&gt;
+
+&lt;h3 id="start-minishift-use-virtualbox"&gt;Start minishift (Use virtualbox)&lt;/h3&gt;
+&lt;p&gt;There is already a &lt;a href="https://docs.openshift.org/latest/minishift/getting-started/installing.html"&gt;guide on how to install minishift&lt;/a&gt;, so I will expect that you have followed it and that you have minishift already working.&lt;/p&gt;
+
+&lt;p&gt;I will also expect that you’re using the latest minishift version available today (1.3.0) or a newer one, if there is one already available as you read this.&lt;/p&gt;
+
+&lt;p&gt;Presumming that you read this blog as soon as it is published, and that you don’t have a minishift instance already up and running, this is the process you would follow to be able to continue with the blog.&lt;/p&gt;
+
+&lt;p&gt;First, I will install the default addons that come shipped with minishift, and then I will enable an addon that will create an &lt;strong&gt;admin&lt;/strong&gt; user, so I can easily log into the minishift OpenShift web UI as admin of the platform.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ minishift addons install --defaults
+$ minishift addons enable admin-user
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This process instructs every minishift instance that will be created from this point to install this addon, so it’s a one time step.&lt;/p&gt;
+
+&lt;p&gt;Now, I will create my minishift instance. I’m using the latest available openshift version as the time of writing, but you could just be using the default shipped with minishift. Also, I’m using virtualbox as virtualization technology, but you could again be using the one you prefer from all the available technologies for your Operating System. And also, I like to give the VM enough cpu and memory so that I can confortably work.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ minishift start --vm-driver=virtualbox --openshift-version=v3.6.0-rc.0 --cpus=2 --memory=8192
+Starting local OpenShift cluster using 'virtualbox' hypervisor...
+Downloading ISO 'https://github.com/minishift/minishift-b2d-iso/releases/download/v1.0.2/minishift-b2d.iso'
+ 40.00 MiB / 40.00 MiB [===================================================================================================================================================================================================] 100.00% 0s
+Downloading OpenShift binary 'oc' version 'v3.6.0-rc.0'
+ 33.74 MiB / 33.74 MiB [===================================================================================================================================================================================================] 100.00% 0s
+Starting OpenShift using openshift/origin:v3.6.0-rc.0 ...
+Pulling image openshift/origin:v3.6.0-rc.0
+Pulled 1/4 layers, 26% complete
+Pulled 2/4 layers, 64% complete
+Pulled 3/4 layers, 77% complete
+Pulled 4/4 layers, 100% complete
+Extracting
+Image pull complete
+OpenShift server started.
+
+The server is accessible via web console at:
+    https://192.168.99.100:8443
+
+You are logged in as:
+    User:     developer
+    Password: [any value]
+
+To login as administrator:
+    oc login -u system:admin
+
+-- Applying addon 'admin-user':..
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id="install-helm-addon-tiller---server-side"&gt;Install helm addon (tiller - server side)&lt;/h2&gt;
+&lt;p&gt;Now that we have minishift up and running, we can install helm’s server part, tiller. For this, I have created an addon that simplifies the installation.&lt;/p&gt;
+
+&lt;p&gt;The process is as simple as install &lt;a href="https://github.com/jorgemoralespou/minishift-addons"&gt;my addon&lt;/a&gt; and the apply the addon, so that helm tiller will be provisioned one time on this machine. Note that I use apply instead of enable, as I just want this install to happen for the current minishift instance and not every time I create a new minishift instance.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cd /tmp
+$ git clone https://github.com/jorgemoralespou/minishift-addons
+$ cd minishift-addons
+$ minishift addons install helm
+$ minishift addons apply helm
+-- Applying addon 'helm':......
+Get Tiller host URL by runninr these commands in the shell:
+  export TILLER_HOST="192.168.99.100:$(oc get svc/tiller -o jsonpath='{.spec.ports[0].nodePort}' -n kube-system --as=system:admin)"
+
+Initialize the helm client, if not done already
+
+e.g.
+  helm init -c
+
+Search for an application:
+
+e.g.
+  helm search
+
+And now deploy an application
+
+e.g.
+  helm --host $TILLER_HOST --kube-context default/192-168-99-100:8443/system:admin
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now that we have installed tiller, we can log into the minishift OpenShift web UI as admin. Remember we have enabled the admin-user addon, so that there is an &lt;strong&gt;admin&lt;/strong&gt; user with &lt;strong&gt;admin&lt;/strong&gt; password to log in the web UI.&lt;/p&gt;
+
+&lt;p&gt;This will open the web UI in our browser.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;minishift console
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And once we log in with the admin credentials:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/posts/images/helm_on_minishift/login.png" alt="Login" /&gt;&lt;/p&gt;
+
+&lt;p&gt;We will be able to see &lt;strong&gt;tiller&lt;/strong&gt; deployed in the &lt;strong&gt;kube-system&lt;/strong&gt; namespace.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/posts/images/helm_on_minishift/tiller_overview.png" alt="Tiller overview" /&gt;&lt;/p&gt;
+
+&lt;p&gt;As you would probably have noticed, it’s the “#2” deployment. This is mostly because the original helm deployment has been altered to use a dedicated serviceaccount &lt;strong&gt;helm&lt;/strong&gt;, that will be given the required permissions &lt;strong&gt;cluster-admin&lt;/strong&gt;. This is in order to make the deployment as secure as possible.&lt;/p&gt;
+
+&lt;p&gt;Also, tiller is exposed through a route that we will use later.&lt;/p&gt;
+
+&lt;h2 id="install-helm-client-side"&gt;Install helm (client side)&lt;/h2&gt;
+&lt;p&gt;It is time to configure our client helm to use tiller in minishift. I presumme you have already installed the helm binary and added to the path, so you can use helm client.&lt;/p&gt;
+
+&lt;p&gt;To verify it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ helm version
+Client: &amp;amp;amp;version.Version{SemVer:"v2.5.0", GitCommit:"012cb0ac1a1b2f888144ef5a67b8dab6c2d45be6", GitTreeState:"clean"}
+Error: cannot connect to Tiller
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Obviously it can not connect to tiller. So let’s configure our helm client instance:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ helm init -c
+Creating /Users/jmorales/.helm
+Creating /Users/jmorales/.helm/repository
+Creating /Users/jmorales/.helm/repository/cache
+Creating /Users/jmorales/.helm/repository/local
+Creating /Users/jmorales/.helm/plugins
+Creating /Users/jmorales/.helm/starters
+Creating /Users/jmorales/.helm/cache/archive
+Creating /Users/jmorales/.helm/repository/repositories.yaml
+$HELM_HOME has been configured at /Users/jmorales/.helm.
+Not installing tiller due to 'client-only' flag having been set
+Happy Helming!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, there is a few caveats we need to take into account:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;em&gt;helm&lt;/em&gt; does use &lt;strong&gt;HELM_HOST&lt;/strong&gt; environment variable, or you need to use &lt;strong&gt;–host&lt;/strong&gt; flag on every command.&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;helm&lt;/em&gt; requires to use a kube context with admin provileges. sudoer accounts are not an option. There is no ENV to specify this, so it will use the current-context defined in $KUBECONFIG by default unless other is specified on the command line. &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In minishift, the context for the admin user account by default is named “&lt;strong&gt;default/192-168-99-100:8443/system:admin&lt;/strong&gt;”. Note that the ip might depend on your install.&lt;/p&gt;
+
+&lt;h2 id="deploy-a-sample-application"&gt;Deploy a sample application&lt;/h2&gt;
+&lt;p&gt;Now it’s time to deploy any application, as this has really been the goal of what we’ve done so far.&lt;/p&gt;
+
+&lt;p&gt;I will use &lt;strong&gt;chronograf&lt;/strong&gt; as sample application (reasons at the end of the blog), and I will create an OpenShift project for it.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ oc new-project chronograf
+$ helm install stable/chronograf --host $TILLER_HOST --kube-context default/192-168-99-100:8443/system:admin -n chronograf --namespace chronograf
+NAME:   chronograf
+LAST DEPLOYED: Wed Jul 19 14:29:17 2017
+NAMESPACE: chronograf
+STATUS: DEPLOYED
+
+RESOURCES:
+==&amp;amp;gt; v1/Service
+NAME                   CLUSTER-IP      EXTERNAL-IP  PORT(S)  AGE
+chronograf-chronograf  172.30.177.119  none       80/TCP   1s
+
+==&amp;amp;gt; v1beta1/Deployment
+NAME                   DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
+chronograf-chronograf  1        1        1           0          1s
+
+
+NOTES:
+Chronograf can be accessed via port 80 on the following DNS name from within your cluster:
+
+- http://chronograf-chronograf.chronograf
+
+You can easily connect to the remote instance from your browser. Forward the webserver port to localhost:8888
+
+- kubectl port-forward --namespace chronograf $(kubectl get pods --namespace chronograf -l app=chronograf-chronograf -o jsonpath='{ .items[0].metadata.name }') 8888
+
+You can also connect to the container running Chronograf. To open a shell session in the pod run the following:
+
+- kubectl exec -i -t --namespace chronograf $(kubectl get pods --namespace chronograf -l app=chronograf-chronograf -o jsonpath='{.items[0].metadata.name}') /bin/sh
+
+To trail the logs for the Chronograf pod run the following:
+
+- kubectl logs -f --namespace chronograf $(kubectl get pods --namespace chronograf -l app=chronograf-chronograf -o jsonpath='{ .items[0].metadata.name }')
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And you can see it deployed though minishift OpenShift web UI.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/posts/images/helm_on_minishift/sample_app.png" alt="Application deployed" /&gt;&lt;/p&gt;
+
+&lt;p&gt;For convenience, you can wrap the helm command line in a script that will abstract you away the &lt;strong&gt;–host&lt;/strong&gt; and &lt;strong&gt;–kube-context&lt;/strong&gt; parameters. But this exercise is left out to you.&lt;/p&gt;
+
+&lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
+&lt;p&gt;In this blog I have shown you how you can have &lt;strong&gt;helm&lt;/strong&gt; up and running and deploy applications packaged as &lt;strong&gt;charts&lt;/strong&gt;. As I wrote before, I used &lt;em&gt;chronograf&lt;/em&gt; as sample application mainly because many of the applications that are packaged as &lt;em&gt;helm charts&lt;/em&gt; and shipped in their repositories adole from security considerations. Many of the applications require to run privileged, or with a specific user id. Some others use kubernetes alpha annotations not supported on the latest OpenShift version I was using, and should change to the beta annotation supported (e.g &lt;a href="https://github.com/kubernetes/charts/blob/master/stable/mysql/templates/pvc.yaml#L11-L16"&gt;the mysql pvc&lt;/a&gt;, where if you don’t implicitly specify a storageClass, it uses the alpha version of the annotation).&lt;/p&gt;
+
+&lt;p&gt;There is a wide range of applications packaged as &lt;strong&gt;helm charts&lt;/strong&gt; and available in the interwebs to use, so now you can easily take advantage of them. &lt;/p&gt;
+
+&lt;p&gt;As a developer you have just got access to more technology to use. But remember, not always the more is the better.&lt;/p&gt;
+</content>
+    <summary type="html">In this blog I will describe how to deploy helm into minishift, and then I will deploy a sample application using a helm chart.</summary>
+  </entry>
   <entry>
     <id>tag:jorgemoral.es,2017-07-17:/2017/07/trust-your-certs/</id>
     <title type="html">Enhancing the local development experience. Trusting your self-signed certificates</title>

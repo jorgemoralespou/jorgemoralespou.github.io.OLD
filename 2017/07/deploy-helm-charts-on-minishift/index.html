@@ -1,0 +1,398 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <!-- begin SEO -->
+    <title>Learn the Origin</title>
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Learn the Origin">
+    <meta property="og:title" content="Learn the Origin">
+    <link rel="canonical" href="http://jorgemoral.es/">
+    <meta property="og:url" content="http://jorgemoral.es/">
+    <meta name="twitter:site" content="@UnPOUcoDe">
+    <meta name="twitter:title" content="Learn the Origin">
+    <meta name="twitter:description" content="Touching containers, orchestration and application development properly mixed with a little touch of real life experience">
+    <meta name="twitter:url" content="http://jorgemoral.es/">
+    <meta name="twitter:card" content="summary">
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "Person",
+            "name": "Jorge Morales Pou",
+            "url": "http://jorgemoral.es",
+            "sameAs": ["https://twitter.com/UnPOUcoDe", "https://www.linkedin.com/in/jorgemoralespou", "https://github.com/jorgemoralespou"]
+        }
+    </script>
+    <!-- end SEO -->
+    <link href="http://jorgemoral.es/feed.xml" type="application/atom+xml" rel="alternate" title="Learn the Origin Feed">
+    <title>jorgemoral.es ::
+        Deploy helm charts on minishift
+    </title>
+    <!--
+    <link rel="stylesheet" href="/css/stylesheet.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    -->
+    <meta name="generator" content="Nanoc 4.8.0">
+
+    <!-- For all browsers -->
+    <link rel="stylesheet" href="/css/main.css">
+    <meta http-equiv="cleartype" content="on">
+    <!-- start custom head snippets -->
+    <!-- insert favicons. use http://realfavicongenerator.net/ -->
+    <link rel="stylesheet" href="/css/asciidoc-pygments.css">
+</head>
+
+<body  class="layout--single">
+    <div class="masthead">
+        <div class="masthead__inner-wrap">
+            <div class="masthead__menu">
+                <nav id="site-nav" class="greedy-nav">
+                    <button><div class="navicon"></div></button>
+                    <ul class="visible-links">
+                        <li class="masthead__menu-item masthead__menu-item--lg"><a href="/">Learn the Origin</a></li>
+<!-- UNCOMMENT WHEN IMPLEMENTED
+                        <li class="masthead__menu-item"><a href="/categories">Categories</a></li>
+-->
+<!-- UNCOMMENT WHEN IMPLEMENTED
+                        <li class="masthead__menu-item"><a href="/tags">Tags</a></li>
+-->
+                        <li class="masthead__menu-item"><a href="/all-posts">All posts</a></li>
+                        <!--
+                        <li class="masthead__menu-item"><a href="/year-archive">By year</a></li>
+                        -->
+<!-- UNCOMMENT WHEN IMPLEMENTED
+                        <li class="masthead__menu-item"><a href="/presentations">Presentations</a></li>
+-->
+<!-- UNCOMMENT WHEN IMPLEMENTED
+                        <li class="masthead__menu-item"><a href="/conferences">Conferences</a></li>
+-->
+                        <li class="masthead__menu-item"><a href="/about">About me</a></li>
+                    </ul>
+                    <ul class="hidden-links hidden"></ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+<!--  USE Breadcrumbs Helper
+
+    <nav class="breadcrumbs">
+      <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+              <a href="http://jorgemoral.es/" itemprop="item"><span itemprop="name">Home</span></a>
+              <meta itemprop="position" content="1" />
+            </li>
+            <span class="sep">/</span>
+            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+              <a href="http://jorgemoral.esdevexp" itemprop="item"><span itemprop="name">Devexp</span></a>
+              <meta itemprop="position" content="2" />
+            </li>
+            <span class="sep">/</span>
+            <li class="current">Configuring your application, Part 2</li>
+      </ol>
+    </nav>
+-->
+
+    <div id="main" role="main">
+        <div class="sidebar sticky">
+            <div itemscope itemtype="http://schema.org/Person">
+                <div class="author__avatar">
+                    <img src="/images/bio-photo.jpg" class="author__avatar" alt="Jorge Morales">
+                </div>
+                <div class="author__content">
+                    <h3 class="author__name">Jorge Morales</h3>
+                    <p class="author__bio">OpenShift Field Product Manager and Developer Advocate working for Red Hat.<br/>Drop me a tweet if you want me to blog about a topic</p>
+                </div>
+
+                <div class="author__urls-wrapper">
+                    <button class="btn btn--inverse">Follow</button>
+                    <ul class="author__urls social-icons">
+                        <li><i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> Madrid, Spain</li>
+                        <li><a href="https://twitter.com/UnPOUcoDe"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+                        <li><a href="https://github.com/jorgemoralespou"><i class="fa fa-fw fa-github-square" aria-hidden="true"></i> GitHub</a></li>
+                        <li><a href="https://gitlab.com/jorgemoralespou"><i class="fa fa-fw fa-github-square" aria-hidden="true"></i> GitLab</a></li>
+                        <li><a href="https://www.linkedin.com/in/jorgemoralespou"><i class="fa fa-fw fa-linkedin-square" aria-hidden="true"></i> LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        
+<article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <div class="page__inner-wrap">
+        <header>
+            <h1 class="page__title" itemprop="headline">Deploy helm charts on minishift</h1>
+            <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i>
+                7 minutes
+                    Posted:
+                    19/Jul/2017 by
+                        Jorge Morales
+            </p>
+        </header>
+        <p>For some time I’ve been listening hear and there about <a href="https://github.com/kubernetes/helm">Helm</a> and have been asked about people how they could deploy into OpenShift applications defined as <a href="https://github.com/kubernetes/charts">Charts</a>, the format Helm uses to package an application.</p>
+
+<p>One of the really nice features that <a href="https://github.com/minishift/minishift">minishift</a> &gt;= 1.2.0 introduced was the concept of an <a href="https://docs.openshift.org/latest/minishift/using/addons.html">addon</a> which is a way to provide additional capabilities to your minishift local environment. As this feature is really interesting, and evolving really nicely, I have developed some addons that allow me to extend my minishift capabilities by issuing a single command.</p>
+
+<p>In this blog I will describe how to deploy helm into minishift, and then I will deploy a sample application using a helm chart.</p>
+
+<h2 id="helm-in-a-handbasket">Helm in a Handbasket</h2>
+<p>I have taken this part from the <a href="https://github.com/kubernetes/helm#helm-in-a-handbasket">helm documentation</a>, as it perfectly introduces helm in a few sentences:</p>
+
+<p><img src="/posts/images/helm_on_minishift/quote.png" alt="Helm in a Handbasket" /></p>
+
+<h2 id="install">Install</h2>
+
+<p>You will definitely need to install helm on your laptop, as it consists of two parts, a client(helm) and a server(tiller). To find the latest client go <a href="https://github.com/kubernetes/helm#install">here</a> and find the binary that suits your Operating System.</p>
+
+<p>Unpack the helm binary and add it to your PATH and you are good to go!</p>
+
+<p>The server part, tiller, will be installed in minishift via an addon.</p>
+
+<h3 id="start-minishift-use-virtualbox">Start minishift (Use virtualbox)</h3>
+<p>There is already a <a href="https://docs.openshift.org/latest/minishift/getting-started/installing.html">guide on how to install minishift</a>, so I will expect that you have followed it and that you have minishift already working.</p>
+
+<p>I will also expect that you’re using the latest minishift version available today (1.3.0) or a newer one, if there is one already available as you read this.</p>
+
+<p>Presumming that you read this blog as soon as it is published, and that you don’t have a minishift instance already up and running, this is the process you would follow to be able to continue with the blog.</p>
+
+<p>First, I will install the default addons that come shipped with minishift, and then I will enable an addon that will create an <strong>admin</strong> user, so I can easily log into the minishift OpenShift web UI as admin of the platform.</p>
+
+<pre><code>$ minishift addons install --defaults
+$ minishift addons enable admin-user
+</code></pre>
+
+<p>This process instructs every minishift instance that will be created from this point to install this addon, so it’s a one time step.</p>
+
+<p>Now, I will create my minishift instance. I’m using the latest available openshift version as the time of writing, but you could just be using the default shipped with minishift. Also, I’m using virtualbox as virtualization technology, but you could again be using the one you prefer from all the available technologies for your Operating System. And also, I like to give the VM enough cpu and memory so that I can confortably work.</p>
+
+<pre><code>$ minishift start --vm-driver=virtualbox --openshift-version=v3.6.0-rc.0 --cpus=2 --memory=8192
+Starting local OpenShift cluster using 'virtualbox' hypervisor...
+Downloading ISO 'https://github.com/minishift/minishift-b2d-iso/releases/download/v1.0.2/minishift-b2d.iso'
+ 40.00 MiB / 40.00 MiB [===================================================================================================================================================================================================] 100.00% 0s
+Downloading OpenShift binary 'oc' version 'v3.6.0-rc.0'
+ 33.74 MiB / 33.74 MiB [===================================================================================================================================================================================================] 100.00% 0s
+Starting OpenShift using openshift/origin:v3.6.0-rc.0 ...
+Pulling image openshift/origin:v3.6.0-rc.0
+Pulled 1/4 layers, 26% complete
+Pulled 2/4 layers, 64% complete
+Pulled 3/4 layers, 77% complete
+Pulled 4/4 layers, 100% complete
+Extracting
+Image pull complete
+OpenShift server started.
+
+The server is accessible via web console at:
+    https://192.168.99.100:8443
+
+You are logged in as:
+    User:     developer
+    Password: [any value]
+
+To login as administrator:
+    oc login -u system:admin
+
+-- Applying addon 'admin-user':..
+</code></pre>
+
+<h2 id="install-helm-addon-tiller---server-side">Install helm addon (tiller - server side)</h2>
+<p>Now that we have minishift up and running, we can install helm’s server part, tiller. For this, I have created an addon that simplifies the installation.</p>
+
+<p>The process is as simple as install <a href="https://github.com/jorgemoralespou/minishift-addons">my addon</a> and the apply the addon, so that helm tiller will be provisioned one time on this machine. Note that I use apply instead of enable, as I just want this install to happen for the current minishift instance and not every time I create a new minishift instance.</p>
+
+<pre><code>$ cd /tmp
+$ git clone https://github.com/jorgemoralespou/minishift-addons
+$ cd minishift-addons
+$ minishift addons install helm
+$ minishift addons apply helm
+-- Applying addon 'helm':......
+Get Tiller host URL by runninr these commands in the shell:
+  export TILLER_HOST="192.168.99.100:$(oc get svc/tiller -o jsonpath='{.spec.ports[0].nodePort}' -n kube-system --as=system:admin)"
+
+Initialize the helm client, if not done already
+
+e.g.
+  helm init -c
+
+Search for an application:
+
+e.g.
+  helm search
+
+And now deploy an application
+
+e.g.
+  helm --host $TILLER_HOST --kube-context default/192-168-99-100:8443/system:admin
+</code></pre>
+
+<p>Now that we have installed tiller, we can log into the minishift OpenShift web UI as admin. Remember we have enabled the admin-user addon, so that there is an <strong>admin</strong> user with <strong>admin</strong> password to log in the web UI.</p>
+
+<p>This will open the web UI in our browser.</p>
+
+<pre><code>minishift console
+</code></pre>
+
+<p>And once we log in with the admin credentials:</p>
+
+<p><img src="/posts/images/helm_on_minishift/login.png" alt="Login" /></p>
+
+<p>We will be able to see <strong>tiller</strong> deployed in the <strong>kube-system</strong> namespace.</p>
+
+<p><img src="/posts/images/helm_on_minishift/tiller_overview.png" alt="Tiller overview" /></p>
+
+<p>As you would probably have noticed, it’s the “#2” deployment. This is mostly because the original helm deployment has been altered to use a dedicated serviceaccount <strong>helm</strong>, that will be given the required permissions <strong>cluster-admin</strong>. This is in order to make the deployment as secure as possible.</p>
+
+<p>Also, tiller is exposed through a route that we will use later.</p>
+
+<h2 id="install-helm-client-side">Install helm (client side)</h2>
+<p>It is time to configure our client helm to use tiller in minishift. I presumme you have already installed the helm binary and added to the path, so you can use helm client.</p>
+
+<p>To verify it:</p>
+
+<pre><code>$ helm version
+Client: &amp;amp;version.Version{SemVer:"v2.5.0", GitCommit:"012cb0ac1a1b2f888144ef5a67b8dab6c2d45be6", GitTreeState:"clean"}
+Error: cannot connect to Tiller
+</code></pre>
+
+<p>Obviously it can not connect to tiller. So let’s configure our helm client instance:</p>
+
+<pre><code>$ helm init -c
+Creating /Users/jmorales/.helm
+Creating /Users/jmorales/.helm/repository
+Creating /Users/jmorales/.helm/repository/cache
+Creating /Users/jmorales/.helm/repository/local
+Creating /Users/jmorales/.helm/plugins
+Creating /Users/jmorales/.helm/starters
+Creating /Users/jmorales/.helm/cache/archive
+Creating /Users/jmorales/.helm/repository/repositories.yaml
+$HELM_HOME has been configured at /Users/jmorales/.helm.
+Not installing tiller due to 'client-only' flag having been set
+Happy Helming!
+</code></pre>
+
+<p>Now, there is a few caveats we need to take into account:</p>
+
+<ul>
+  <li><em>helm</em> does use <strong>HELM_HOST</strong> environment variable, or you need to use <strong>–host</strong> flag on every command.</li>
+  <li><em>helm</em> requires to use a kube context with admin provileges. sudoer accounts are not an option. There is no ENV to specify this, so it will use the current-context defined in $KUBECONFIG by default unless other is specified on the command line. </li>
+</ul>
+
+<p>In minishift, the context for the admin user account by default is named “<strong>default/192-168-99-100:8443/system:admin</strong>”. Note that the ip might depend on your install.</p>
+
+<h2 id="deploy-a-sample-application">Deploy a sample application</h2>
+<p>Now it’s time to deploy any application, as this has really been the goal of what we’ve done so far.</p>
+
+<p>I will use <strong>chronograf</strong> as sample application (reasons at the end of the blog), and I will create an OpenShift project for it.</p>
+
+<pre><code>$ oc new-project chronograf
+$ helm install stable/chronograf --host $TILLER_HOST --kube-context default/192-168-99-100:8443/system:admin -n chronograf --namespace chronograf
+NAME:   chronograf
+LAST DEPLOYED: Wed Jul 19 14:29:17 2017
+NAMESPACE: chronograf
+STATUS: DEPLOYED
+
+RESOURCES:
+==&amp;gt; v1/Service
+NAME                   CLUSTER-IP      EXTERNAL-IP  PORT(S)  AGE
+chronograf-chronograf  172.30.177.119  none       80/TCP   1s
+
+==&amp;gt; v1beta1/Deployment
+NAME                   DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
+chronograf-chronograf  1        1        1           0          1s
+
+
+NOTES:
+Chronograf can be accessed via port 80 on the following DNS name from within your cluster:
+
+- http://chronograf-chronograf.chronograf
+
+You can easily connect to the remote instance from your browser. Forward the webserver port to localhost:8888
+
+- kubectl port-forward --namespace chronograf $(kubectl get pods --namespace chronograf -l app=chronograf-chronograf -o jsonpath='{ .items[0].metadata.name }') 8888
+
+You can also connect to the container running Chronograf. To open a shell session in the pod run the following:
+
+- kubectl exec -i -t --namespace chronograf $(kubectl get pods --namespace chronograf -l app=chronograf-chronograf -o jsonpath='{.items[0].metadata.name}') /bin/sh
+
+To trail the logs for the Chronograf pod run the following:
+
+- kubectl logs -f --namespace chronograf $(kubectl get pods --namespace chronograf -l app=chronograf-chronograf -o jsonpath='{ .items[0].metadata.name }')
+</code></pre>
+
+<p>And you can see it deployed though minishift OpenShift web UI.</p>
+
+<p><img src="/posts/images/helm_on_minishift/sample_app.png" alt="Application deployed" /></p>
+
+<p>For convenience, you can wrap the helm command line in a script that will abstract you away the <strong>–host</strong> and <strong>–kube-context</strong> parameters. But this exercise is left out to you.</p>
+
+<h2 id="summary">Summary</h2>
+<p>In this blog I have shown you how you can have <strong>helm</strong> up and running and deploy applications packaged as <strong>charts</strong>. As I wrote before, I used <em>chronograf</em> as sample application mainly because many of the applications that are packaged as <em>helm charts</em> and shipped in their repositories adole from security considerations. Many of the applications require to run privileged, or with a specific user id. Some others use kubernetes alpha annotations not supported on the latest OpenShift version I was using, and should change to the beta annotation supported (e.g <a href="https://github.com/kubernetes/charts/blob/master/stable/mysql/templates/pvc.yaml#L11-L16">the mysql pvc</a>, where if you don’t implicitly specify a storageClass, it uses the alpha version of the annotation).</p>
+
+<p>There is a wide range of applications packaged as <strong>helm charts</strong> and available in the interwebs to use, so now you can easily take advantage of them. </p>
+
+<p>As a developer you have just got access to more technology to use. But remember, not always the more is the better.</p>
+
+
+        <p>I would like to hear from you! If you have some ideas or comments, please do not hesitate to <a href="https://twitter.com/UnPOUcoDe">tweet me</a> your comments.</p>
+    </div>
+
+    <footer class="page__meta">
+      <p class="page__taxonomy">
+         <strong><i class="fa fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+         <span itemprop="keywords">
+               <a href="/tags/#openshift" class="page__taxonomy-item" rel="tag">openshift</a><a href="/tags/#origin" class="page__taxonomy-item" rel="tag">origin</a><a href="/tags/#development" class="page__taxonomy-item" rel="tag">development</a><a href="/tags/#local" class="page__taxonomy-item" rel="tag">local</a><a href="/tags/#devexp" class="page__taxonomy-item" rel="tag">devexp</a><a href="/tags/#minishift" class="page__taxonomy-item" rel="tag">minishift</a><a href="/tags/#build" class="page__taxonomy-item" rel="tag">build</a><a href="/tags/#helm" class="page__taxonomy-item" rel="tag">helm</a>
+         </span>
+      </p>
+
+      <p class="page__taxonomy">
+         <strong><i class="fa fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+         <span itemprop="keywords">
+            <a href="/categories/#devexp" class="page__taxonomy-item" rel="categories">devexp</a>
+         </span>
+      </p>
+
+      <p class="page__date">
+            <strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:  </strong>July 19, 2017</p>
+   </footer>
+
+   <section class="page__share">
+      <h4 class="page__share-title">Share on</h4>
+         <a href="https://twitter.com/intent/tweet?via=UnPOUcoDe&text=Deploy helm charts on minishift http://jorgemoral.es/2017/07/deploy-helm-charts-on-minishift/" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+   </section>
+</article>
+
+    </div>
+
+    <div class="page__footer">
+        <footer>
+            <!-- start custom footer snippets -->
+            <!-- end custom footer snippets -->
+            <div class="page__footer-follow">
+                <ul class="social-icons">
+                    <li><strong>Follow:</strong></li>
+                    <li><a href="https://twitter.com/UnPOUcoDe"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+                    <li><a href="/atom.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+                </ul>
+            </div>
+            <div class="page__footer-copyright">&copy; 2016 Jorge Morales Pou.</div>
+        </footer>
+    </div>
+    <script src="/js/main.min.js"></script>
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-81343831-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+</body>
+
+</html>
+

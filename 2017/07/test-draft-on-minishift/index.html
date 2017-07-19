@@ -1,0 +1,533 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <!-- begin SEO -->
+    <title>Learn the Origin</title>
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Learn the Origin">
+    <meta property="og:title" content="Learn the Origin">
+    <link rel="canonical" href="http://jorgemoral.es/">
+    <meta property="og:url" content="http://jorgemoral.es/">
+    <meta name="twitter:site" content="@UnPOUcoDe">
+    <meta name="twitter:title" content="Learn the Origin">
+    <meta name="twitter:description" content="Touching containers, orchestration and application development properly mixed with a little touch of real life experience">
+    <meta name="twitter:url" content="http://jorgemoral.es/">
+    <meta name="twitter:card" content="summary">
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "Person",
+            "name": "Jorge Morales Pou",
+            "url": "http://jorgemoral.es",
+            "sameAs": ["https://twitter.com/UnPOUcoDe", "https://www.linkedin.com/in/jorgemoralespou", "https://github.com/jorgemoralespou"]
+        }
+    </script>
+    <!-- end SEO -->
+    <link href="http://jorgemoral.es/feed.xml" type="application/atom+xml" rel="alternate" title="Learn the Origin Feed">
+    <title>jorgemoral.es ::
+        Test Microsoft Draft on minishift
+    </title>
+    <!--
+    <link rel="stylesheet" href="/css/stylesheet.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    -->
+    <meta name="generator" content="Nanoc 4.8.0">
+
+    <!-- For all browsers -->
+    <link rel="stylesheet" href="/css/main.css">
+    <meta http-equiv="cleartype" content="on">
+    <!-- start custom head snippets -->
+    <!-- insert favicons. use http://realfavicongenerator.net/ -->
+    <link rel="stylesheet" href="/css/asciidoc-pygments.css">
+</head>
+
+<body  class="layout--single">
+    <div class="masthead">
+        <div class="masthead__inner-wrap">
+            <div class="masthead__menu">
+                <nav id="site-nav" class="greedy-nav">
+                    <button><div class="navicon"></div></button>
+                    <ul class="visible-links">
+                        <li class="masthead__menu-item masthead__menu-item--lg"><a href="/">Learn the Origin</a></li>
+<!-- UNCOMMENT WHEN IMPLEMENTED
+                        <li class="masthead__menu-item"><a href="/categories">Categories</a></li>
+-->
+<!-- UNCOMMENT WHEN IMPLEMENTED
+                        <li class="masthead__menu-item"><a href="/tags">Tags</a></li>
+-->
+                        <li class="masthead__menu-item"><a href="/all-posts">All posts</a></li>
+                        <!--
+                        <li class="masthead__menu-item"><a href="/year-archive">By year</a></li>
+                        -->
+<!-- UNCOMMENT WHEN IMPLEMENTED
+                        <li class="masthead__menu-item"><a href="/presentations">Presentations</a></li>
+-->
+<!-- UNCOMMENT WHEN IMPLEMENTED
+                        <li class="masthead__menu-item"><a href="/conferences">Conferences</a></li>
+-->
+                        <li class="masthead__menu-item"><a href="/about">About me</a></li>
+                    </ul>
+                    <ul class="hidden-links hidden"></ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+<!--  USE Breadcrumbs Helper
+
+    <nav class="breadcrumbs">
+      <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+              <a href="http://jorgemoral.es/" itemprop="item"><span itemprop="name">Home</span></a>
+              <meta itemprop="position" content="1" />
+            </li>
+            <span class="sep">/</span>
+            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+              <a href="http://jorgemoral.esdevexp" itemprop="item"><span itemprop="name">Devexp</span></a>
+              <meta itemprop="position" content="2" />
+            </li>
+            <span class="sep">/</span>
+            <li class="current">Configuring your application, Part 2</li>
+      </ol>
+    </nav>
+-->
+
+    <div id="main" role="main">
+        <div class="sidebar sticky">
+            <div itemscope itemtype="http://schema.org/Person">
+                <div class="author__avatar">
+                    <img src="/images/bio-photo.jpg" class="author__avatar" alt="Jorge Morales">
+                </div>
+                <div class="author__content">
+                    <h3 class="author__name">Jorge Morales</h3>
+                    <p class="author__bio">OpenShift Field Product Manager and Developer Advocate working for Red Hat.<br/>Drop me a tweet if you want me to blog about a topic</p>
+                </div>
+
+                <div class="author__urls-wrapper">
+                    <button class="btn btn--inverse">Follow</button>
+                    <ul class="author__urls social-icons">
+                        <li><i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> Madrid, Spain</li>
+                        <li><a href="https://twitter.com/UnPOUcoDe"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+                        <li><a href="https://github.com/jorgemoralespou"><i class="fa fa-fw fa-github-square" aria-hidden="true"></i> GitHub</a></li>
+                        <li><a href="https://gitlab.com/jorgemoralespou"><i class="fa fa-fw fa-github-square" aria-hidden="true"></i> GitLab</a></li>
+                        <li><a href="https://www.linkedin.com/in/jorgemoralespou"><i class="fa fa-fw fa-linkedin-square" aria-hidden="true"></i> LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        
+<article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <div class="page__inner-wrap">
+        <header>
+            <h1 class="page__title" itemprop="headline">Test Microsoft Draft on minishift</h1>
+            <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i>
+                8 minutes
+                    Posted:
+                    19/Jul/2017 by
+                        Jorge Morales
+            </p>
+        </header>
+        
+<h2 id="install">Install</h2>
+
+<p>I’ve been following the guide <a href="https://github.com/Azure/draft/blob/master/docs/install.md">here</a> to install draft, but I have adapted the
+steps to make it work on <a href="ihttps://github.com/minishift/minishift">minishift</a>. All the instructions have been tested on my local laptop, which
+is a mac, but should be easy to follow on other Operating Systems, specially on any Linux based distro.</p>
+
+<h3 id="start-minishift-use-virtualbox">Start minishift (Use virtualbox)</h3>
+
+<pre><code>$ minishit addons install admin-user
+$ minishift start --vm-driver=virtualbox --openshift-version=v3.6.0-rc.0 # CPUS and Memory
+Starting local OpenShift cluster using 'virtualbox' hypervisor...
+-- Importing cached images ...
+   Importing openshift/origin-docker-registry:v3.6.0-rc.0 [1m13s]
+   Importing openshift/origin-haproxy-router:v3.6.0-rc.0 [38.9s]
+   Importing openshift/origin:v3.6.0-rc.0 [38s]
+Starting OpenShift using openshift/origin:v3.6.0-rc.0 ...
+OpenShift server started.
+
+The server is accessible via web console at:
+    https://192.168.99.100:8443
+
+You are logged in as:
+    User:     developer
+    Password: &lt;any value&gt;
+
+To login as administrator:
+    oc login -u system:admin
+
+-- Applying addon 'admin-user':..
+</code></pre>
+
+<h2 id="install-additional-addons-registry">Install additional addons (Registry):</h2>
+
+<pre><code>$ cd /tmp
+$ git clone https://github.com/minishift/minishift
+$ cd minishift
+$ minishift addons install registry-route
+$ minishift addons apply registry-route
+-- Applying addon 'registry-route':........
+Add-on 'registry-route' created docker-registry route. Please run following commands to login to the OpenShift docker registry:
+  eval $(minishift docker-env)
+  docker login -u developer -p `oc whoami -t` docker-registry-default.192.168.99.100.nip.io:443
+$ eval $(minishift docker-env)
+$ docker login -u developer -p `oc whoami -t` docker-registry-default.192.168.99.100.nip.io:443
+$ oc whoami -t
+SZbax1mQUHxvGL5Gi_tVTConqs6GTQ4P0YDvM7TGblI
+</code></pre>
+
+<h2 id="install-additional-addons-helm">Install additional addons (Helm):</h2>
+
+<pre><code>$ cd /tmp
+$ git clone https://github.com/jorgemoralespou/minishift-addons
+$ cd minishift-addons
+$ minishift addons install helm
+$ minishift addons apply helm
+-- Applying addon 'helm':...
+To use helm, provide the minishift host to your helm config
+
+e.g.
+  helm init --host 192.168.99.100:8443 -c
+
+And remember to have repositories configured, else add them:
+
+e.g.
+  helm repo add stable https://kubernetes-charts.storage.googleapis.com
+  helm search
+
+$ helm init --host 192.168.99.100:8443 -c
+</code></pre>
+
+<p>NOTE: Remember that the admin kube-context is “default/192-168-99-100:8443/system:admin”</p>
+
+<h2 id="install-draft-client-and-server">Install Draft (Client and server):</h2>
+
+<p>NOTE: You will need to execute draft as privileged, so I will create a serviceaccount named draft in the kube-system namespace and will grant the <em>provileged</em> SCC to it.</p>
+
+<pre><code>$ oc create serviceaccount draft -n kube-system --as=system:admin
+$ oc adm policy add-scc-to-user privileged system:serviceaccount:kube-system:draft --as=system:admin
+</code></pre>
+
+<p>Now we need to deploy <strong>draft</strong> regularly, knowing that it will fail, as it is not using that specific serviceaccount. Why I haven’t granted the SCC to the default serviceaccount? Mainly because doing so would alter the behavior of everything else deployed in the same project.</p>
+
+<pre><code>$ draft init --kube-context default/192-168-99-100:8443/system:admin --host 192.168.99.100:8443
+Creating /Users/jmorales/.draft
+Creating /Users/jmorales/.draft/plugins
+Creating /Users/jmorales/.draft/packs
+Creating pack ruby...
+Creating pack php...
+Creating pack golang...
+Creating pack gradle...
+Creating pack maven...
+Creating pack python...
+Creating pack node...
+Creating pack dotnetcore...
+$DRAFT_HOME has been configured at /Users/jmorales/.draft.
+
+In order to install Draft, we need a bit more information...
+
+1. Enter your Docker registry URL (e.g. docker.io, quay.io, myregistry.azurecr.io): docker-registry-default.192.168.99.100.nip.io:443
+2. Enter your username: developer
+3. Enter your password:
+4. Enter your org where Draft will push images [developer]: myproject
+5. Enter your top-level domain for ingress (e.g. draft.example.com): apps.192.168.99.100.nip.io
+Draft has been installed into your Kubernetes Cluster.
+Happy Sailing!
+</code></pre>
+
+<p>I will verify that the deployment has actually failed. Then I will patch the deployment to use the <em>draft</em> serviceaccount, and will redeploy draftd.</p>
+
+<pre><code>$ oc get deployment/draftd -n kube-system --as=system:admin
+NAME      DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+draftd    1         0         0            0           2m
+
+$ oc patch deployment/draftd -p '{"spec":{"template":{"spec":{"serviceAccountName":"draft"}}}}' -n kube-system --as=system:admin
+deployment "draftd" patched
+
+$ oc get deployment/draftd -o yaml -n kube-system --as=system:admin | grep serviceAccount
+      serviceAccount: draft
+      serviceAccountName: draft
+
+$ oc get deployment/draftd -n kube-system --as=system:admin
+NAME      DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+draftd    1         1         1            1           3m
+</code></pre>
+
+<p><strong>Now we really have draftd up and running!</strong></p>
+
+<p>We need to expose draftd, as the client will need to connect to it, but since it will be using tcp and will be listening on port <em>44135</em> we can either do port-forwarding (for a one time solution), or expose the service via a nodePort and use that port as the –host parameter to draft.</p>
+
+<pre><code>$ oc create service nodeport xxxxxxxxx
+</code></pre>
+
+<p>Now we have draftd exposed here: <strong>192.168.99.100.nip.io:xyzz</strong></p>
+
+<p>Draft creates a folder in $HOME/.draft where it will store the packs and plugins.</p>
+
+<h2 id="getting-started"> Getting started</h2>
+<p>Once we have Draft up and running on OpenShift (minishift), we will install our first application. For sake of simplicity, our first application will use the <a href="https://github.com/Azure/draft/blob/master/docs/getting-started.md#getting-started">Getting Started guide</a> on Draft site.</p>
+
+<p>First thing we will need is to get the example applications on my local laptop:</p>
+
+<pre><code>$ cd /tmp
+$ git clone https://github.com/Azure/draft
+$ cd draft/examples/python
+</code></pre>
+
+<p>This guide uses a simple Python application which uses Flask to provide a very simple Hello World webserver.</p>
+
+<h1 id="section"> <strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong>*</h1>
+<p># REWORD FROM HERE
+# <strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong>*</p>
+
+<h2 id="draft-create">Draft Create</h2>
+
+<p>We need some “scaffolding” to deploy our app into a <a href="https://kubernetes.io/">Kubernetes</a> cluster. Draft can create a <a href="https://helm.sh/">Helm</a> chart, a <code>Dockerfile</code> and a <code>draft.toml</code> with <code>draft create</code>:</p>
+
+<pre><code class="language-shell">$ draft create
+--&amp;gt; Python app detected
+--&amp;gt; Ready to sail
+$ ls -a
+.draftignore  Dockerfile  app.py  chart/  draft.toml  requirements.txt
+</code></pre>
+
+<p>The <code>chart/</code> and <code>Dockerfile</code> assets created by Draft default to a basic Python
+configuration. This <code>Dockerfile</code> harnesses the <a href="https://hub.docker.com/_/python/">python:onbuild</a>
+image, which will install the dependencies in <code>requirements.txt</code> and copy the current directory
+into <code>/usr/src/app</code>. And to align with the service values in <code>chart/values.yaml</code>, this Dockerfile
+exposes port 80 from the container.</p>
+
+<p>The <code>draft.toml</code> file contains basic configuration about the application like the name, which
+namespace it will be deployed to, and whether to deploy the app automatically when local files
+change.</p>
+
+<pre><code class="language-shell">$ cat draft.toml
+[environments]
+  [environments.development]
+    name = "tufted-lamb"
+    namespace = "default"
+    watch = true
+    watch_delay = 2
+</code></pre>
+
+<p>Edit this file to adapt to our configuration. Change the namespace to myproject.</p>
+
+<pre><code class="language-shell">$ cat draft.toml
+[environments]
+  [environments.development]
+    name = "unrealistic-wallaby"
+    namespace = "myproject"
+    wait = false
+    watch = false
+    watch_delay = 2
+</code></pre>
+
+<p>See <a href="user-guide.md">the Draft User Guide</a> for more information and available configuration on the
+<code>draft.toml</code>.</p>
+
+<p>A <code>.draftignore</code> file is created as well for elements we want to exclude tracking on <code>draft up</code>
+when watching for changes. The syntax is identical to
+<a href="https://github.com/kubernetes/helm/blob/master/pkg/repo/repotest/testdata/examplechart/.helmignore">helm ignore feature</a>.</p>
+
+<p>Note that for technical reasons, the <code>.git/</code> directory is unconditionally ignored for now.</p>
+
+<h2 id="draft-up">Draft Up</h2>
+
+<p>Now we’re ready to deploy <code>app.py</code> to a Kubernetes cluster.</p>
+
+<p>Draft handles these tasks with one <code>draft up</code> command:</p>
+
+<ul>
+  <li>reads configuration from <code>draft.toml</code></li>
+  <li>compresses the <code>chart/</code> directory and the application directory as two separate tarballs</li>
+  <li>uploads the tarballs to <code>draftd</code>, the server-side component</li>
+  <li><code>draftd</code> then builds the docker image and pushes the image to a registry</li>
+  <li><code>draftd</code> instructs helm to install the Helm chart, referencing the Docker registry image just built</li>
+</ul>
+
+<p>With the <code>watch</code> option set to <code>true</code>, we can let this run in the background while we make changes
+later on…</p>
+
+<p>~~~ shell
+$ draft up –debug –kube-context default/192-168-99-100:8443/system:admin
+–&gt; Building Dockerfile
+Step 1/4 : FROM python:onbuild
+onbuild: Pulling from library/python
+……
+8d372e9bd581: Pull complete
+Digest: sha256:d2975d912d675da27d2299c59aa388455385e9733921e7d746570431f9594cb3
+Status: Downloaded newer image for python:onbuild
+# Executing 3 build triggers…
+Step 1/1 : COPY requirements.txt /usr/src/app/
+Step 1/1 : RUN pip install –no-cache-dir -r requirements.txt
+ —&gt; Running in 8299d7bf76d3
+Collecting flask (from -r requirements.txt (line 1))
+  Downloading Flask-0.12.2-py2.py3-none-any.whl (83kB)
+Collecting Werkzeug&gt;=0.7 (from flask-&gt;-r requirements.txt (line 1))
+  Downloading Werkzeug-0.12.2-py2.py3-none-any.whl (312kB)
+Collecting Jinja2&gt;=2.4 (from flask-&gt;-r requirements.txt (line 1))
+  Downloading Jinja2-2.9.6-py2.py3-none-any.whl (340kB)
+Collecting click&gt;=2.0 (from flask-&gt;-r requirements.txt (line 1))
+  Downloading click-6.7-py2.py3-none-any.whl (71kB)
+Collecting itsdangerous&gt;=0.21 (from flask-&gt;-r requirements.txt (line 1))
+  Downloading itsdangerous-0.24.tar.gz (46kB)
+Collecting MarkupSafe&gt;=0.23 (from Jinja2&gt;=2.4-&gt;flask-&gt;-r requirements.txt (line 1))
+  Downloading MarkupSafe-1.0.tar.gz
+Installing collected packages: Werkzeug, MarkupSafe, Jinja2, click, itsdangerous, flask
+  Running setup.py install for MarkupSafe: started
+    Running setup.py install for MarkupSafe: finished with status ‘done’
+  Running setup.py install for itsdangerous: started
+    Running setup.py install for itsdangerous: finished with status ‘done’
+Successfully installed Jinja2-2.9.6 MarkupSafe-1.0 Werkzeug-0.12.2 click-6.7 flask-0.12.2 itsdangerous-0.24
+Step 1/1 : COPY . /usr/src/app
+ —&gt; a03164b380e5
+Step 2/4 : EXPOSE 8080
+ —&gt; Running in 7b54b4e52ce5
+ —&gt; 636d8b0a0f8f
+Step 3/4 : ENTRYPOINT python
+ —&gt; Running in ed5802f1f08c
+ —&gt; 615e2e5dd743
+Step 4/4 : CMD app.py
+ —&gt; Running in 6e023e262464
+ —&gt; db3a4025bd9e
+Successfully built db3a4025bd9e
+Successfully tagged docker-registry-default.192.168.99.100.nip.io:443/myproject/unrealistic-wallaby:4955d122d0403486a29be654b4ce1e7515b2c11e
+–&gt; Pushing docker-registry-default.192.168.99.100.nip.io:443/myproject/unrealistic-wallaby:4955d122d0403486a29be654b4ce1e7515b2c11e
+The push refers to a repository [docker-registry-default.192.168.99.100.nip.io:443/myproject/unrealistic-wallaby]
+Error encountered streaming JSON response: Get https://docker-registry-default.192.168.99.100.nip.io:443/v1/_ping: x509: certificate signed by unknown authority</p>
+
+<p>————– HERE IT FAILED</p>
+
+<p>–&gt; Pushing docker.io/microsoft/tufted-lamb:5a3c633ae76c9bdb81b55f5d4a783398bf00658e
+The push refers to a repository [docker.io/microsoft/tufted-lamb]
+…
+5a3c633ae76c9bdb81b55f5d4a783398bf00658e: digest: sha256:9d9e9fdb8ee3139dd77a110fa2d2b87573c3ff5ec9c045db6009009d1c9ebf5b size: 16384
+–&gt; Deploying to Kubernetes
+    Release “tufted-lamb” does not exist. Installing it now.
+–&gt; Status: DEPLOYED
+–&gt; Notes:</p>
+
+<p>http://tufted-lamb.example.com to access your application</p>
+
+<p>Watching local files for changes…
+~~~</p>
+
+<h2 id="interact-with-the-deployed-app">Interact with the Deployed App</h2>
+
+<p>Using the handy output that follows successful deployment, we can now contact our app.</p>
+
+<pre><code class="language-shell">$ curl http://tufted-lamb.example.com
+Hello Draft!
+</code></pre>
+
+<p>When we <code>curl</code> our app, we see our app in action! A beautiful “Hello Draft!” greets us.  If not, make sure you’ve followed the <a href="ingress.md">Ingress Guide</a>.</p>
+
+<h2 id="update-the-app">Update the App</h2>
+
+<p>Now, let’s change the output in <code>app.py</code> to output “Hello Kubernetes!” instead:</p>
+
+<pre><code class="language-shell">$ cat &amp;lt;&lt;eof&gt; app.py
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    return "Hello Kubernetes!\n"
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=8080)
+EOF
+</code></pre>
+
+<h2 id="draft-upgrade">Draft Up(grade)</h2>
+
+<p>Now if we watch the terminal that we initially called <code>draft up</code> with, Draft will notice that there
+were changes made locally and call <code>draft up</code> again. Draft then determines that the Helm release
+already exists and will perform a <code>helm upgrade</code> rather than attempting another <code>helm install</code>:</p>
+
+<pre><code class="language-shell">--&amp;gt; Building Dockerfile
+Step 1 : FROM python:onbuild
+...
+Successfully built 9c90b0445146
+--&amp;gt; Pushing docker.io/microsoft/tufted-lamb:f031eb675112e2c942369a10815850a0b8bf190e
+The push refers to a repository [docker.io/microsoft/tufted-lamb]
+...
+--&amp;gt; Deploying to Kubernetes
+--&amp;gt; Status: DEPLOYED
+--&amp;gt; Notes:
+     
+  http://tufted-lamb.example.com to access your application
+</code></pre>
+
+<h2 id="great-success">Great Success!</h2>
+
+<p>Now when we run <code>curl http://tufted-lamb.example.com</code>, we can see our app has been updated and deployed to Kubernetes automatically!&lt;/eof&gt;&lt;/any&gt;</p>
+
+
+        <p>I would like to hear from you! If you have some ideas or comments, please do not hesitate to <a href="https://twitter.com/UnPOUcoDe">tweet me</a> your comments.</p>
+    </div>
+
+    <footer class="page__meta">
+      <p class="page__taxonomy">
+         <strong><i class="fa fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+         <span itemprop="keywords">
+               <a href="/tags/#openshift" class="page__taxonomy-item" rel="tag">openshift</a><a href="/tags/#origin" class="page__taxonomy-item" rel="tag">origin</a><a href="/tags/#development" class="page__taxonomy-item" rel="tag">development</a><a href="/tags/#local" class="page__taxonomy-item" rel="tag">local</a><a href="/tags/#devexp" class="page__taxonomy-item" rel="tag">devexp</a><a href="/tags/#minishift" class="page__taxonomy-item" rel="tag">minishift</a><a href="/tags/#build" class="page__taxonomy-item" rel="tag">build</a>
+         </span>
+      </p>
+
+      <p class="page__taxonomy">
+         <strong><i class="fa fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+         <span itemprop="keywords">
+            <a href="/categories/#devexp" class="page__taxonomy-item" rel="categories">devexp</a>
+         </span>
+      </p>
+
+      <p class="page__date">
+            <strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:  </strong>July 19, 2017</p>
+   </footer>
+
+   <section class="page__share">
+      <h4 class="page__share-title">Share on</h4>
+         <a href="https://twitter.com/intent/tweet?via=UnPOUcoDe&text=Test Microsoft Draft on minishift http://jorgemoral.es/2017/07/test-draft-on-minishift/" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+   </section>
+</article>
+
+    </div>
+
+    <div class="page__footer">
+        <footer>
+            <!-- start custom footer snippets -->
+            <!-- end custom footer snippets -->
+            <div class="page__footer-follow">
+                <ul class="social-icons">
+                    <li><strong>Follow:</strong></li>
+                    <li><a href="https://twitter.com/UnPOUcoDe"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+                    <li><a href="/atom.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+                </ul>
+            </div>
+            <div class="page__footer-copyright">&copy; 2016 Jorge Morales Pou.</div>
+        </footer>
+    </div>
+    <script src="/js/main.min.js"></script>
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-81343831-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+</body>
+
+</html>
+
