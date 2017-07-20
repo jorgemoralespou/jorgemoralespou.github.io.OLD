@@ -130,43 +130,50 @@
                         Jorge Morales
             </p>
         </header>
-        
+        <p>After experimenting with helm charts, it is time to experiment with <a href="https://github.com/Azure/draft">Microsoft Draft</a>.</p>
+
+<p>In their <a href="https://github.com/Azure/draft#draft-streamlined-kubernetes-development">own words</a>:</p>
+
+<p>&gt; Draft makes it easy to build applications that run on Kubernetes.  Draft targets the “inner loop” of a developer’s workflow: as they hack on code, but before code is committed to version control.
+&gt; 
+&gt; Using Draft is as simple as:
+&gt; 
+&gt; 1. <code>draft create</code> to containerize your application based on Draft <a href="docs/packs.md">packs</a>
+&gt; 2. <code>draft up</code> to deploy your application to a Kubernetes dev sandbox, accessible via a public URL
+&gt; 3. Use a local editor to modify the application, with changes deployed to Kubernetes in seconds
+&gt; 
+&gt; Once the developer is happy with changes made via Draft, they commit and push to version control, after which a continuous integration (CI) system takes over.  Draft builds upon [Kubernetes Helm][helm] and the <a href="https://github.com/kubernetes/helm/blob/master/docs/charts.md">Kubernetes Chart format</a>, making it easy to construct CI pipelines from Draft-enabled applications.</p>
+
+<p>So it is my time to experiment with it, and provide you a guide to follow so you can also experiment with it. I hope this guide will make your journey easier.</p>
+
 <h2 id="install">Install</h2>
 
 <p>I’ve been following the guide <a href="https://github.com/Azure/draft/blob/master/docs/install.md">here</a> to install draft, but I have adapted the
 steps to make it work on <a href="ihttps://github.com/minishift/minishift">minishift</a>. All the instructions have been tested on my local laptop, which
 is a mac, but should be easy to follow on other Operating Systems, specially on any Linux based distro.</p>
 
-<h3 id="start-minishift-use-virtualbox">Start minishift (Use virtualbox)</h3>
+<p>If you have already followed the instructions on my previous blog about helm, there is quite some repeated stuff, as helm is a dependency and requirement for draft. If you have not done that already, please go to that other <a href="xxxxxxxxxx">blog</a> and follow the instructions there. I will resume from the point where you have helm installed on your laptop and helm tiller deployed on minishift.</p>
 
-<pre><code>$ minishit addons install admin-user
-$ minishift start --vm-driver=virtualbox --openshift-version=v3.6.0-rc.0 # CPUS and Memory
+<h3 id="start-minishift">Start minishift</h3>
+<p>If you don’t have minishift up and running, it is time to start it up. As the memory, cpu and hypervisor configuration used when creating minishift are preserved, you just need to do start.</p>
+
+<pre><code>$ minishift start --vm-driver=virtualbox --openshift-version=v3.6.0-rc.0 --cpus=2 --memory=8192
 Starting local OpenShift cluster using 'virtualbox' hypervisor...
--- Importing cached images ...
-   Importing openshift/origin-docker-registry:v3.6.0-rc.0 [1m13s]
-   Importing openshift/origin-haproxy-router:v3.6.0-rc.0 [38.9s]
-   Importing openshift/origin:v3.6.0-rc.0 [38s]
 Starting OpenShift using openshift/origin:v3.6.0-rc.0 ...
 OpenShift server started.
 
 The server is accessible via web console at:
     https://192.168.99.100:8443
-
-You are logged in as:
-    User:     developer
-    Password: &lt;any value&gt;
-
-To login as administrator:
-    oc login -u system:admin
-
--- Applying addon 'admin-user':..
 </code></pre>
 
-<h2 id="install-additional-addons-registry">Install additional addons (Registry):</h2>
+<p><em>NOTE</em>: Remember to use the same flags you used before, as minishift don’t remember them for now.</p>
+
+<h2 id="install-additional-requirements-a-docker-registry">Install additional requirements. A docker registry.</h2>
+<p>One of the requirements that Draft has is a Docker registry to push the images we build. As OpenShift has one registry, we will expose the registry to the world via an Openshift Route. For this, minishift provides an addon (not yet merged as it requires OpenShift &gt;= 3.6), so let’s install and enable it.</p>
 
 <pre><code>$ cd /tmp
 $ git clone https://github.com/minishift/minishift
-$ cd minishift
+$ cd minishift/addons
 $ minishift addons install registry-route
 $ minishift addons apply registry-route
 -- Applying addon 'registry-route':........
@@ -175,45 +182,20 @@ Add-on 'registry-route' created docker-registry route. Please run following comm
   docker login -u developer -p `oc whoami -t` docker-registry-default.192.168.99.100.nip.io:443
 $ eval $(minishift docker-env)
 $ docker login -u developer -p `oc whoami -t` docker-registry-default.192.168.99.100.nip.io:443
-$ oc whoami -t
-SZbax1mQUHxvGL5Gi_tVTConqs6GTQ4P0YDvM7TGblI
 </code></pre>
-
-<h2 id="install-additional-addons-helm">Install additional addons (Helm):</h2>
-
-<pre><code>$ cd /tmp
-$ git clone https://github.com/jorgemoralespou/minishift-addons
-$ cd minishift-addons
-$ minishift addons install helm
-$ minishift addons apply helm
--- Applying addon 'helm':...
-To use helm, provide the minishift host to your helm config
-
-e.g.
-  helm init --host 192.168.99.100:8443 -c
-
-And remember to have repositories configured, else add them:
-
-e.g.
-  helm repo add stable https://kubernetes-charts.storage.googleapis.com
-  helm search
-
-$ helm init --host 192.168.99.100:8443 -c
-</code></pre>
-
-<p>NOTE: Remember that the admin kube-context is “default/192-168-99-100:8443/system:admin”</p>
 
 <h2 id="install-draft-client-and-server">Install Draft (Client and server):</h2>
+<p>It is time to install draft. You can find the latest releases of draft for your Operating System in their <a href="https://github.com/Azure/draft/blob/master/docs/install.md#dependencies">Install instructions GitHub page</a>. Grab the appropriate binary for you, unpack and add it to your path.</p>
 
-<p>NOTE: You will need to execute draft as privileged, so I will create a serviceaccount named draft in the kube-system namespace and will grant the <em>provileged</em> SCC to it.</p>
+<p>Whenever we install Draft, it will fail, mostly because it requires to run a privileged container. In a later step I will fix it by creating a dedicated serviceaccount for <strong>draft</strong> and allowing this serviceaccount to run privileged containers. </p>
 
-<pre><code>$ oc create serviceaccount draft -n kube-system --as=system:admin
-$ oc adm policy add-scc-to-user privileged system:serviceaccount:kube-system:draft --as=system:admin
-</code></pre>
+<p>Why I haven’t granted the SCC to the <em>default</em> serviceaccount? Mainly because doing so would alter the behavior of everything else deployed in the same project.</p>
 
-<p>Now we need to deploy <strong>draft</strong> regularly, knowing that it will fail, as it is not using that specific serviceaccount. Why I haven’t granted the SCC to the default serviceaccount? Mainly because doing so would alter the behavior of everything else deployed in the same project.</p>
+<p>As it happened with helm, I need to provide draft with the –kube-context and –host flags. You can go back to my previous blog to see how to get those.</p>
 
-<pre><code>$ draft init --kube-context default/192-168-99-100:8443/system:admin --host 192.168.99.100:8443
+<pre><code>$ export TILLER_HOST="$(minishift ip):$(oc get svc/tiller -o jsonpath='{.spec.ports[0].nodePort}' -n kube-system --as=system:admin)"
+
+$ draft init --kube-context default/192-168-99-100:8443/system:admin --host $TILLER_HOST
 Creating /Users/jmorales/.draft
 Creating /Users/jmorales/.draft/plugins
 Creating /Users/jmorales/.draft/packs
@@ -229,13 +211,19 @@ $DRAFT_HOME has been configured at /Users/jmorales/.draft.
 
 In order to install Draft, we need a bit more information...
 
-1. Enter your Docker registry URL (e.g. docker.io, quay.io, myregistry.azurecr.io): docker-registry-default.192.168.99.100.nip.io:443
+1. Enter your Docker registry URL (e.g. docker.io, quay.io, myregistry.azurecr.io): docker-registry.default.svc.cluster.local
 2. Enter your username: developer
-3. Enter your password:
+3. Enter your password: MO-riSJ4ykC48UFBRynHGfQpXcGR8BqqY7VJ2jPugHQ
 4. Enter your org where Draft will push images [developer]: myproject
 5. Enter your top-level domain for ingress (e.g. draft.example.com): apps.192.168.99.100.nip.io
 Draft has been installed into your Kubernetes Cluster.
 Happy Sailing!
+</code></pre>
+
+<p><em>NOTE</em>: You will need to execute draft as privileged, so I will create a serviceaccount named draft in the kube-system namespace and will grant the <em>provileged</em> SCC to it.</p>
+
+<pre><code>$ oc create serviceaccount draft -n kube-system --as=system:admin
+$ oc adm policy add-scc-to-user privileged system:serviceaccount:kube-system:draft --as=system:admin
 </code></pre>
 
 <p>I will verify that the deployment has actually failed. Then I will patch the deployment to use the <em>draft</em> serviceaccount, and will redeploy draftd.</p>
@@ -256,16 +244,16 @@ NAME      DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
 draftd    1         1         1            1           3m
 </code></pre>
 
+<p>Draft creates a folder in $HOME/.draft where it will store the packs and plugins.</p>
+
 <p><strong>Now we really have draftd up and running!</strong></p>
 
-<p>We need to expose draftd, as the client will need to connect to it, but since it will be using tcp and will be listening on port <em>44135</em> we can either do port-forwarding (for a one time solution), or expose the service via a nodePort and use that port as the –host parameter to draft.</p>
+<p>Currently it looks like draft needs to open a tunnel to your server. In order to do that, the only way I have been able to make it work has been to port-forward my local port 44135 to the draftd pod’s port 44135.</p>
 
-<pre><code>$ oc create service nodeport xxxxxxxxx
+<pre><code>$ oc port-forward $(oc get pod xxxx -n kube-system --as=system:admin) :44135 -n kube-system --as=system:admin &amp;amp;
 </code></pre>
 
-<p>Now we have draftd exposed here: <strong>192.168.99.100.nip.io:xyzz</strong></p>
-
-<p>Draft creates a folder in $HOME/.draft where it will store the packs and plugins.</p>
+<p>Now we have draftd listening locally on port 44135.</p>
 
 <h2 id="getting-started"> Getting started</h2>
 <p>Once we have Draft up and running on OpenShift (minishift), we will install our first application. For sake of simplicity, our first application will use the <a href="https://github.com/Azure/draft/blob/master/docs/getting-started.md#getting-started">Getting Started guide</a> on Draft site.</p>
@@ -318,7 +306,7 @@ change.</p>
 <pre><code class="language-shell">$ cat draft.toml
 [environments]
   [environments.development]
-    name = "unrealistic-wallaby"
+    name = "my-pythonapp"
     namespace = "myproject"
     wait = false
     watch = false
@@ -352,7 +340,7 @@ when watching for changes. The syntax is identical to
 later on…</p>
 
 <p>~~~ shell
-$ draft up –debug –kube-context default/192-168-99-100:8443/system:admin
+$ draft up –kube-context default/192-168-99-100:8443/system:admin –host $DRAFT_HOST
 –&gt; Building Dockerfile
 Step 1/4 : FROM python:onbuild
 onbuild: Pulling from library/python
@@ -465,7 +453,7 @@ The push refers to a repository [docker.io/microsoft/tufted-lamb]
 
 <h2 id="great-success">Great Success!</h2>
 
-<p>Now when we run <code>curl http://tufted-lamb.example.com</code>, we can see our app has been updated and deployed to Kubernetes automatically!&lt;/eof&gt;&lt;/any&gt;</p>
+<p>Now when we run <code>curl http://tufted-lamb.example.com</code>, we can see our app has been updated and deployed to Kubernetes automatically!&lt;/eof&gt;</p>
 
 
         <p>I would like to hear from you! If you have some ideas or comments, please do not hesitate to <a href="https://twitter.com/UnPOUcoDe">tweet me</a> your comments.</p>
